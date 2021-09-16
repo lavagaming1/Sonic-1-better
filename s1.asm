@@ -3160,8 +3160,8 @@ SegaScreen:				; XREF: GameModeArray
 		bsr.w	PalLoad_Now	; load Sega logo pallet
 		move.w	#-$A,(PalCycle_Frame).w
 		move.w	#0,(PalCycle_Timer).w
-		move.w	#0,($FFFFF662).w
-		move.w	#0,($FFFFF660).w
+		move.w	#0,(Unk_F662).w ; thses get cleared but never used ?
+		move.w	#0,(Unk_F660).w
 		move.w	(VDP_Reg1_val).w,d0
 		ori.b	#$40,d0
 		move.w	d0,(VDP_control_port).l
@@ -3188,7 +3188,7 @@ Sega_WaitEnd:
 
 Sega_GotoTitle:
 		move.b	#4,(Game_Mode).w ; go to title screen
-		rts	
+		rts
 ; ===========================================================================
 
 ; ---------------------------------------------------------------------------
@@ -3975,12 +3975,12 @@ Level_LoadObj:
 
 loc_39E8:
 		move.b	d0,(Time_Over_flag).w
-		move.b	d0,($FFFFFE2C).w ; clear shield
-		move.b	d0,($FFFFFE2D).w ; clear invincibility
-		move.b	d0,($FFFFFE2E).w ; clear speed shoes
-		move.b	d0,($FFFFFE2F).w
+		move.b	d0,(ShieldFlag).w ; clear shield
+		move.b	d0,(InvcFlag).w ; clear invincibility
+		move.b	d0,(SpeedSHoesFlags).w ; clear speed shoes
+		move.b	d0,(Unk_Flags_1).w
 		move.w	d0,(Debug_placement_mode).w
-		move.w	d0,($FFFFFE02).w
+		move.w	d0,(Level_Inactive_flag).w
 		move.w	d0,(Timer_frames).w
 		bsr.w	OscillateNumInit
 		move.b	#1,(Update_HUD_score).w ; update score	counter
@@ -4082,7 +4082,7 @@ loc_3B14:
 		bsr.w	SignpostArtLoad
 		cmpi.b	#8,(Game_Mode).w
 		beq.s	Level_ChkDemo	; if screen mode is 08 (demo), branch
-		tst.w	($FFFFFE02).w	; is the level set to restart?
+		tst.w	(Level_Inactive_flag).w	; is the level set to restart?
 		bne.w	Level		; if yes, branch
 		cmpi.b	#$C,(Game_Mode).w
 		beq.w	Level_MainLoop	; if screen mode is $0C	(level), branch
@@ -4090,7 +4090,7 @@ loc_3B14:
 ; ===========================================================================
 
 Level_ChkDemo:				; XREF: Level_MainLoop
-		tst.w	($FFFFFE02).w	; is level set to restart?
+		tst.w	(Level_Inactive_flag).w	; is level set to restart?
 		bne.s	Level_EndDemo	; if yes, branch
 		tst.w	(Demo_Time_left).w	; is there time	left on	the demo?
 		beq.s	Level_EndDemo	; if not, branch
@@ -4945,7 +4945,7 @@ SS_ClrNemRam:
 		dbf	d1,SS_ClrNemRam	; clear	Nemesis	buffer
 
 		clr.b	(Water_fullscreen_flag).w
-		clr.w	($FFFFFE02).w
+		clr.w	(Level_Inactive_flag).w
 		moveq	#$A,d0
 		bsr.w	PalLoad_ForFade	; load special stage pallet
 		jsr	(SS_Load).l
@@ -5074,7 +5074,7 @@ SS_NormalExit:
 		jsr	(ObjectsLoad).l
 		jsr	(BuildSprites).l
 		bsr.w	RunPLC_RAM
-		tst.w	($FFFFFE02).w
+		tst.w	(Level_Inactive_flag).w
 		beq.s	SS_NormalExit
 		tst.l	(Plc_Buffer).w
 		bne.s	SS_NormalExit
@@ -5761,12 +5761,12 @@ End_LoadSonic:
 		move.w	d0,(Ring_count).w
 		move.l	d0,(Timer).w
 		move.b	d0,(Extra_life_flags).w
-		move.b	d0,($FFFFFE2C).w
-		move.b	d0,($FFFFFE2D).w
-		move.b	d0,($FFFFFE2E).w
-		move.b	d0,($FFFFFE2F).w
+		move.b	d0,(ShieldFlag).w
+		move.b	d0,(InvcFlag).w
+		move.b	d0,(SpeedSHoesFlags).w
+		move.b	d0,(Unk_Flags_1).w
 		move.w	d0,(Debug_placement_mode).w
-		move.w	d0,($FFFFFE02).w
+		move.w	d0,(Level_Inactive_flag).w
 		move.w	d0,(Timer_frames).w
 		bsr.w	OscillateNumInit
 		move.b	#1,(Update_HUD_score).w
@@ -5808,10 +5808,10 @@ End_MainLoop:
 ; ===========================================================================
 
 loc_52DA:
-		tst.w	($FFFFFE02).w	; is level set to restart?
+		tst.w	(Level_Inactive_flag).w	; is level set to restart?
 		beq.w	End_MainLoop	; if not, branch
 
-		clr.w	($FFFFFE02).w
+		clr.w	(Level_Inactive_flag).w
 		move.w	#$3F,(Palette_fade_start).w
 		clr.w	($FFFFF794).w
 
@@ -5833,9 +5833,9 @@ End_AllEmlds:				; XREF: loc_5334
 		bsr.w	Pal_ToWhite
 
 loc_5334:
-		tst.w	($FFFFFE02).w
+		tst.w	(Level_Inactive_flag).w
 		beq.w	End_AllEmlds
-		clr.w	($FFFFFE02).w
+		clr.w	(Level_Inactive_flag).w
 		move.w	#$2E2F,(Level_Layout+$80).w ; modify level layout
 		lea	(VDP_control_port).l,a5
 		lea	(VDP_data_port).l,a6
@@ -5946,7 +5946,7 @@ Obj87_Wait:
 Obj87_LookUp:				; XREF: Obj87_Index
 		cmpi.w	#$2000,($FFD43C).l
 		bne.s	locret_5480
-		move.w	#1,($FFFFFE02).w ; set level to	restart	(causes	flash)
+		move.w	#1,(Level_Inactive_flag).w ; set level to	restart	(causes	flash)
 		move.w	#$5A,$30(a0)
 		addq.b	#2,routine_secondary(a0)
 
@@ -5963,7 +5963,7 @@ Obj87_ClrObjRam:			; XREF: Obj87_Index
 Obj87_ClrLoop:
 		clr.l	(a1)+
 		dbf	d1,Obj87_ClrLoop ; clear the object RAM
-		move.w	#1,($FFFFFE02).w
+		move.w	#1,(Level_Inactive_flag).w
 		addq.b	#2,routine_secondary(a0)
 		move.b	#1,anim(a0)
 		move.w	#$3C,$30(a0)
@@ -8435,7 +8435,7 @@ Resize_SBZ3:
 		cmpi.w	#$18,(Object_RAM+y_pos).w ; has Sonic reached the top of the level?
 		bcc.s	locret_6F8C	; if not, branch
 		clr.b	(Last_star_pole_hit).w
-		move.w	#1,($FFFFFE02).w ; restart level
+		move.w	#1,(Level_Inactive_flag).w ; restart level
 		move.w	#$502,(Current_ZoneAndAct).w ; set level	number to 0502 (FZ)
 		move.b	#1,(Freeze_flag).w ; freeze Sonic
 
@@ -12521,8 +12521,8 @@ Obj7C_Collect:				; XREF: Obj7C_ChkDel
 		move.b	#6,routine(a1)	; delete giant ring object (Obj4B)
 		move.b	#$1C,(Object_RAM+anim).w ; make Sonic	invisible
 		move.b	#1,(Bonuses_flag).w ; stop	Sonic getting bonuses
-		clr.b	($FFFFFE2D).w	; remove invincibility
-		clr.b	($FFFFFE2C).w	; remove shield
+		clr.b	(InvcFlag).w	; remove invincibility
+		clr.b	(ShieldFlag).w	; remove shield
 
 locret_9F76:
 		rts	
@@ -12802,7 +12802,7 @@ ExtraLife:
 Obj2E_ChkShoes:
 		cmpi.b	#3,d0		; does monitor contain speed shoes?
 		bne.s	Obj2E_ChkShield
-		move.b	#1,($FFFFFE2E).w ; speed up the	BG music
+		move.b	#1,(SpeedSHoesFlags).w ; speed up the	BG music
 		move.w	#$4B0,(Object_RAM+$34).w ; time limit for the power-up
 		move.w	#$C00,(Sonic_top_speed).w ; change Sonic's top speed
 		move.w	#$18,(Sonic_acceleration).w
@@ -12814,7 +12814,7 @@ Obj2E_ChkShoes:
 Obj2E_ChkShield:
 		cmpi.b	#4,d0		; does monitor contain a shield?
 		bne.s	Obj2E_ChkInvinc
-		move.b	#1,($FFFFFE2C).w ; give	Sonic a	shield
+		move.b	#1,(ShieldFlag).w ; give	Sonic a	shield
 		move.b	#$38,(Object_RAM+$180).w ; load shield object	($38)
 		move.w	#SndID_Shield,d0
 		jmp	(PlaySound).l	; play shield sound
@@ -12823,7 +12823,7 @@ Obj2E_ChkShield:
 Obj2E_ChkInvinc:
 		cmpi.b	#5,d0		; does monitor contain invincibility?
 		bne.s	Obj2E_ChkRings
-		move.b	#1,($FFFFFE2D).w ; make	Sonic invincible
+		move.b	#1,(InvcFlag).w ; make	Sonic invincible
 		move.w	#$4B0,(Object_RAM+$32).w ; time limit for the power-up
 		move.b	#$38,(Object_RAM+$200).w ; load stars	object ($3801)
 		move.b	#1,(Object_RAM+$200+anim).w
@@ -15395,7 +15395,7 @@ Obj39_ChgMode:				; XREF: Obj39_Wait
 ; ===========================================================================
 
 Obj39_ResetLvl:				; XREF: Obj39_ChgMode
-		move.w	#1,($FFFFFE02).w ; restart level
+		move.w	#1,(Level_Inactive_flag).w ; restart level
 
 Obj39_Display:				; XREF: Obj39_ChgMode
 		bra.w	DisplaySprite
@@ -15563,7 +15563,7 @@ Obj3A_ChkSS:				; XREF: Obj3A_NextLevel
 ; ===========================================================================
 
 loc_C6EA:				; XREF: Obj3A_ChkSS
-		move.w	#1,($FFFFFE02).w ; restart level
+		move.w	#1,(Level_Inactive_flag).w ; restart level
 
 Obj3A_Display2:				; XREF: Obj3A_NextLevel, Obj3A_ChkSS
 		bra.w	DisplaySprite
@@ -15758,7 +15758,7 @@ locret_C8EA:
 ; ===========================================================================
 
 Obj7E_Exit:				; XREF: Obj7E_Index
-		move.w	#1,($FFFFFE02).w ; restart level
+		move.w	#1,(Level_Inactive_flag).w ; restart level
 		bra.w	DisplaySprite
 ; ===========================================================================
 
@@ -16188,7 +16188,7 @@ Obj36_Upright:				; XREF: Obj36_Solid
 		bpl.s	Obj36_Display
 
 Obj36_Hurt:				; XREF: Obj36_SideWays; Obj36_Upright
-		tst.b	($FFFFFE2D).w	; is Sonic invincible?
+		tst.b	(InvcFlag).w	; is Sonic invincible?
 		bne.s	Obj36_Display	; if yes, branch
 		move.l	a0,-(sp)
 		movea.l	a0,a2
@@ -18732,7 +18732,7 @@ GotThroughAct:				; XREF: Obj3E_EndAct
 		tst.b	(Object_RAM+$5C0).w
 		bne.s	locret_ECEE
 		move.w	(Camera_Max_X_pos).w,(Camera_Min_X_pos).w
-		clr.b	($FFFFFE2D).w	; disable invincibility
+		clr.b	(InvcFlag).w	; disable invincibility
 		clr.b	(Update_HUD_timer).w	; stop time counter
 		move.b	#$3A,(Object_RAM+$5C0).w
 		moveq	#$10,d0
@@ -24095,7 +24095,7 @@ Obj01_Display:
 		jsr	(DisplaySprite).l
 
 Obj01_ChkInvin:
-		tst.b	($FFFFFE2D).w	; does Sonic have invincibility?
+		tst.b	(InvcFlag).w	; does Sonic have invincibility?
 		beq.s	Obj01_ChkShoes	; if not, branch
 		tst.w	$32(a0)		; check	time remaining for invinciblity
 		beq.s	Obj01_ChkShoes	; if no	time remains, branch
@@ -24117,10 +24117,10 @@ Obj01_PlayMusic:
 		jsr	(PlaySound).l	; play normal music
 
 Obj01_RmvInvin:
-		move.b	#0,($FFFFFE2D).w ; cancel invincibility
+		move.b	#0,(InvcFlag).w ; cancel invincibility
 
 Obj01_ChkShoes:
-		tst.b	($FFFFFE2E).w	; does Sonic have speed	shoes?
+		tst.b	(SpeedSHoesFlags).w	; does Sonic have speed	shoes?
 		beq.s	Obj01_ExitChk	; if not, branch
 		tst.w	$34(a0)		; check	time remaining
 		beq.s	Obj01_ExitChk
@@ -24129,7 +24129,7 @@ Obj01_ChkShoes:
 		move.w	#$600,(Sonic_top_speed).w ; restore Sonic's speed
 		move.w	#$C,(Sonic_acceleration).w ; restore Sonic's acceleration
 		move.w	#$80,(Sonic_deceleration).w ; restore Sonic's deceleration
-		move.b	#0,($FFFFFE2E).w ; cancel speed	shoes
+		move.b	#0,(SpeedSHoesFlags).w ; cancel speed	shoes
 		move.w	#MusID_SlowDown,d0
 		jmp	(PlaySound).l	; run music at normal speed
 ; ===========================================================================
@@ -24816,7 +24816,7 @@ Boundary_Bottom:
 		cmpi.w	#$2000,(Object_RAM+x_pos).w
 		bcs.w	KillSonic
 		clr.b	(Last_star_pole_hit).w	; clear	lamppost counter
-		move.w	#1,($FFFFFE02).w ; restart the level
+		move.w	#1,(Level_Inactive_flag).w ; restart the level
 		move.w	#$103,(Current_ZoneAndAct).w ; set level	to SBZ3	(LZ4)
 ;+
 		rts	
@@ -25457,7 +25457,7 @@ Obj01_Gone:			; XREF: Obj01_Index
 		beq.s	locret_13914
 		subq.w	#1,$3A(a0)	; subtract 1 from time delay
 		bne.s	locret_13914
-		move.w	#1,($FFFFFE02).w ; restart the level
+		move.w	#1,(Level_Inactive_flag).w ; restart the level
 
 locret_13914:
 		rts	
@@ -26232,9 +26232,9 @@ Obj38_DoStars:
 ; ===========================================================================
 
 Obj38_Shield:				; XREF: Obj38_Index
-		tst.b	($FFFFFE2D).w	; does Sonic have invincibility?
+		tst.b	(InvcFlag).w	; does Sonic have invincibility?
 		bne.s	Obj38_RmvShield	; if yes, branch
-		tst.b	($FFFFFE2C).w	; does Sonic have shield?
+		tst.b	(ShieldFlag).w	; does Sonic have shield?
 		beq.s	Obj38_Delete	; if not, branch
 		move.w	(Object_RAM+x_pos).w,x_pos(a0)
 		move.w	(Object_RAM+y_pos).w,y_pos(a0)
@@ -26253,7 +26253,7 @@ Obj38_Delete:
 ; ===========================================================================
 
 Obj38_Stars:				; XREF: Obj38_Index
-		tst.b	($FFFFFE2D).w	; does Sonic have invincibility?
+		tst.b	(InvcFlag).w	; does Sonic have invincibility?
 		beq.s	Obj38_Delete2	; if not, branch
 		move.w	($FFFFF7A8).w,d0
 		move.b	anim(a0),d1
@@ -35386,7 +35386,7 @@ locret_1AF2E:
 ; ===========================================================================
 
 Touch_Enemy:				; XREF: Touch_ChkValue
-		tst.b	($FFFFFE2D).w	; is Sonic invincible?
+		tst.b	(InvcFlag).w	; is Sonic invincible?
 		bne.s	loc_1AF40	; if yes, branch
 		cmpi.b	#2,anim(a0)	; is Sonic rolling?
 		bne.w	Touch_ChkHurt	; if not, branch
@@ -35453,7 +35453,7 @@ loc_1AFDA:				; XREF: Touch_CatKiller
 		bset	#7,status(a1)
 
 Touch_ChkHurt:				; XREF: Touch_ChkValue
-		tst.b	($FFFFFE2D).w	; is Sonic invincible?
+		tst.b	(InvcFlag).w	; is Sonic invincible?
 		beq.s	Touch_Hurt	; if not, branch
 
 loc_1AFE6:				; XREF: Touch_Hurt
@@ -35478,7 +35478,7 @@ Touch_Hurt:				; XREF: Touch_ChkHurt
 
 
 HurtSonic:
-		tst.b	($FFFFFE2C).w	; does Sonic have a shield?
+		tst.b	(ShieldFlag).w	; does Sonic have a shield?
 		bne.s	Hurt_Shield	; if yes, branch
 		tst.w	(Ring_count).w	; does Sonic have any rings?
 		beq.w	Hurt_NoRings	; if not, branch
@@ -35489,7 +35489,7 @@ HurtSonic:
 		move.w	y_pos(a0),y_pos(a1)
 
 Hurt_Shield:
-		move.b	#0,($FFFFFE2C).w ; remove shield
+		move.b	#0,(ShieldFlag).w ; remove shield
 		move.b	#4,routine(a0)
 		bsr.w	Sonic_ResetOnFloor
 		bset	#1,status(a0)
@@ -35538,7 +35538,7 @@ Hurt_NoRings:
 KillSonic:
 		tst.w	(Debug_placement_mode).w	; is debug mode	active?
 		bne.s	Kill_NoDeath	; if yes, branch
-		move.b	#0,($FFFFFE2D).w ; remove invincibility
+		move.b	#0,(InvcFlag).w ; remove invincibility
 		move.b	#6,routine(a0)
 		bsr.w	Sonic_ResetOnFloor
 		bset	#1,status(a0)

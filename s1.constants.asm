@@ -226,7 +226,8 @@ Water_routine =			ramaddr( $FFFFF64D )
 Water_fullscreen_flag =		ramaddr( $FFFFF64E )	; was "Water_move"
 
 Do_Updates_in_H_int =		ramaddr( $FFFFF64F )
-
+Unk_F660 =                      ramaddr( $FFFFF660 )
+Unk_F662 =                      ramaddr( $FFFFF662 )
 PalCycle_Frame_LZ =		ramaddr( $FFFFF650 )
 
 Plc_Buffer =			ramaddr( $FFFFF680 )
@@ -343,6 +344,7 @@ Obj_respawn_index =		ramaddr( $FFFFFC00 )	; respawn table indices of the next ob
 Error_message_ID =		ramaddr( $FFFFFC44 )
 
 System_Stack =			ramaddr( $FFFFFE00 )
+Level_Inactive_flag =		ramaddr( $FFFFFE02 )
 Timer_frames =			ramaddr( $FFFFFE04 )	; 2 bytes
 
 Debug_object =			ramaddr( $FFFFFE06 )
@@ -377,6 +379,10 @@ Timer_minute = 			ramaddr( $FFFFFE23 )
 Timer_second = 			ramaddr( $FFFFFE24 )
 Timer_frame = 			ramaddr( $FFFFFE25 )
 Score =				ramaddr( $FFFFFE26 )	; 4 bytes
+ShieldFlag =                    ramaddr( $FFFFFE2C )
+InvcFlag =                    ramaddr( $FFFFFE2D )
+SpeedSHoesFlags =             ramaddr( $FFFFFE2E )
+Unk_Flags_1 =             ramaddr( $FFFFFE2F ) 
 				; $FFFFFE2A-$FFFFFE2F unused 6 bytes
 
 Last_star_pole_hit =		ramaddr( $FFFFFE30 )
