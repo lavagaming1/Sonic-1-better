@@ -3986,7 +3986,7 @@ loc_39E8:
 		move.b	#1,(Update_HUD_score).w ; update score	counter
 		move.b	#1,(Update_HUD_rings).w ; update rings	counter
 		move.b	#1,(Update_HUD_timer).w ; update time counter
-		move.w	#0,($FFFFF790).w
+		move.w	#0,(Demo_button_index).w
 		lea	(Demo_Index).l,a1 ; load demo data
 		moveq	#0,d0
 		move.b	(Current_Zone).w,d0
@@ -4001,8 +4001,8 @@ loc_39E8:
 		movea.l	(a1,d0.w),a1
 
 Level_Demo:
-		move.b	1(a1),($FFFFF792).w ; load key press duration
-		subq.b	#1,($FFFFF792).w ; subtract 1 from duration
+		move.b	1(a1),(Demo_press_counter).w ; load key press duration
+		subq.b	#1,(Demo_press_counter).w ; subtract 1 from duration
 		move.w	#1800,(Demo_Time_left).w
 		tst.w	(Demo_mode_flag).w
 		bpl.s	Level_ChkWaterPal
@@ -4111,7 +4111,7 @@ Level_EndDemo:				; XREF: Level_ChkDemo
 loc_3B88:
 		move.w	#$3C,(Demo_Time_left).w
 		move.w	#$3F,(Palette_fade_start).w
-		clr.w	($FFFFF794).w
+		clr.w	(PalChangeSpeed).w
 
 loc_3B98:
 		move.b	#8,(Vint_routine).w
@@ -4120,9 +4120,9 @@ loc_3B98:
 		jsr	(ObjectsLoad).l
 		jsr	(BuildSprites).l
 		jsr	(ObjectsManager).l
-		subq.w	#1,($FFFFF794).w
+		subq.w	#1,(PalChangeSpeed).w
 		bpl.s	loc_3BC8
-		move.w	#2,($FFFFF794).w
+		move.w	#2,(PalChangeSpeed).w
 		bsr.w	Pal_FadeOut
 
 loc_3BC8:
@@ -4221,7 +4221,7 @@ DynWater_LZ1:				; XREF: DynWater_Index
 		move.w	#$318,d1
 		cmpi.w	#$1080,d0
 		bcs.s	loc_3CB4
-		move.b	#-$80,($FFFFF7E5).w
+		move.b	#-$80,(ButtonVineSec).w
 		move.w	#$5C8,d1
 		cmpi.w	#$1380,d0
 		bcs.s	loc_3CB4
@@ -4362,7 +4362,7 @@ loc_3DD2:
 		move.w	#$608,(Water_Level_3).w
 		move.w	#$7C0,(Water_Level_2).w
 		move.b	#1,($FFFFF7E8).w
-		rts	
+		rts
 ; ===========================================================================
 
 loc_3E04:
@@ -4425,7 +4425,7 @@ LZWind_Loop:
 		bcs.s	loc_3EF4
 		cmp.w	6(a2),d2
 		bcc.s	loc_3EF4
-		move.b	($FFFFFE0F).w,d0
+		move.b	(Vint_runcount+3).w,d0
 		andi.b	#$3F,d0
 		bne.s	loc_3E90
 		move.w	#SpeSndID_Waterfall,d0
@@ -4541,7 +4541,7 @@ loc_3F9A:
 		clr.b	$15(a1)
 		move.b	#$1B,anim(a1)	; use Sonic's "sliding" animation
 		move.b	#1,(Lock_Controls).w ; lock	controls (except jumping)
-		move.b	($FFFFFE0F).w,d0
+		move.b	(Vint_runcount+3).w,d0
 		andi.b	#$1F,d0
 		bne.s	locret_3FBE
 		move.w	#SpeSndID_Waterfall,d0
@@ -4573,7 +4573,7 @@ MoveSonicInDemo:			; XREF: Level_MainLoop; et al
 
 MoveDemo_Record:
 		lea	($80000).l,a1
-		move.w	($FFFFF790).w,d0
+		move.w	(Demo_button_index).w,d0
 		adda.w	d0,a1
 		move.b	(Ctrl_1).w,d0
 		cmp.b	(a1),d0
@@ -4587,8 +4587,8 @@ MoveDemo_Record:
 loc_3FFA:				; XREF: MoveDemo_Record
 		move.b	d0,2(a1)
 		move.b	#0,3(a1)
-		addq.w	#2,($FFFFF790).w
-		andi.w	#$3FF,($FFFFF790).w
+		addq.w	#2,(Demo_button_index).w
+		andi.w	#$3FF,(Demo_button_index).w
 		rts	
 ; ===========================================================================
 
@@ -4619,7 +4619,7 @@ loc_4038:
 		movea.l	(a1,d0.w),a1
 
 loc_4056:
-		move.w	($FFFFF790).w,d0
+		move.w	(Demo_button_index).w,d0
 		adda.w	d0,a1
 		move.b	(a1),d0
 		lea	(Ctrl_1).w,a0
@@ -4629,10 +4629,10 @@ loc_4056:
 		move.b	d1,(a0)+
 		and.b	d1,d0
 		move.b	d0,(a0)+
-		subq.b	#1,($FFFFF792).w
+		subq.b	#1,(Demo_press_counter).w
 		bcc.s	locret_407E
-		move.b	3(a1),($FFFFF792).w
-		addq.w	#2,($FFFFF790).w
+		move.b	3(a1),(Demo_press_counter).w
+		addq.w	#2,(Demo_button_index).w
 
 locret_407E:
 		rts	
@@ -4957,13 +4957,13 @@ SS_ClrNemRam:
 		move.w	#$40,(SS_Rotate_sec).w ; set stage rotation	speed
 		move.w	#MusID_SpecialStage,d0
 		bsr.w	PlaySound	; play special stage BG	music
-		move.w	#0,($FFFFF790).w
+		move.w	#0,(Demo_button_index).w
 		lea	(Demo_Index).l,a1
 		moveq	#6,d0
 		lsl.w	#2,d0
 		movea.l	(a1,d0.w),a1
-		move.b	1(a1),($FFFFF792).w
-		subq.b	#1,($FFFFF792).w
+		move.b	1(a1),(Demo_press_counter).w
+		subq.b	#1,(Demo_press_counter).w
 		clr.w	(Ring_count).w
 		clr.b	(Extra_life_flags).w
 		move.w	#0,(Debug_placement_mode).w
@@ -5013,7 +5013,7 @@ SS_ChkEnd:
 SS_End:
 		move.w	#60,(Demo_Time_left).w ; set	delay time to 1	second
 		move.w	#$3F,(Palette_fade_start).w
-		clr.w	($FFFFF794).w
+		clr.w	(PalChangeSpeed).w
 
 SS_EndLoop:
 		move.b	#$16,(Vint_routine).w
@@ -5024,9 +5024,9 @@ SS_EndLoop:
 		jsr	(BuildSprites).l
 		jsr	(SS_ShowLayout).l
 		bsr.w	SS_BGAnimate
-		subq.w	#1,($FFFFF794).w
+		subq.w	#1,(PalChangeSpeed).w
 		bpl.s	loc_47D4
-		move.w	#2,($FFFFF794).w
+		move.w	#2,(PalChangeSpeed).w
 		bsr.w	Pal_ToWhite
 
 loc_47D4:
@@ -5550,7 +5550,7 @@ Obj80_ChkType:				; XREF: Obj80_Index
 		beq.s	loc_4F40
 		cmpi.b	#6,(Object_RAM+routine).w
 		bcs.s	loc_4F40
-		move.b	($FFFFFE0F).w,d0
+		move.b	(Vint_runcount+3).w,d0
 		andi.b	#1,d0
 		bne.s	loc_4F40
 		tst.w	(Object_RAM+x_vel).w
@@ -5559,7 +5559,7 @@ Obj80_ChkType:				; XREF: Obj80_Index
 ; ===========================================================================
 
 loc_4F40:				; XREF: Obj80_ChkType
-		move.b	($FFFFFE0F).w,d0
+		move.b	(Vint_runcount+3).w,d0
 		andi.b	#$F,d0
 		bne.s	Obj80_Display2
 		bchg	#0,mapping_frame(a0)
@@ -5813,7 +5813,7 @@ loc_52DA:
 
 		clr.w	(Level_Inactive_flag).w
 		move.w	#$3F,(Palette_fade_start).w
-		clr.w	($FFFFF794).w
+		clr.w	(PalChangeSpeed).w
 
 End_AllEmlds:				; XREF: loc_5334
 		bsr.w	PauseGame
@@ -5827,9 +5827,9 @@ End_AllEmlds:				; XREF: loc_5334
 		jsr	(ObjectsManager).l
 		bsr.w	OscillateNumDo
 		bsr.w	ChangeRingFrame
-		subq.w	#1,($FFFFF794).w
+		subq.w	#1,(PalChangeSpeed).w
 		bpl.s	loc_5334
-		move.w	#2,($FFFFF794).w
+		move.w	#2,(PalChangeSpeed).w
 		bsr.w	Pal_ToWhite
 
 loc_5334:
@@ -11331,7 +11331,7 @@ loc_912A:				; XREF: Obj28_Index
 		move.b	d0,routine(a0)
 		tst.b	($FFFFF7A7).w
 		beq.s	loc_9180
-		btst	#4,($FFFFFE0F).w
+		btst	#4,(Vint_runcount+3).w
 		beq.s	loc_9180
 		neg.w	x_vel(a0)
 		bchg	#0,1(a0)
@@ -12359,7 +12359,7 @@ Obj37_Bounce:				; XREF: Obj37_Index
 		bsr.w	ObjectMove
 		addi.w	#$18,y_vel(a0)
 		bmi.s	Obj37_ChkDel
-		move.b	($FFFFFE0F).w,d0
+		move.b	(Vint_runcount+3).w,d0
 		add.b	d7,d0
 		andi.b	#3,d0
 		bne.s	Obj37_ChkDel
@@ -13396,7 +13396,7 @@ loc_AD78:				; XREF: Obj2D_Move
 ; ===========================================================================
 
 loc_AD84:				; XREF: Obj2D_Move
-		btst	#2,($FFFFFE0F).w
+		btst	#2,(Vint_runcount+3).w
 		beq.s	loc_ADA4
 		subq.b	#2,routine_secondary(a0)
 		move.w	#$3B,$30(a0)
@@ -14310,7 +14310,7 @@ Obj31_Type00:				; XREF: Obj31_TypeIndex
 loc_B872:
 		tst.w	$32(a0)
 		beq.s	loc_B8A0
-		move.b	($FFFFFE0F).w,d0
+		move.b	(Vint_runcount+3).w,d0
 		andi.b	#$F,d0
 		bne.s	loc_B892
 		tst.b	1(a0)
@@ -14362,7 +14362,7 @@ Obj31_Type01:				; XREF: Obj31_TypeIndex
 ; ===========================================================================
 
 loc_B902:
-		move.b	($FFFFFE0F).w,d0
+		move.b	(Vint_runcount+3).w,d0
 		andi.b	#$F,d0
 		bne.s	loc_B91C
 		tst.b	1(a0)
@@ -15531,7 +15531,7 @@ locret_C692:
 
 Obj3A_AddBonus:				; XREF: Obj3A_ChkBonus
 		jsr	(AddPoints).l
-		move.b	($FFFFFE0F).w,d0
+		move.b	(Vint_runcount+3).w,d0
 		andi.b	#3,d0
 		bne.s	locret_C692
 		move.w	#SndID_Button,d0
@@ -15736,7 +15736,7 @@ Obj7E_RingBonus:			; XREF: Obj7E_Index
 		subi.w	#10,(Bonus_Countdown_2).w ; subtract 10	from ring bonus
 		moveq	#10,d0		; add 10 to score
 		jsr	(AddPoints).l
-		move.b	($FFFFFE0F).w,d0
+		move.b	(Vint_runcount+3).w,d0
 		andi.b	#3,d0
 		bne.s	locret_C8EA
 		move.w	#SndID_Button,d0
@@ -15773,7 +15773,7 @@ Obj7E_Continue:				; XREF: Obj7E_Index
 ; ===========================================================================
 
 loc_C91A:				; XREF: Obj7E_Index
-		move.b	($FFFFFE0F).w,d0
+		move.b	(Vint_runcount+3).w,d0
 		andi.b	#$F,d0
 		bne.s	Obj7E_Display2
 		bchg	#0,mapping_frame(a0)
@@ -16352,7 +16352,7 @@ Obj49_Main:				; XREF: Obj49_Index
 		move.b	#4,1(a0)
 
 Obj49_PlaySnd:				; XREF: Obj49_Index
-		move.b	($FFFFFE0F).w,d0
+		move.b	(Vint_runcount+3).w,d0
 		andi.b	#$3F,d0
 		bne.s	Obj49_ChkDel
 		move.w	#SpeSndID_Waterfall,d0
@@ -20304,7 +20304,7 @@ Obj55_ChkDrop:				; XREF: Obj55_Index2
 		bcc.s	Obj55_NoDrop	; if not, branch
 		tst.w	(Debug_placement_mode).w	; is debug mode	on?
 		bne.s	Obj55_NoDrop	; if yes, branch
-		move.b	($FFFFFE0F).w,d0
+		move.b	(Vint_runcount+3).w,d0
 		add.b	d7,d0
 		andi.b	#7,d0
 		bne.s	Obj55_NoDrop
@@ -20312,7 +20312,7 @@ Obj55_ChkDrop:				; XREF: Obj55_Index2
 		addq.b	#2,routine_secondary(a0)
 
 Obj55_NoDrop:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj55_DropFly:				; XREF: Obj55_Index2
@@ -20331,17 +20331,17 @@ Obj55_DropFly:				; XREF: Obj55_Index2
 		addq.b	#2,routine_secondary(a0)
 
 locret_10180:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj55_ChkDel:				; XREF: Obj55_DropFly
 		tst.b	1(a0)
 		bpl.w	DeleteObject
-		rts	
+		rts
 ; ===========================================================================
 
 Obj55_PlaySnd:				; XREF: Obj55_Index2
-		move.b	($FFFFFE0F).w,d0
+		move.b	(Vint_runcount+3).w,d0
 		andi.b	#$F,d0
 		bne.s	loc_101A0
 		move.w	#SndID_Flapping,d0
@@ -20357,7 +20357,7 @@ loc_101A0:
 loc_101B0:
 		cmpi.w	#$80,d0
 		bcs.s	locret_101C6
-		move.b	($FFFFFE0F).w,d0
+		move.b	(Vint_runcount+3).w,d0
 		add.b	d7,d0
 		andi.b	#7,d0
 		bne.s	locret_101C6
@@ -30485,7 +30485,7 @@ loc_1784C:				; XREF: loc_177E6
 
 
 BossDefeated:
-		move.b	($FFFFFE0F).w,d0
+		move.b	(Vint_runcount+3).w,d0
 		andi.b	#7,d0
 		bne.s	locret_178A2
 		jsr	(SingleObjLoad).l
@@ -35108,7 +35108,7 @@ locret_1AC60:
 
 Obj3E_Explosion:			; XREF: Obj3E_Index
 		moveq	#7,d0
-		and.b	($FFFFFE0F).w,d0
+		and.b	(Vint_runcount+3).w,d0
 		bne.s	loc_1ACA0
 		jsr	(SingleObjLoad).l
 		bne.s	loc_1ACA0
@@ -35159,7 +35159,7 @@ locret_1ACF8:
 
 Obj3E_Animals:				; XREF: Obj3E_Index
 		moveq	#7,d0
-		and.b	($FFFFFE0F).w,d0
+		and.b	(Vint_runcount+3).w,d0
 		bne.s	loc_1AD38
 		jsr	(SingleObjLoad).l
 		bne.s	loc_1AD38

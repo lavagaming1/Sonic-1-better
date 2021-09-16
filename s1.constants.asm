@@ -300,6 +300,11 @@ Obj_load_addr_3 =		ramaddr( $FFFFF778 )	; likely a leftover from Ghouls'n'Ghosts
 Obj_load_addr_4 =		ramaddr( $FFFFF77C )	; likely a leftover from Ghouls'n'Ghosts
 SS_Rotate =	        	ramaddr( $FFFFF780 )
 SS_Rotate_sec =                 ramaddr( $FFFFF782 )
+
+Demo_button_index =                 ramaddr( $FFFFF790 )
+Demo_press_counter =                 ramaddr( $FFFFF792 )
+PalChangeSpeed =                 ramaddr( $FFFFF794 )
+
 Current_Boss_ID =		ramaddr( $FFFFF7AA )
 
 Pal_unk = 			ramaddr( $FFFFF7C0 )
@@ -322,6 +327,7 @@ End_SonicUnk =			ramaddr( $FFFFF7D7 )
 Camera_X_pos_coarse =		ramaddr( $FFFFF7DA )	; (Camera_X_pos - 128) / 256
 
 ButtonVine_Trigger =		ramaddr( $FFFFF7E0 )	; 16 bytes flag array, #subtype byte set when button/vine of respective subtype activated
+ButtonVineSec =                 ButtonVine_Trigger+$5
 Anim_Counters =			ramaddr( $FFFFF7F0 )	; $10 bytes ; was: Level_Unk
 
 Sprite_Table =			ramaddr( $FFFFF800 )	; Sprite attribute table buffer
