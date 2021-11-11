@@ -1,6 +1,20 @@
 ; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ; simplifying macros and functions
 
+; makes a VDP address difference
+vdpCommDelta function addr,((addr&$3FFF)<<16)|((addr&$C000)>>14)
+
+; makes a VDP command
+vdpComm function addr,type,rwd,(((type&rwd)&3)<<30)|((addr&$3FFF)<<16)|(((type&rwd)&$FC)<<2)|((addr&$C000)>>14)
+; values for the type argument
+VRAM = %100001
+CRAM = %101011
+VSRAM = %100101
+
+; values for the rwd argument
+READ = %001100
+WRITE = %000111
+DMA = %100111
 ; tells the Z80 to stop, and waits for it to finish stopping (acquire bus)
 stopZ80 macro
 	move.w	#$100,(Z80_Bus_Request).l ; stop the Z80

@@ -3450,6 +3450,11 @@ LevelSelect:
 		bne.s	LevelSelect
 		andi.b	#$F0,(Ctrl_1_Press).w ; is	A, B, C, or Start pressed?
 		beq.s	LevelSelect	; if not, branch
+		btst	#4,(Ctrl_1_Press).w  ; is b pressed
+		beq.s   ChangeSoundTest
+		move.w  #$10,(Sound_test_sound).w
+		bra.w   LevelSelect
+ChangeSoundTest:
 		move.w	(Level_select_zone).w,d0
 		cmpi.w	#$14,d0		; have you selected item $14 (sound test)?
 		bne.s	LevSel_Level_SS	; if not, go to	Level/SS subroutine
@@ -4361,7 +4366,7 @@ loc_3DD2:
 		move.b	#4,(Water_routine).w
 		move.w	#$608,(Water_Level_3).w
 		move.w	#$7C0,(Water_Level_2).w
-		move.b	#1,($FFFFF7E8).w
+		;move.b	#1,($FFFFF7E8).w ; unused
 		rts
 ; ===========================================================================
 
@@ -4678,7 +4683,7 @@ ColIndexLoad:				; XREF: Level
 		moveq	#0,d0
 		move.b	(Current_Zone).w,d0
 		lsl.w	#2,d0
-		move.l	ColPointers(pc,d0.w),($FFFFF796).w
+		move.l	ColPointers(pc,d0.w),(Collision_addr).w
 		rts	
 ; End of function ColIndexLoad
 
@@ -5734,7 +5739,7 @@ End_LoadData:
 		bset	#2,(Scroll_flags).w
 		bsr.w	MainLoadBlockLoad
 		bsr.w	LoadTilesFromStart
-		move.l	#Col_GHZ,($FFFFF796).w ; load collision	index
+		move.l	#Col_GHZ,(Collision_addr).w ; load collision	index
 		move	#$2300,sr
 		lea	(Kos_EndFlowers).l,a0 ;	load extra flower patterns
 		lea	($FFFF9400).w,a1 ; RAM address to buffer the patterns
@@ -7610,18 +7615,18 @@ sub_6886:
 LoadTilesAsYouMove:
 		lea	(VDP_control_port).l,a5
 		lea	(VDP_data_port).l,a6
-		lea	($FFFFFF32).w,a2
-		lea	($FFFFFF18).w,a3
+		lea	(Scroll_flags_BG_copy).w,a2
+		lea	(Camera_BG_copy).w,a3
 		lea	(Level_Layout+$40).w,a4
-		move.w	#$6000,d2
+		move.w	#vdpComm(VRAM_Plane_B_Name_Table,VRAM,WRITE)>>16,d2
 		bsr.w	Draw_BG1
-		lea	($FFFFFF34).w,a2
-		lea	($FFFFFF20).w,a3
+		lea	(Scroll_flags_BG2_copy).w,a2
+		lea	(Camera_BG2_copy).w,a3
 		bsr.w	Draw_BG2
 		lea	(Scroll_flags_copy).w,a2
 		lea	(Camera_RAM_copy).w,a3
 		lea	(Level_Layout).w,a4
-		move.w	#$4000,d2
+		move.w	#vdpComm(VRAM_Plane_A_Name_Table,VRAM,WRITE)>>16,d2
 		tst.b	(a2)
 		beq.s	locret_6952
 		bclr	#0,(a2)
@@ -7664,7 +7669,7 @@ loc_6938:
 		bsr.w	sub_6B04
 
 locret_6952:
-		rts	
+		rts
 ; End of function LoadTilesAsYouMove
 
 
@@ -7738,7 +7743,7 @@ loc_69EE:
 		bsr.w	sub_6B06
 
 locret_69F2:
-		rts	
+		rts
 ; End of function Draw_BG1
 
 
@@ -7796,7 +7801,7 @@ loc_6A3E:
 		bsr.w	sub_6B06
 
 locret_6A80:
-		rts	
+		rts
 ; End of function Draw_BG2
 
 ; ===========================================================================
@@ -7832,7 +7837,7 @@ loc_6AAC:
 		bsr.w	sub_6B06
 
 locret_6AD6:
-		rts	
+		rts
 
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
@@ -8213,13 +8218,13 @@ DynScrResizeLoad:			; XREF: DeformBgLayer
 		move.w	Resize_Index(pc,d0.w),d0
 		jsr	Resize_Index(pc,d0.w)
 		moveq	#2,d1
-		move.w	($FFFFF726).w,d0
+		move.w	(Camera_Max_Y_pos).w,d0
 		sub.w	(Camera_Max_Y_pos_now).w,d0
 		beq.s	locret_6DAA
 		bcc.s	loc_6DAC
 		neg.w	d1
 		move.w	(Camera_Y_pos).w,d0
-		cmp.w	($FFFFF726).w,d0
+		cmp.w	(Camera_Max_Y_pos).w,d0
 		bls.s	loc_6DA0
 		move.w	d0,(Camera_Max_Y_pos_now).w
 		andi.w	#-2,(Camera_Max_Y_pos_now).w
@@ -8274,26 +8279,26 @@ Resize_GHZx:	dc.w Resize_GHZ1-Resize_GHZx
 ; ===========================================================================
 
 Resize_GHZ1:
-		move.w	#$300,($FFFFF726).w ; set lower	y-boundary
+		move.w	#$300,(Camera_Max_Y_pos).w ; set lower	y-boundary
 		cmpi.w	#$1780,(Camera_X_pos).w ; has the camera reached $1780 on x-axis?
 		bcs.s	locret_6E08	; if not, branch
-		move.w	#$400,($FFFFF726).w ; set lower	y-boundary
+		move.w	#$400,(Camera_Max_Y_pos).w ; set lower	y-boundary
 
 locret_6E08:
 		rts
 ; ===========================================================================
 
 Resize_GHZ2:
-		move.w	#$300,($FFFFF726).w
+		move.w	#$300,(Camera_Max_Y_pos).w
 		cmpi.w	#$ED0,(Camera_X_pos).w
 		bcs.s	locret_6E3A
-		move.w	#$200,($FFFFF726).w
+		move.w	#$200,(Camera_Max_Y_pos).w
 		cmpi.w	#$1600,(Camera_X_pos).w
 		bcs.s	locret_6E3A
-		move.w	#$400,($FFFFF726).w
+		move.w	#$400,(Camera_Max_Y_pos).w
 		cmpi.w	#$1D60,(Camera_X_pos).w
 		bcs.s	locret_6E3A
-		move.w	#$300,($FFFFF726).w
+		move.w	#$300,(Camera_Max_Y_pos).w
 
 locret_6E3A:
 		rts
@@ -8311,18 +8316,18 @@ off_6E4A:	dc.w Resize_GHZ3main-off_6E4A
 ; ===========================================================================
 
 Resize_GHZ3main:
-		move.w	#$300,($FFFFF726).w
+		move.w	#$300,(Camera_Max_Y_pos).w
 		cmpi.w	#$380,(Camera_X_pos).w
 		bcs.s	locret_6E96
-		move.w	#$310,($FFFFF726).w
+		move.w	#$310,(Camera_Max_Y_pos).w
 		cmpi.w	#$960,(Camera_X_pos).w
 		bcs.s	locret_6E96
 		cmpi.w	#$280,(Camera_Y_pos).w
 		bcs.s	loc_6E98
-		move.w	#$400,($FFFFF726).w
+		move.w	#$400,(Camera_Max_Y_pos).w
 		cmpi.w	#$1380,(Camera_X_pos).w
 		bcc.s	loc_6E8E
-		move.w	#$4C0,($FFFFF726).w
+		move.w	#$4C0,(Camera_Max_Y_pos).w
 		move.w	#$4C0,(Camera_Max_Y_pos_now).w
 
 loc_6E8E:
@@ -8334,7 +8339,7 @@ locret_6E96:
 ; ===========================================================================
 
 loc_6E98:
-		move.w	#$300,($FFFFF726).w
+		move.w	#$300,(Camera_Max_Y_pos).w
 		addq.b	#2,(Dynamic_Resize_Routine).w
 		rts
 ; ===========================================================================
@@ -8471,13 +8476,13 @@ off_6FB2:	dc.w loc_6FBA-off_6FB2
 ; ===========================================================================
 
 loc_6FBA:
-		move.w	#$1D0,($FFFFF726).w
+		move.w	#$1D0,(Camera_Max_Y_pos).w
 		cmpi.w	#$700,(Camera_X_pos).w
 		bcs.s	locret_6FE8
-		move.w	#$220,($FFFFF726).w
+		move.w	#$220,(Camera_Max_Y_pos).w
 		cmpi.w	#$D00,(Camera_X_pos).w
 		bcs.s	locret_6FE8
-		move.w	#$340,($FFFFF726).w
+		move.w	#$340,(Camera_Max_Y_pos).w
 		cmpi.w	#$340,(Camera_Y_pos).w
 		bcs.s	locret_6FE8
 		addq.b	#2,(Dynamic_Resize_Routine).w
@@ -8498,10 +8503,10 @@ loc_6FF8:
 		cmpi.w	#$E00,(Camera_X_pos).w
 		bcc.s	locret_702C
 		move.w	#$340,(Camera_Min_Y_pos_now).w
-		move.w	#$340,($FFFFF726).w
+		move.w	#$340,(Camera_Max_Y_pos).w
 		cmpi.w	#$A90,(Camera_X_pos).w
 		bcc.s	locret_702C
-		move.w	#$500,($FFFFF726).w
+		move.w	#$500,(Camera_Max_Y_pos).w
 		cmpi.w	#$370,(Camera_Y_pos).w
 		bcs.s	locret_702C
 		addq.b	#2,(Dynamic_Resize_Routine).w
@@ -8531,20 +8536,20 @@ loc_7050:
 		cmpi.w	#$E70,(Camera_X_pos).w
 		bcs.s	locret_7072
 		move.w	#0,(Camera_Min_Y_pos_now).w
-		move.w	#$500,($FFFFF726).w
+		move.w	#$500,(Camera_Max_Y_pos).w
 		cmpi.w	#$1430,(Camera_X_pos).w
 		bcs.s	locret_7072
-		move.w	#$210,($FFFFF726).w
+		move.w	#$210,(Camera_Max_Y_pos).w
 
 locret_7072:
 		rts	
 ; ===========================================================================
 
 Resize_MZ2:
-		move.w	#$520,($FFFFF726).w
+		move.w	#$520,(Camera_Max_Y_pos).w
 		cmpi.w	#$1700,(Camera_X_pos).w
 		bcs.s	locret_7088
-		move.w	#$200,($FFFFF726).w
+		move.w	#$200,(Camera_Max_Y_pos).w
 
 locret_7088:
 		rts	
@@ -8561,10 +8566,10 @@ off_7098:	dc.w Resize_MZ3boss-off_7098
 ; ===========================================================================
 
 Resize_MZ3boss:
-		move.w	#$720,($FFFFF726).w
+		move.w	#$720,(Camera_Max_Y_pos).w
 		cmpi.w	#$1560,(Camera_X_pos).w
 		bcs.s	locret_70E8
-		move.w	#$210,($FFFFF726).w
+		move.w	#$210,(Camera_Max_Y_pos).w
 		cmpi.w	#$17F0,(Camera_X_pos).w
 		bcs.s	locret_70E8
 		bsr.w	SingleObjLoad
@@ -8624,7 +8629,7 @@ off_7118:	dc.w Resize_SLZ3main-off_7118
 Resize_SLZ3main:
 		cmpi.w	#$1E70,(Camera_X_pos).w
 		bcs.s	locret_7130
-		move.w	#$210,($FFFFF726).w
+		move.w	#$210,(Camera_Max_Y_pos).w
 		addq.b	#2,(Dynamic_Resize_Routine).w
 
 locret_7130:
@@ -8677,13 +8682,13 @@ Resize_SYZ1:
 ; ===========================================================================
 
 Resize_SYZ2:
-		move.w	#$520,($FFFFF726).w
+		move.w	#$520,(Camera_Max_Y_pos).w
 		cmpi.w	#$25A0,(Camera_X_pos).w
 		bcs.s	locret_71A2
-		move.w	#$420,($FFFFF726).w
+		move.w	#$420,(Camera_Max_Y_pos).w
 		cmpi.w	#$4D0,(Object_RAM+y_pos).w
 		bcs.s	locret_71A2
-		move.w	#$520,($FFFFF726).w
+		move.w	#$520,(Camera_Max_Y_pos).w
 
 locret_71A2:
 		rts
@@ -8715,7 +8720,7 @@ locret_71CE:
 Resize_SYZ3boss:
 		cmpi.w	#$2C00,(Camera_X_pos).w
 		bcs.s	locret_7200
-		move.w	#$4CC,($FFFFF726).w
+		move.w	#$4CC,(Camera_Max_Y_pos).w
 		bsr.w	SingleObjLoad
 		bne.s	loc_71EC
 		move.b	#$75,(a1)	; load SYZ boss	object
@@ -8754,13 +8759,13 @@ Resize_SBZx:	dc.w Resize_SBZ1-Resize_SBZx
 ; ===========================================================================
 
 Resize_SBZ1:
-		move.w	#$720,($FFFFF726).w
+		move.w	#$720,(Camera_Max_Y_pos).w
 		cmpi.w	#$1880,(Camera_X_pos).w
 		bcs.s	locret_7242
-		move.w	#$620,($FFFFF726).w
+		move.w	#$620,(Camera_Max_Y_pos).w
 		cmpi.w	#$2000,(Camera_X_pos).w
 		bcs.s	locret_7242
-		move.w	#$2A0,($FFFFF726).w
+		move.w	#$2A0,(Camera_Max_Y_pos).w
 
 locret_7242:
 		rts	
@@ -8779,10 +8784,10 @@ off_7252:	dc.w Resize_SBZ2main-off_7252
 ; ===========================================================================
 
 Resize_SBZ2main:
-		move.w	#$800,($FFFFF726).w
+		move.w	#$800,(Camera_Max_Y_pos).w
 		cmpi.w	#$1800,(Camera_X_pos).w
 		bcs.s	locret_727A
-		move.w	#$510,($FFFFF726).w
+		move.w	#$510,(Camera_Max_Y_pos).w
 		cmpi.w	#$1E00,(Camera_X_pos).w
 		bcs.s	locret_727A
 		addq.b	#2,(Dynamic_Resize_Routine).w
@@ -14227,7 +14232,7 @@ Obj31_Var2:	dc.b $38, 0		; width, frame number
 
 loc_B798:				; XREF: Obj31_Index
 		bsr.w	Obj31_Types
-		move.w	y_pos(a0),($FFFFF7A4).w
+		move.w	y_pos(a0),(MZ_ObjY_posSave).w
 		moveq	#0,d1
 		move.b	width_pixels(a0),d1
 		addi.w	#$B,d1
@@ -14302,7 +14307,7 @@ Obj31_Type00:				; XREF: Obj31_TypeIndex
 		move.b	$3A(a0),d0	; move number 0	or 1 to	d0
 		tst.b	(a2,d0.w)	; has switch (d0) been pressed?
 		beq.s	loc_B8A8	; if not, branch
-		tst.w	($FFFFF7A4).w
+		tst.w	(MZ_ObjY_posSave).w
 		bpl.s	loc_B872
 		cmpi.b	#$10,$32(a0)
 		beq.s	loc_B8A0
@@ -14766,7 +14771,7 @@ loc_BE9A:
 loc_BE9E:
 		move.w	(sp)+,d3
 		moveq	#1,d0
-		rts	
+		rts
 ; End of function Obj32_MZBlock
 
 ; ===========================================================================
@@ -14848,10 +14853,10 @@ loc_BF6E:				; XREF: Obj33_Index
 		bcs.s	loc_BFC6
 		cmpi.w	#$AA1,d0
 		bcc.s	loc_BFC6
-		move.w	($FFFFF7A4).w,d0
+		move.w	(MZ_ObjY_posSave).w,d0
 		subi.w	#$1C,d0
 		move.w	d0,y_pos(a0)
-		bset	#7,($FFFFF7A4).w
+		bset	#7,(MZ_ObjY_posSave).w
 		bset	#7,subtype(a0)
 
 loc_BFC6:
@@ -24145,12 +24150,12 @@ Obj01_ExitChk:
 
 
 Sonic_RecordPos:			; XREF: loc_12C7E; Obj01_Hurt; Obj01_Dead
-		move.w	($FFFFF7A8).w,d0
+		move.w	(Sonic_Pos_Record_Index).w,d0
 		lea	(Sonic_Stat_Record_Buf).w,a1
 		lea	(a1,d0.w),a1
 		move.w	x_pos(a0),(a1)+
 		move.w	y_pos(a0),(a1)+
-		addq.b	#4,($FFFFF7A9).w
+		addq.b	#4,(Sonic_Pos_Record_Index+1).w
 		rts	
 ; End of function Sonic_RecordPos
 
@@ -24807,7 +24812,7 @@ loc_13336:
 
 Boundary_Bottom:
 ; Add this to prevent the player from dying if the screen's scrolling down.
-;		move.w	($FFFFF726).w,d0
+;		move.w	(Camera_Max_Y_pos).w,d0
 ;		move.w	(Camera_Max_Y_pos_now).w,d1
 ;		cmp.w	d0,d1			; screen still scrolling down?
 ;		blt.s	+			; if so, don't kill Sonic
@@ -25607,7 +25612,7 @@ SAnim_End_FD:
 		move.b	2(a1,d1.w),anim(a0) ; read next byte, run that animation
 
 SAnim_End:
-		rts	
+		rts
 ; ===========================================================================
 
 SAnim_WalkRun:				; XREF: SAnim_Do
@@ -26255,7 +26260,7 @@ Obj38_Delete:
 Obj38_Stars:				; XREF: Obj38_Index
 		tst.b	(InvcFlag).w	; does Sonic have invincibility?
 		beq.s	Obj38_Delete2	; if not, branch
-		move.w	($FFFFF7A8).w,d0
+		move.w	(Sonic_Pos_Record_Index).w,d0
 		move.b	anim(a0),d1
 		subq.b	#1,d1
 		bra.s	Obj38_StarTrail
@@ -26924,7 +26929,7 @@ loc_149DE:
 ; ===========================================================================
 
 loc_149EC:
-		movea.l	($FFFFF796).w,a2 ; load	collision index
+		movea.l	(Collision_addr).w,a2 ; load	collision index
 		move.b	(a2,d0.w),d0
 		andi.w	#$FF,d0
 		beq.s	loc_149DE
@@ -27005,7 +27010,7 @@ loc_14A86:
 ; ===========================================================================
 
 loc_14A94:
-		movea.l	($FFFFF796).w,a2
+		movea.l	(Collision_addr).w,a2
 		move.b	(a2,d0.w),d0
 		andi.w	#$FF,d0
 		beq.s	loc_14A86
@@ -27079,7 +27084,7 @@ loc_14B1E:
 ; ===========================================================================
 
 loc_14B2C:
-		movea.l	($FFFFF796).w,a2
+		movea.l	(Collision_addr).w,a2
 		move.b	(a2,d0.w),d0
 		andi.w	#$FF,d0
 		beq.s	loc_14B1E
@@ -27160,7 +27165,7 @@ loc_14BC6:
 ; ===========================================================================
 
 loc_14BD4:
-		movea.l	($FFFFF796).w,a2
+		movea.l	(Collision_addr).w,a2
 		move.b	(a2,d0.w),d0
 		andi.w	#$FF,d0
 		beq.s	loc_14BC6
@@ -30175,7 +30180,7 @@ Obj79_LoadInfo:				; XREF: LevelSizeLoad
 		move.b	(Saved_Dynamic_Resize_Routine).w,(Dynamic_Resize_Routine).w
 		move.b	(Saved_Water_routine).w,(Water_routine).w
 		move.w	(Saved_Camera_Max_Y_pos).w,(Camera_Max_Y_pos_now).w
-		move.w	(Saved_Camera_Max_Y_pos).w,($FFFFF726).w ;
+		move.w	(Saved_Camera_Max_Y_pos).w,(Camera_Max_Y_pos).w ;
 		move.w	(Saved_Camera_X_pos).w,(Camera_X_pos).w
 		move.w	(Saved_Camera_Y_pos).w,(Camera_Y_pos).w ;
 		move.w	(Saved_Camera_BG_X_pos).w,(Camera_BG_X_pos).w
@@ -38325,9 +38330,9 @@ Debug_Index:	dc.w Debug_Main-Debug_Index
 Debug_Main:				; XREF: Debug_Index
 		addq.b	#2,(Debug_placement_mode).w
 		move.w	(Camera_Min_Y_pos_now).w,($FFFFFEF0).w ; buffer level x-boundary
-		move.w	($FFFFF726).w,($FFFFFEF2).w ; buffer level y-boundary
+		move.w	(Camera_Max_Y_pos).w,($FFFFFEF2).w ; buffer level y-boundary
 		move.w	#0,(Camera_Min_Y_pos_now).w
-		move.w	#$720,($FFFFF726).w
+		move.w	#$720,(Camera_Max_Y_pos).w
 		andi.w	#$7FF,(Object_RAM+y_pos).w
 		andi.w	#$7FF,(Camera_Y_pos).w
 		andi.w	#$3FF,(Camera_BG_Y_pos).w
@@ -38492,7 +38497,7 @@ Debug_Exit:
 		move.w	d0,x_sub(a0)
 		move.w	d0,y_sub(a0)
 		move.w	($FFFFFEF0).w,(Camera_Min_Y_pos_now).w ; restore level boundaries
-		move.w	($FFFFFEF2).w,($FFFFF726).w
+		move.w	($FFFFFEF2).w,(Camera_Max_Y_pos).w
 		cmpi.b	#$10,(Game_Mode).w ; are you in	the special stage?
 		bne.s	Debug_DoNothing	; if not, branch
 		clr.w	(SS_Rotate).w

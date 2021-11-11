@@ -252,6 +252,7 @@ Camera_BG3_X_pos =		ramaddr( $FFFFF718 )	; only used in SS, later used for level
 Camera_BG3_Y_pos =		ramaddr( $FFFFF71C )	; later used for levels in REV01 and REVXB
 Camera_X_pos_copy =		ramaddr( $FFFFF720 )	; unused (only initialised at beginning of level)
 Camera_Y_pos_copy =		ramaddr( $FFFFF724 )	; unused (only initialised at beginning of level)
+Camera_Max_Y_pos =		ramaddr( $FFFFF726 )
 Camera_Min_X_pos =		ramaddr( $FFFFF728 )
 Camera_Max_X_pos =		ramaddr( $FFFFF72A )
 Camera_Min_Y_pos_now =		ramaddr( $FFFFF72C )
@@ -287,7 +288,9 @@ Sonic_LastLoadedDPLC =		ramaddr( $FFFFF766 )	; mapping frame number when Sonic l
 
 Primary_Angle =			ramaddr( $FFFFF768 )
 Secondary_Angle =		ramaddr( $FFFFF76A )
-
+Collision_addr =                ramaddr( $FFFFF796 )
+MZ_ObjY_posSave =            ramaddr( $FFFFF7A4 )
+Sonic_Pos_Record_Index =     ramaddr( $FFFFF7A8 )
 BigRingGraphics =		ramaddr( $FFFFF7BE )
 
 Obj_placement_routine =		ramaddr( $FFFFF76C )
@@ -427,8 +430,11 @@ Ring_spill_anim_frame =		ramaddr( $FFFFFEC7 )
 Ring_spill_anim_accum =		ramaddr( $FFFFFEC8 )
 
 Camera_RAM_copy =		ramaddr( $FFFFFF10 )
+Camera_BG_copy =                ramaddr( $FFFFFF18 )
+Camera_BG2_copy =               ramaddr( $FFFFFF20 )
 Scroll_flags_copy =		ramaddr( $FFFFFF30 )
-
+Scroll_flags_BG_copy =          ramaddr( $FFFFFF32 )
+Scroll_flags_BG2_copy =         ramaddr( $FFFFFF34 )
 LevSel_HoldTimer =		ramaddr( $FFFFFF80 )
 Level_select_zone =		ramaddr( $FFFFFF82 )
 Sound_test_sound =		ramaddr( $FFFFFF84 )
@@ -492,3 +498,15 @@ QueueToPlay =			9
 SFXToPlay =			$A	; used for music/sfx
 SFXSpecToPlay =			$B	; used for special sfx
 SFXUnknown =			$C	; used for (broken) sfx
+; ---------------------------------------------------------------------------
+; VRAM and tile art base addresses.
+; VRAM Reserved regions.
+VRAM_Plane_A_Name_Table                  = $C000	; Extends until $CFFF
+VRAM_Plane_B_Name_Table                  = $E000	; Extends until $EFFF
+VRAM_Plane_A_Name_Table_2P               = $A000	; Extends until $AFFF
+VRAM_Plane_B_Name_Table_2P               = $8000	; Extends until $8FFF
+VRAM_Plane_Table_Size                    = $1000	; 64 cells x 32 cells x 2 bytes per cell
+VRAM_Sprite_Attribute_Table              = $F800	; Extends until $FA7F
+VRAM_Sprite_Attribute_Table_Size         = $0280	; 640 bytes
+VRAM_Horiz_Scroll_Table                  = $FC00	; Extends until $FF7F
+VRAM_Horiz_Scroll_Table_Size             = $0380	; 224 lines * 2 bytes per entry * 2 PNTs
