@@ -4366,7 +4366,7 @@ loc_3DD2:
 		move.b	#4,(Water_routine).w
 		move.w	#$608,(Water_Level_3).w
 		move.w	#$7C0,(Water_Level_2).w
-		;move.b	#1,($FFFFF7E8).w ; unused
+		move.b	#1,(ButtonVine_Trigger+$8).w ; unused
 		rts
 ; ===========================================================================
 
@@ -6678,7 +6678,7 @@ loc_60F8:
 		moveq	#0,d0
 		move.b	(Current_Zone).w,d0
 		lsl.b	#2,d0
-		move.l	LoopTileNums(pc,d0.w),($FFFFF7AC).w
+		move.l	LoopTileNums(pc,d0.w),(Loop_TunnelRam).w
 		bra.w	LevSz_Unk
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -8397,7 +8397,7 @@ Resize_LZ12:
 ; ===========================================================================
 
 Resize_LZ3:
-		tst.b	($FFFFF7EF).w	; has switch $F	been pressed?
+		tst.b	(ButtonVine_Trigger+$F).w	; has switch $F	been pressed?
 		beq.s	loc_6F28	; if not, branch
 		lea	(Level_Layout+$106).w,a1
 		cmpi.b	#7,(a1)
@@ -11296,7 +11296,7 @@ loc_90C0:
 		move.b	#7,anim_frame_duration(a0)
 		move.b	#2,mapping_frame(a0)
 		move.w	#-$400,y_vel(a0)
-		tst.b	($FFFFF7A7).w
+		tst.b	(BossdefeatedFlag).w
 		bne.s	loc_911C
 		bsr.w	SingleObjLoad
 		bne.s	Obj28_Display
@@ -11334,7 +11334,7 @@ loc_912A:				; XREF: Obj28_Index
 		add.b	d0,d0
 		addq.b	#4,d0
 		move.b	d0,routine(a0)
-		tst.b	($FFFFF7A7).w
+		tst.b	(BossdefeatedFlag).w
 		beq.s	loc_9180
 		btst	#4,(Vint_runcount+3).w
 		beq.s	loc_9180
@@ -20169,7 +20169,7 @@ locret_FFA0:
 ; ===========================================================================
 
 Obj52_Type07:				; XREF: Obj52_TypeIndex
-		tst.b	($FFFFF7E2).w	; has switch number 02 been pressed?
+		tst.b	(ButtonVine_Trigger+$2).w	; has switch number 02 been pressed?
 		beq.s	Obj52_07_ChkDel
 		subq.b	#3,subtype(a0)	; if yes, change object	type to	04
 
@@ -20709,7 +20709,7 @@ loc_1052C:
 Obj56_Type07:				; XREF: Obj56_TypeIndex
 		tst.b	$38(a0)
 		bne.s	loc_1055E
-		tst.b	($FFFFF7EF).w	; has switch number $F been pressed?
+		tst.b	(ButtonVine_Trigger+$F).w	; has switch number $F been pressed?
 		beq.s	locret_10578
 		move.b	#1,$38(a0)
 		clr.w	$3A(a0)
@@ -23501,7 +23501,7 @@ loc_124FC:
 
 
 sub_12502:				; XREF: loc_124B2; loc_124C2
-		tst.b	($FFFFF7EE).w
+		tst.b	(ButtonVine_Trigger+$E).w
 		beq.s	loc_12520
 		tst.b	$3B(a0)
 		bne.s	loc_12520
@@ -25489,13 +25489,13 @@ loc_13926:
 		add.w	d1,d0
 		lea	(Level_Layout).w,a1
 		move.b	(a1,d0.w),d1	; d1 is	the 256x256 tile Sonic is currently on
-		cmp.b	($FFFFF7AE).w,d1
+		cmp.b	(Loop_TunnelRam+$2).w,d1
 		beq.w	Obj01_ChkRoll
-		cmp.b	($FFFFF7AF).w,d1
+		cmp.b	(Loop_TunnelRam+$3).w,d1
 		beq.w	Obj01_ChkRoll
-		cmp.b	($FFFFF7AC).w,d1
+		cmp.b	(Loop_TunnelRam).w,d1
 		beq.s	loc_13976
-		cmp.b	($FFFFF7AD).w,d1
+		cmp.b	(Loop_TunnelRam+$1).w,d1
 		beq.s	loc_13966
 		bclr	#6,1(a0)
 		rts	
@@ -30610,9 +30610,9 @@ loc_17984:
 		clr.w	x_vel(a0)
 		addq.b	#2,routine_secondary(a0)
 		move.w	#-$26,$3C(a0)
-		tst.b	($FFFFF7A7).w
+		tst.b	(BossdefeatedFlag).w
 		bne.s	locret_179AA
-		move.b	#1,($FFFFF7A7).w
+		move.b	#1,(BossdefeatedFlag).w
 
 locret_179AA:
 		rts
@@ -31633,9 +31633,9 @@ loc_18500:
 		clr.w	x_vel(a0)
 		addq.b	#2,routine_secondary(a0)
 		move.w	#-$26,$3C(a0)
-		tst.b	($FFFFF7A7).w
+		tst.b	(BossdefeatedFlag).w
 		bne.s	locret_1852A
-		move.b	#1,($FFFFF7A7).w
+		move.b	#1,(BossdefeatedFlag).w
 		clr.w	y_vel(a0)
 
 locret_1852A:
@@ -32285,9 +32285,9 @@ loc_18B52:
 		bclr	#7,status(a0)
 		clr.w	x_vel(a0)
 		move.b	#-$18,$3C(a0)
-		tst.b	($FFFFF7A7).w
+		tst.b	(BossdefeatedFlag).w
 		bne.s	loc_18B7C
-		move.b	#1,($FFFFF7A7).w
+		move.b	#1,(BossdefeatedFlag).w
 
 loc_18B7C:
 		bra.w	loc_189FE
@@ -33205,9 +33205,9 @@ loc_1947E:
 		bclr	#7,status(a0)
 		clr.w	x_vel(a0)
 		move.w	#-1,$3C(a0)
-		tst.b	($FFFFF7A7).w
+		tst.b	(BossdefeatedFlag).w
 		bne.s	loc_194A8
-		move.b	#1,($FFFFF7A7).w
+		move.b	#1,(BossdefeatedFlag).w
 
 loc_194A8:
 		bra.w	loc_19202
@@ -35064,7 +35064,7 @@ Obj3E_Not02:
 ; ===========================================================================
 
 Obj3E_BodyMain:				; XREF: Obj3E_Index
-		cmpi.b	#2,($FFFFF7A7).w
+		cmpi.b	#2,(BossdefeatedFlag).w
 		beq.s	Obj3E_ChkOpened
 		move.w	#$2B,d1
 		move.w	#$18,d2
@@ -35137,7 +35137,7 @@ loc_1ACA0:
 ; ===========================================================================
 
 Obj3E_MakeAnimal:
-		move.b	#2,($FFFFF7A7).w
+		move.b	#2,(BossdefeatedFlag).w
 		move.b	#$C,routine(a0)	; replace explosions with animals
 		move.b	#6,mapping_frame(a0)
 		move.w	#$96,anim_frame_duration(a0)
