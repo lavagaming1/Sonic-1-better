@@ -5177,11 +5177,11 @@ loc_491C:
 PalCycle_SS:				; XREF: loc_DA6; SpecialStage
 		tst.w	(Game_paused).w
 		bne.s	locret_49E6
-		subq.w	#1,($FFFFF79C).w
+		subq.w	#1,(Unk_F79C).w
 		bpl.s	locret_49E6
 		lea	(VDP_control_port).l,a6
-		move.w	($FFFFF79A).w,d0
-		addq.w	#1,($FFFFF79A).w
+		move.w	(S1SS_PalFrame).w,d0
+		addq.w	#1,(S1SS_PalFrame).w
 		andi.w	#$1F,d0
 		lsl.w	#2,d0
 		lea	(byte_4A3C).l,a0
@@ -5191,10 +5191,10 @@ PalCycle_SS:				; XREF: loc_DA6; SpecialStage
 		move.w	#$1FF,d0
 
 loc_4992:
-		move.w	d0,($FFFFF79C).w
+		move.w	d0,(Unk_F79C).w
 		moveq	#0,d0
 		move.b	(a0)+,d0
-		move.w	d0,($FFFFF7A0).w
+		move.w	d0,(Unk_F7A0).w
 		lea	(byte_4ABC).l,a1
 		lea	(a1,d0.w),a1
 		move.w	#-$7E00,d0
@@ -5284,7 +5284,7 @@ Pal_SSCyc2:	binclude	art/pallet/c_ss_2.bin
 
 
 SS_BGAnimate:				; XREF: SpecialStage
-		move.w	($FFFFF7A0).w,d0
+		move.w	(Unk_F7A0).w,d0
 		bne.s	loc_4BF6
 		move.w	#0,(Camera_BG_Y_pos).w
 		move.w	(Camera_BG_Y_pos).w,(Vscroll_Factor_BG).w
