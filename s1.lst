@@ -1,4 +1,4 @@
- AS V1.42 Beta [Bld 89] - source file s1.asm - page 1 - 11/12/2021 0:18:19
+ AS V1.42 Beta [Bld 89] - source file s1.asm - page 1 - 11/12/2021 0:25:02
 
 
        1/       0 :                     ; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -490,222 +490,224 @@
 (1)  294/       0 : =$FFFFFFFFFF..      Unk_F7A0 =                       ramaddr( $FFFFF7A0 )
 (1)  295/       0 : =$FFFFFFFFFF..      MZ_ObjY_posSave =            ramaddr( $FFFFF7A4 )
 (1)  296/       0 : =$FFFFFFFFFF..      Sonic_Pos_Record_Index =     ramaddr( $FFFFF7A8 )
-(1)  297/       0 : =$FFFFFFFFFF..      BigRingGraphics =		ramaddr( $FFFFF7BE )
-(1)  298/       0 :                     
-(1)  299/       0 : =$FFFFFFFFFF..      Obj_placement_routine =		ramaddr( $FFFFF76C )
+(1)  297/       0 : =$FFFFFFFFFF..      BossdefeatedFlag =           ramaddr( $FFFFFF7A )
+(1)  298/       0 : =$FFFFFFFFFF..      Loop_TunnelRam =               ramaddr( $FFFFF7AC )
+(1)  299/       0 : =$FFFFFFFFFF..      BigRingGraphics =		ramaddr( $FFFFF7BE )
 (1)  300/       0 :                     
-(1)  301/       0 : =$FFFFFFFFFF..      Camera_X_pos_last =		ramaddr( $FFFFF76E )
+(1)  301/       0 : =$FFFFFFFFFF..      Obj_placement_routine =		ramaddr( $FFFFF76C )
 (1)  302/       0 :                     
-(1)  303/       0 : =$FFFFFFFFFF..      Obj_load_addr_right =		ramaddr( $FFFFF770 )	; contains the address of the next object to load when moving right
-(1)  304/       0 : =$FFFFFFFFFF..      Obj_load_addr_left =		ramaddr( $FFFFF774 )	; contains the address of the next object to load when moving left
-(1)  305/       0 : =$FFFFFFFFFF..      Obj_load_addr_3 =		ramaddr( $FFFFF778 )	; likely a leftover from Ghouls'n'Ghosts
-(1)  306/       0 : =$FFFFFFFFFF..      Obj_load_addr_4 =		ramaddr( $FFFFF77C )	; likely a leftover from Ghouls'n'Ghosts
-(1)  307/       0 : =$FFFFFFFFFF..      SS_Rotate =	        	ramaddr( $FFFFF780 )
-(1)  308/       0 : =$FFFFFFFFFF..      SS_Rotate_sec =                 ramaddr( $FFFFF782 )
-(1)  309/       0 :                     
-(1)  310/       0 : =$FFFFFFFFFF..      Demo_button_index =                 ramaddr( $FFFFF790 )
-(1)  311/       0 : =$FFFFFFFFFF..      Demo_press_counter =                 ramaddr( $FFFFF792 )
-(1)  312/       0 : =$FFFFFFFFFF..      PalChangeSpeed =                 ramaddr( $FFFFF794 )
-(1)  313/       0 :                     
-(1)  314/       0 : =$FFFFFFFFFF..      Current_Boss_ID =		ramaddr( $FFFFF7AA )
+(1)  303/       0 : =$FFFFFFFFFF..      Camera_X_pos_last =		ramaddr( $FFFFF76E )
+(1)  304/       0 :                     
+(1)  305/       0 : =$FFFFFFFFFF..      Obj_load_addr_right =		ramaddr( $FFFFF770 )	; contains the address of the next object to load when moving right
+(1)  306/       0 : =$FFFFFFFFFF..      Obj_load_addr_left =		ramaddr( $FFFFF774 )	; contains the address of the next object to load when moving left
+(1)  307/       0 : =$FFFFFFFFFF..      Obj_load_addr_3 =		ramaddr( $FFFFF778 )	; likely a leftover from Ghouls'n'Ghosts
+(1)  308/       0 : =$FFFFFFFFFF..      Obj_load_addr_4 =		ramaddr( $FFFFF77C )	; likely a leftover from Ghouls'n'Ghosts
+(1)  309/       0 : =$FFFFFFFFFF..      SS_Rotate =	        	ramaddr( $FFFFF780 )
+(1)  310/       0 : =$FFFFFFFFFF..      SS_Rotate_sec =                 ramaddr( $FFFFF782 )
+(1)  311/       0 :                     
+(1)  312/       0 : =$FFFFFFFFFF..      Demo_button_index =                 ramaddr( $FFFFF790 )
+(1)  313/       0 : =$FFFFFFFFFF..      Demo_press_counter =                 ramaddr( $FFFFF792 )
+(1)  314/       0 : =$FFFFFFFFFF..      PalChangeSpeed =                 ramaddr( $FFFFF794 )
 (1)  315/       0 :                     
-(1)  316/       0 : =$FFFFFFFFFF..      Pal_unk = 			ramaddr( $FFFFF7C0 )
-(1)  317/       0 : =$FFFFFFFFFF..      WindTunnel_flag =		ramaddr( $FFFFF7C7 )
-(1)  318/       0 : =$FFFFFFFFFF..      Freeze_flag =			ramaddr( $FFFFF7C8 )
-(1)  319/       0 : =$FFFFFFFFFF..      WindTunnel_holding_flag =	ramaddr( $FFFFF7C9 )
-(1)  320/       0 :                     
-(1)  321/       0 : =$FFFFFFFFFF..      Lock_Controls =			ramaddr( $FFFFF7CA )
-(1)  322/       0 : =$FFFFFFFFFF..      SBZ_Unk =			ramaddr( $FFFFF7CB )
-(1)  323/       0 : =$FFFFFFFFFF..      Control_Locked =		ramaddr( $FFFFF7CC )
-(1)  324/       0 : =$FFFFFFFFFF..      Bonuses_flag =			ramaddr( $FFFFF7CD )
-(1)  325/       0 :                     
-(1)  326/       0 : =$FFFFFFFFFF..      Chain_Bonus_counter =		ramaddr( $FFFFF7D0 )	; counts up when you destroy things that give points, resets when you touch the ground
-(1)  327/       0 : =$FFFFFFFFFF..      Bonus_Countdown_1 =		ramaddr( $FFFFF7D2 )	; level or special stage results time bonus
-(1)  328/       0 : =$FFFFFFFFFF..      Bonus_Countdown_2 =		ramaddr( $FFFFF7D4 )	; level or special stage results ring bonus
-(1)  329/       0 : =$FFFFFFFFFF..      Update_Bonus_score =		ramaddr( $FFFFF7D6 )
-(1)  330/       0 :                     
-(1)  331/       0 : =$FFFFFFFFFF..      End_SonicUnk =			ramaddr( $FFFFF7D7 )
+(1)  316/       0 : =$FFFFFFFFFF..      Current_Boss_ID =		ramaddr( $FFFFF7AA )
+(1)  317/       0 :                     
+(1)  318/       0 : =$FFFFFFFFFF..      Pal_unk = 			ramaddr( $FFFFF7C0 )
+(1)  319/       0 : =$FFFFFFFFFF..      WindTunnel_flag =		ramaddr( $FFFFF7C7 )
+(1)  320/       0 : =$FFFFFFFFFF..      Freeze_flag =			ramaddr( $FFFFF7C8 )
+(1)  321/       0 : =$FFFFFFFFFF..      WindTunnel_holding_flag =	ramaddr( $FFFFF7C9 )
+(1)  322/       0 :                     
+(1)  323/       0 : =$FFFFFFFFFF..      Lock_Controls =			ramaddr( $FFFFF7CA )
+(1)  324/       0 : =$FFFFFFFFFF..      SBZ_Unk =			ramaddr( $FFFFF7CB )
+(1)  325/       0 : =$FFFFFFFFFF..      Control_Locked =		ramaddr( $FFFFF7CC )
+(1)  326/       0 : =$FFFFFFFFFF..      Bonuses_flag =			ramaddr( $FFFFF7CD )
+(1)  327/       0 :                     
+(1)  328/       0 : =$FFFFFFFFFF..      Chain_Bonus_counter =		ramaddr( $FFFFF7D0 )	; counts up when you destroy things that give points, resets when you touch the ground
+(1)  329/       0 : =$FFFFFFFFFF..      Bonus_Countdown_1 =		ramaddr( $FFFFF7D2 )	; level or special stage results time bonus
+(1)  330/       0 : =$FFFFFFFFFF..      Bonus_Countdown_2 =		ramaddr( $FFFFF7D4 )	; level or special stage results ring bonus
+(1)  331/       0 : =$FFFFFFFFFF..      Update_Bonus_score =		ramaddr( $FFFFF7D6 )
 (1)  332/       0 :                     
-(1)  333/       0 : =$FFFFFFFFFF..      Camera_X_pos_coarse =		ramaddr( $FFFFF7DA )	; (Camera_X_pos - 128) / 256
+(1)  333/       0 : =$FFFFFFFFFF..      End_SonicUnk =			ramaddr( $FFFFF7D7 )
 (1)  334/       0 :                     
-(1)  335/       0 : =$FFFFFFFFFF..      ButtonVine_Trigger =		ramaddr( $FFFFF7E0 )	; 16 bytes flag array, #subtype byte set when button/vine of respective subtype activated
-(1)  336/       0 : =$FFFFFFFFFF..      ButtonVineSec =                 ButtonVine_Trigger+$5
-(1)  337/       0 : =$FFFFFFFFFF..      Anim_Counters =			ramaddr( $FFFFF7F0 )	; $10 bytes ; was: Level_Unk
-(1)  338/       0 :                     
-(1)  339/       0 : =$FFFFFFFFFF..      Sprite_Table =			ramaddr( $FFFFF800 )	; Sprite attribute table buffer
+(1)  335/       0 : =$FFFFFFFFFF..      Camera_X_pos_coarse =		ramaddr( $FFFFF7DA )	; (Camera_X_pos - 128) / 256
+(1)  336/       0 :                     
+(1)  337/       0 : =$FFFFFFFFFF..      ButtonVine_Trigger =		ramaddr( $FFFFF7E0 )	; 16 bytes flag array, #subtype byte set when button/vine of respective subtype activated
+(1)  338/       0 : =$FFFFFFFFFF..      ButtonVineSec =                 ButtonVine_Trigger+$5
+(1)  339/       0 : =$FFFFFFFFFF..      Anim_Counters =			ramaddr( $FFFFF7F0 )	; $10 bytes ; was: Level_Unk
 (1)  340/       0 :                     
-(1)  341/       0 : =$FFFFFFFFFF..      Underwater_target_palette_line3 =	ramaddr( $FFFFFA00 )	; Underwater_target_palette will contain the palette the screen will ultimately fade in to.
+(1)  341/       0 : =$FFFFFFFFFF..      Sprite_Table =			ramaddr( $FFFFF800 )	; Sprite attribute table buffer
 (1)  342/       0 :                     
-(1)  343/       0 : =$FFFFFFFFFF..      Underwater_palette =		ramaddr( $FFFFFA80 )	; main palette for underwater parts of the screen
-(1)  344/       0 : =$FFFFFFFFFF..      Underwater_palette_line2 =	ramaddr( $FFFFFAC0 )
-(1)  345/       0 :                     
-(1)  346/       0 : =$FFFFFFFFFF..      Normal_palette =		ramaddr( $FFFFFB00 )	; main palette for non-underwater parts of the screen
-(1)  347/       0 : =$FFFFFFFFFF..      Normal_palette_line2 =		ramaddr( $FFFFFB20 )
-(1)  348/       0 : =$FFFFFFFFFF..      Normal_palette_line3 =		ramaddr( $FFFFFB40 )
-(1)  349/       0 : =$FFFFFFFFFF..      Normal_palette_line4 =		ramaddr( $FFFFFB60 )
-(1)  350/       0 :                     
-(1)  351/       0 : =$FFFFFFFFFF..      Target_palette =		ramaddr( $FFFFFB80 )	; This is used by the screen-fading subroutines.
-(1)  352/       0 : =$FFFFFFFFFF..      Target_palette_line3 =		ramaddr( $FFFFFBC0 )	; While Normal_palette contains the blacked-out palette caused by the fading, Target_palette will contain the palette the screen will ultimately fade in to.
-(1)  353/       0 :                     
-(1)  354/       0 : =$FFFFFFFFFF..      Object_Respawn_Table =		ramaddr( $FFFFFC00 )
-(1)  355/       0 : =$FFFFFFFFFF..      Obj_respawn_index =		ramaddr( $FFFFFC00 )	; respawn table indices of the next objects when moving left or right for the first player
-(1)  356/       0 : =$FFFFFFFFFF..      Error_message_ID =		ramaddr( $FFFFFC44 )
-(1)  357/       0 :                     
-(1)  358/       0 : =$FFFFFFFFFF..      System_Stack =			ramaddr( $FFFFFE00 )
-(1)  359/       0 : =$FFFFFFFFFF..      Level_Inactive_flag =		ramaddr( $FFFFFE02 )
-(1)  360/       0 : =$FFFFFFFFFF..      Timer_frames =			ramaddr( $FFFFFE04 )	; 2 bytes
-(1)  361/       0 :                     
-(1)  362/       0 : =$FFFFFFFFFF..      Debug_object =			ramaddr( $FFFFFE06 )
-(1)  363/       0 : =$FFFFFFFFFF..      Debug_placement_mode =		ramaddr( $FFFFFE08 )
-(1)  364/       0 : =$FFFFFFFFFF..      Debug_Accel_Timer =		ramaddr( $FFFFFE0A )
-(1)  365/       0 : =$FFFFFFFFFF..      Debug_Speed =			ramaddr( $FFFFFE0B )
-(1)  366/       0 :                     
-(1)  367/       0 : =$FFFFFFFFFF..      Vint_runcount =			ramaddr( $FFFFFE0C )
+(1)  343/       0 : =$FFFFFFFFFF..      Underwater_target_palette_line3 =	ramaddr( $FFFFFA00 )	; Underwater_target_palette will contain the palette the screen will ultimately fade in to.
+(1)  344/       0 :                     
+(1)  345/       0 : =$FFFFFFFFFF..      Underwater_palette =		ramaddr( $FFFFFA80 )	; main palette for underwater parts of the screen
+(1)  346/       0 : =$FFFFFFFFFF..      Underwater_palette_line2 =	ramaddr( $FFFFFAC0 )
+(1)  347/       0 :                     
+(1)  348/       0 : =$FFFFFFFFFF..      Normal_palette =		ramaddr( $FFFFFB00 )	; main palette for non-underwater parts of the screen
+(1)  349/       0 : =$FFFFFFFFFF..      Normal_palette_line2 =		ramaddr( $FFFFFB20 )
+(1)  350/       0 : =$FFFFFFFFFF..      Normal_palette_line3 =		ramaddr( $FFFFFB40 )
+(1)  351/       0 : =$FFFFFFFFFF..      Normal_palette_line4 =		ramaddr( $FFFFFB60 )
+(1)  352/       0 :                     
+(1)  353/       0 : =$FFFFFFFFFF..      Target_palette =		ramaddr( $FFFFFB80 )	; This is used by the screen-fading subroutines.
+(1)  354/       0 : =$FFFFFFFFFF..      Target_palette_line3 =		ramaddr( $FFFFFBC0 )	; While Normal_palette contains the blacked-out palette caused by the fading, Target_palette will contain the palette the screen will ultimately fade in to.
+(1)  355/       0 :                     
+(1)  356/       0 : =$FFFFFFFFFF..      Object_Respawn_Table =		ramaddr( $FFFFFC00 )
+(1)  357/       0 : =$FFFFFFFFFF..      Obj_respawn_index =		ramaddr( $FFFFFC00 )	; respawn table indices of the next objects when moving left or right for the first player
+(1)  358/       0 : =$FFFFFFFFFF..      Error_message_ID =		ramaddr( $FFFFFC44 )
+(1)  359/       0 :                     
+(1)  360/       0 : =$FFFFFFFFFF..      System_Stack =			ramaddr( $FFFFFE00 )
+(1)  361/       0 : =$FFFFFFFFFF..      Level_Inactive_flag =		ramaddr( $FFFFFE02 )
+(1)  362/       0 : =$FFFFFFFFFF..      Timer_frames =			ramaddr( $FFFFFE04 )	; 2 bytes
+(1)  363/       0 :                     
+(1)  364/       0 : =$FFFFFFFFFF..      Debug_object =			ramaddr( $FFFFFE06 )
+(1)  365/       0 : =$FFFFFFFFFF..      Debug_placement_mode =		ramaddr( $FFFFFE08 )
+(1)  366/       0 : =$FFFFFFFFFF..      Debug_Accel_Timer =		ramaddr( $FFFFFE0A )
+(1)  367/       0 : =$FFFFFFFFFF..      Debug_Speed =			ramaddr( $FFFFFE0B )
 (1)  368/       0 :                     
-(1)  369/       0 : =$FFFFFFFFFF..      Current_ZoneAndAct =		ramaddr( $FFFFFE10 )	; 2 bytes
-(1)  370/       0 : =$FFFFFFFFFF..      Current_Zone =			ramaddr( $FFFFFE10 )
-(1)  371/       0 : =$FFFFFFFFFF..      Current_Act =			ramaddr( $FFFFFE11 )
-(1)  372/       0 : =$FFFFFFFFFF..      Life_count =			ramaddr( $FFFFFE12 )
-(1)  373/       0 :                     				; $FFFFFE13 unused
-(1)  374/       0 : =$FFFFFFFFFF..      Air_left =			ramaddr( $FFFFFE14 )
-(1)  375/       0 :                     				; $FFFFFE15 unused
-(1)  376/       0 : =$FFFFFFFFFF..      Current_Special_Stage =		ramaddr( $FFFFFE16 )
-(1)  377/       0 :                     				; $FFFFFE17 unused
-(1)  378/       0 : =$FFFFFFFFFF..      Continue_count =		ramaddr( $FFFFFE18 )
-(1)  379/       0 :                     				; $FFFFFE19 unused
-(1)  380/       0 : =$FFFFFFFFFF..      Time_Over_flag =		ramaddr( $FFFFFE1A )
-(1)  381/       0 : =$FFFFFFFFFF..      Extra_life_flags =		ramaddr( $FFFFFE1B )
-(1)  382/       0 :                     
-(1)  383/       0 : =$FFFFFFFFFF..      Update_HUD_lives =		ramaddr( $FFFFFE1C )
-(1)  384/       0 : =$FFFFFFFFFF..      Update_HUD_rings =		ramaddr( $FFFFFE1D )
-(1)  385/       0 : =$FFFFFFFFFF..      Update_HUD_timer =		ramaddr( $FFFFFE1E )
-(1)  386/       0 : =$FFFFFFFFFF..      Update_HUD_score =		ramaddr( $FFFFFE1F )
-(1)  387/       0 :                     
-(1)  388/       0 : =$FFFFFFFFFF..      Ring_count =			ramaddr( $FFFFFE20 )	; 2 bytes
-(1)  389/       0 : =$FFFFFFFFFF..      Timer =				ramaddr( $FFFFFE22 )	; 4 bytes
-(1)  390/       0 : =$FFFFFFFFFF..      Timer_minute = 			ramaddr( $FFFFFE23 )
-(1)  391/       0 : =$FFFFFFFFFF..      Timer_second = 			ramaddr( $FFFFFE24 )
-(1)  392/       0 : =$FFFFFFFFFF..      Timer_frame = 			ramaddr( $FFFFFE25 )
-(1)  393/       0 : =$FFFFFFFFFF..      Score =				ramaddr( $FFFFFE26 )	; 4 bytes
-(1)  394/       0 : =$FFFFFFFFFF..      ShieldFlag =                    ramaddr( $FFFFFE2C )
-(1)  395/       0 : =$FFFFFFFFFF..      InvcFlag =                    ramaddr( $FFFFFE2D )
-(1)  396/       0 : =$FFFFFFFFFF..      SpeedSHoesFlags =             ramaddr( $FFFFFE2E )
-(1)  397/       0 : =$FFFFFFFFFF..      Unk_Flags_1 =             ramaddr( $FFFFFE2F ) 
-(1)  398/       0 :                     				; $FFFFFE2A-$FFFFFE2F unused 6 bytes
-(1)  399/       0 :                     
-(1)  400/       0 : =$FFFFFFFFFF..      Last_star_pole_hit =		ramaddr( $FFFFFE30 )
-(1)  401/       0 : =$FFFFFFFFFF..      Saved_Last_star_pole_hit =	ramaddr( $FFFFFE31 )
-(1)  402/       0 : =$FFFFFFFFFF..      Saved_x_pos =			ramaddr( $FFFFFE32 )
-(1)  403/       0 : =$FFFFFFFFFF..      Saved_y_pos =			ramaddr( $FFFFFE34 )
-(1)  404/       0 : =$FFFFFFFFFF..      Saved_Ring_count =		ramaddr( $FFFFFE36 )
-(1)  405/       0 : =$FFFFFFFFFF..      Saved_Timer =			ramaddr( $FFFFFE38 )
-(1)  406/       0 : =$FFFFFFFFFF..      Saved_Dynamic_Resize_Routine =	ramaddr( $FFFFFE3C )
-(1)  407/       0 : =$FFFFFFFFFF..      Saved_Camera_Max_Y_pos =	ramaddr( $FFFFFE3E )
-(1)  408/       0 : =$FFFFFFFFFF..      Saved_Camera_X_pos =		ramaddr( $FFFFFE40 )
-(1)  409/       0 : =$FFFFFFFFFF..      Saved_Camera_Y_pos =		ramaddr( $FFFFFE42 )
-(1)  410/       0 : =$FFFFFFFFFF..      Saved_Camera_BG_X_pos =		ramaddr( $FFFFFE44 )
-(1)  411/       0 : =$FFFFFFFFFF..      Saved_Camera_BG_Y_pos =		ramaddr( $FFFFFE46 )
-(1)  412/       0 : =$FFFFFFFFFF..      Saved_Camera_BG2_X_pos =	ramaddr( $FFFFFE48 )
-(1)  413/       0 : =$FFFFFFFFFF..      Saved_Camera_BG2_Y_pos =	ramaddr( $FFFFFE4A )
-(1)  414/       0 : =$FFFFFFFFFF..      Saved_Camera_BG3_X_pos =	ramaddr( $FFFFFE4C )
-(1)  415/       0 : =$FFFFFFFFFF..      Saved_Camera_BG3_Y_pos =	ramaddr( $FFFFFE4E )
-(1)  416/       0 : =$FFFFFFFFFF..      Saved_Water_Level =		ramaddr( $FFFFFE50 )
-(1)  417/       0 : =$FFFFFFFFFF..      Saved_Water_routine =		ramaddr( $FFFFFE52 )
-(1)  418/       0 : =$FFFFFFFFFF..      Saved_Water_move =		ramaddr( $FFFFFE53 )
-(1)  419/       0 : =$FFFFFFFFFF..      Saved_Extra_life_flags =	ramaddr( $FFFFFE54 )
-(1)  420/       0 : =$FFFFFFFFFF..      Emerald_count =			ramaddr( $FFFFFE57 )
-(1)  421/       0 :                     
-(1)  422/       0 : =$FFFFFFFFFF..      Oscillation_Control =		ramaddr( $FFFFFE5E )
-(1)  423/       0 : =$FFFFFFFFFF..      Oscillating_Data =		ramaddr( $FFFFFE60 )
-(1)  424/       0 :                     
-(1)  425/       0 : =$FFFFFFFFFF..      Logspike_anim_counter =		ramaddr( $FFFFFEC0 )
-(1)  426/       0 : =$FFFFFFFFFF..      Logspike_anim_frame =		ramaddr( $FFFFFEC1 )
-(1)  427/       0 : =$FFFFFFFFFF..      Rings_anim_counter =		ramaddr( $FFFFFEC2 )
-(1)  428/       0 : =$FFFFFFFFFF..      Rings_anim_frame =		ramaddr( $FFFFFEC3 )
-(1)  429/       0 : =$FFFFFFFFFF..      Unknown_anim_counter =		ramaddr( $FFFFFEC4 )
-(1)  430/       0 : =$FFFFFFFFFF..      Unknown_anim_frame =		ramaddr( $FFFFFEC5 )
-(1)  431/       0 : =$FFFFFFFFFF..      Ring_spill_anim_counter =	ramaddr( $FFFFFEC6 )
-(1)  432/       0 : =$FFFFFFFFFF..      Ring_spill_anim_frame =		ramaddr( $FFFFFEC7 )
-(1)  433/       0 : =$FFFFFFFFFF..      Ring_spill_anim_accum =		ramaddr( $FFFFFEC8 )
-(1)  434/       0 :                     
-(1)  435/       0 : =$FFFFFFFFFF..      Camera_RAM_copy =		ramaddr( $FFFFFF10 )
-(1)  436/       0 : =$FFFFFFFFFF..      Camera_BG_copy =                ramaddr( $FFFFFF18 )
-(1)  437/       0 : =$FFFFFFFFFF..      Camera_BG2_copy =               ramaddr( $FFFFFF20 )
-(1)  438/       0 : =$FFFFFFFFFF..      Scroll_flags_copy =		ramaddr( $FFFFFF30 )
-(1)  439/       0 : =$FFFFFFFFFF..      Scroll_flags_BG_copy =          ramaddr( $FFFFFF32 )
-(1)  440/       0 : =$FFFFFFFFFF..      Scroll_flags_BG2_copy =         ramaddr( $FFFFFF34 )
-(1)  441/       0 : =$FFFFFFFFFF..      LevSel_HoldTimer =		ramaddr( $FFFFFF80 )
-(1)  442/       0 : =$FFFFFFFFFF..      Level_select_zone =		ramaddr( $FFFFFF82 )
-(1)  443/       0 : =$FFFFFFFFFF..      Sound_test_sound =		ramaddr( $FFFFFF84 )
-(1)  444/       0 :                     
-(1)  445/       0 : =$FFFFFFFFFF..      Level_select_flag =		ramaddr( $FFFFFFE0 )
-(1)  446/       0 : =$FFFFFFFFFF..      Slow_motion_flag =		ramaddr( $FFFFFFE1 )
-(1)  447/       0 : =$FFFFFFFFFF..      Debug_options_flag =		ramaddr( $FFFFFFE2 )	; if set, allows you to enable debug mode.
-(1)  448/       0 : =$FFFFFFFFFF..      Hidden_credits_flag =		ramaddr( $FFFFFFE3 )
-(1)  449/       0 : =$FFFFFFFFFF..      Correct_cheat_entries =		ramaddr( $FFFFFFE4 )
-(1)  450/       0 : =$FFFFFFFFFF..      Correct_cheat_entries_2 =	ramaddr( $FFFFFFE6 )
-(1)  451/       0 :                     
-(1)  452/       0 : =$FFFFFFFFFF..      unk_FFEA =			ramaddr( $FFFFFFEA )	; Cleared at title screen, never read from
-(1)  453/       0 : =$FFFFFFFFFF..      unk_FFEC =			ramaddr( $FFFFFFEC )	; Written to at Sonic_Floor, never read from
-(1)  454/       0 : =$FFFFFFFFFF..      unk_FFED =			ramaddr( $FFFFFFED )	; Written to at Sonic_Floor, never read from
-(1)  455/       0 : =$FFFFFFFFFF..      unk_FFEE =			ramaddr( $FFFFFFEE )	; Written to at Sonic_Floor, never read from
-(1)  456/       0 : =$FFFFFFFFFF..      unk_FFEF =			ramaddr( $FFFFFFEF )	; Written to at Sonic_Floor, never read from
-(1)  457/       0 :                     
-(1)  458/       0 : =$FFFFFFFFFF..      Demo_mode_flag =		ramaddr( $FFFFFFF0 )	; 1 if a demo is playing (2 bytes)
-(1)  459/       0 : =$FFFFFFFFFF..      Demo_number =			ramaddr( $FFFFFFF2 )	; which demo will play next (2 bytes)
-(1)  460/       0 : =$FFFFFFFFFF..      Ending_demo_number =		ramaddr( $FFFFFFF4 )	; zone for the ending demos (2 bytes)
-(1)  461/       0 : =$FFFFFFFFFF..      Graphics_Flags =		ramaddr( $FFFFFFF8 )	; misc. bitfield
-(1)  462/       0 : =$FFFFFFFFFF..      Debug_mode_flag =		ramaddr( $FFFFFFFA )	; (2 bytes)
-(1)  463/       0 : =$FFFFFFFFFF..      Checksum_fourcc =		ramaddr( $FFFFFFFC )	; (4 bytes)
-(1)  464/       0 : =$FFFFFFFFFF..      RAM_End =			ramaddr( $FFFFFFFF )
-(1)  468/       0 :                     ; ---------------------------------------------------------------------------
-(1)  469/       0 :                     ; VDP addressses
-(1)  470/       0 : =$C00000            VDP_data_port =			$C00000 ; (8=r/w, 16=r/w)
-(1)  471/       0 : =$C00004            VDP_control_port =		$C00004 ; (8=r/w, 16=r/w)
-(1)  472/       0 : =$C00011            PSG_input =			$C00011
-(1)  473/       0 :                     
-(1)  474/       0 :                     ; ---------------------------------------------------------------------------
-(1)  475/       0 :                     ; Z80 addresses
-(1)  476/       0 : =$A00000            Z80_RAM =			$A00000 ; start of Z80 RAM
-(1)  477/       0 : =$A000EA            Z80_DAC3_Pitch =		$A000EA
-(1)  478/       0 : =$A01FFD            DAC_Status =			$A01FFD
-(1)  479/       0 : =$A01FFF            DAC_Sample =			$A01FFF
-(1)  480/       0 : =$A02000            Z80_RAM_End =			$A02000 ; end of non-reserved Z80 RAM
-(1)  481/       0 : =$A04000            YM2612_A0 =			$A04000
-(1)  482/       0 : =$A04001            YM2612_D0 =			$A04001
-(1)  483/       0 : =$A04002            YM2612_A1 =			$A04002
-(1)  484/       0 : =$A04003            YM2612_D1 =			$A04003
-(1)  485/       0 : =$A10001            Z80_Version =			$A10001
-(1)  486/       0 : =$A10002            Z80_Port_1_Data =		$A10002
-(1)  487/       0 : =$A10008            Z80_Port_1_Control =		$A10008
-(1)  488/       0 : =$A1000A            Z80_Port_2_Control =		$A1000A
-(1)  489/       0 : =$A1000C            Z80_Expansion_Control =		$A1000C
-(1)  490/       0 : =$A11100            Z80_Bus_Request =		$A11100
-(1)  491/       0 : =$A11200            Z80_Reset =			$A11200
-(1)  492/       0 :                     
-(1)  493/       0 : =$A14000            Security_Addr =			$A14000
+(1)  369/       0 : =$FFFFFFFFFF..      Vint_runcount =			ramaddr( $FFFFFE0C )
+(1)  370/       0 :                     
+(1)  371/       0 : =$FFFFFFFFFF..      Current_ZoneAndAct =		ramaddr( $FFFFFE10 )	; 2 bytes
+(1)  372/       0 : =$FFFFFFFFFF..      Current_Zone =			ramaddr( $FFFFFE10 )
+(1)  373/       0 : =$FFFFFFFFFF..      Current_Act =			ramaddr( $FFFFFE11 )
+(1)  374/       0 : =$FFFFFFFFFF..      Life_count =			ramaddr( $FFFFFE12 )
+(1)  375/       0 :                     				; $FFFFFE13 unused
+(1)  376/       0 : =$FFFFFFFFFF..      Air_left =			ramaddr( $FFFFFE14 )
+(1)  377/       0 :                     				; $FFFFFE15 unused
+(1)  378/       0 : =$FFFFFFFFFF..      Current_Special_Stage =		ramaddr( $FFFFFE16 )
+(1)  379/       0 :                     				; $FFFFFE17 unused
+(1)  380/       0 : =$FFFFFFFFFF..      Continue_count =		ramaddr( $FFFFFE18 )
+(1)  381/       0 :                     				; $FFFFFE19 unused
+(1)  382/       0 : =$FFFFFFFFFF..      Time_Over_flag =		ramaddr( $FFFFFE1A )
+(1)  383/       0 : =$FFFFFFFFFF..      Extra_life_flags =		ramaddr( $FFFFFE1B )
+(1)  384/       0 :                     
+(1)  385/       0 : =$FFFFFFFFFF..      Update_HUD_lives =		ramaddr( $FFFFFE1C )
+(1)  386/       0 : =$FFFFFFFFFF..      Update_HUD_rings =		ramaddr( $FFFFFE1D )
+(1)  387/       0 : =$FFFFFFFFFF..      Update_HUD_timer =		ramaddr( $FFFFFE1E )
+(1)  388/       0 : =$FFFFFFFFFF..      Update_HUD_score =		ramaddr( $FFFFFE1F )
+(1)  389/       0 :                     
+(1)  390/       0 : =$FFFFFFFFFF..      Ring_count =			ramaddr( $FFFFFE20 )	; 2 bytes
+(1)  391/       0 : =$FFFFFFFFFF..      Timer =				ramaddr( $FFFFFE22 )	; 4 bytes
+(1)  392/       0 : =$FFFFFFFFFF..      Timer_minute = 			ramaddr( $FFFFFE23 )
+(1)  393/       0 : =$FFFFFFFFFF..      Timer_second = 			ramaddr( $FFFFFE24 )
+(1)  394/       0 : =$FFFFFFFFFF..      Timer_frame = 			ramaddr( $FFFFFE25 )
+(1)  395/       0 : =$FFFFFFFFFF..      Score =				ramaddr( $FFFFFE26 )	; 4 bytes
+(1)  396/       0 : =$FFFFFFFFFF..      ShieldFlag =                    ramaddr( $FFFFFE2C )
+(1)  397/       0 : =$FFFFFFFFFF..      InvcFlag =                    ramaddr( $FFFFFE2D )
+(1)  398/       0 : =$FFFFFFFFFF..      SpeedSHoesFlags =             ramaddr( $FFFFFE2E )
+(1)  399/       0 : =$FFFFFFFFFF..      Unk_Flags_1 =             ramaddr( $FFFFFE2F ) 
+(1)  400/       0 :                     				; $FFFFFE2A-$FFFFFE2F unused 6 bytes
+(1)  401/       0 :                     
+(1)  402/       0 : =$FFFFFFFFFF..      Last_star_pole_hit =		ramaddr( $FFFFFE30 )
+(1)  403/       0 : =$FFFFFFFFFF..      Saved_Last_star_pole_hit =	ramaddr( $FFFFFE31 )
+(1)  404/       0 : =$FFFFFFFFFF..      Saved_x_pos =			ramaddr( $FFFFFE32 )
+(1)  405/       0 : =$FFFFFFFFFF..      Saved_y_pos =			ramaddr( $FFFFFE34 )
+(1)  406/       0 : =$FFFFFFFFFF..      Saved_Ring_count =		ramaddr( $FFFFFE36 )
+(1)  407/       0 : =$FFFFFFFFFF..      Saved_Timer =			ramaddr( $FFFFFE38 )
+(1)  408/       0 : =$FFFFFFFFFF..      Saved_Dynamic_Resize_Routine =	ramaddr( $FFFFFE3C )
+(1)  409/       0 : =$FFFFFFFFFF..      Saved_Camera_Max_Y_pos =	ramaddr( $FFFFFE3E )
+(1)  410/       0 : =$FFFFFFFFFF..      Saved_Camera_X_pos =		ramaddr( $FFFFFE40 )
+(1)  411/       0 : =$FFFFFFFFFF..      Saved_Camera_Y_pos =		ramaddr( $FFFFFE42 )
+(1)  412/       0 : =$FFFFFFFFFF..      Saved_Camera_BG_X_pos =		ramaddr( $FFFFFE44 )
+(1)  413/       0 : =$FFFFFFFFFF..      Saved_Camera_BG_Y_pos =		ramaddr( $FFFFFE46 )
+(1)  414/       0 : =$FFFFFFFFFF..      Saved_Camera_BG2_X_pos =	ramaddr( $FFFFFE48 )
+(1)  415/       0 : =$FFFFFFFFFF..      Saved_Camera_BG2_Y_pos =	ramaddr( $FFFFFE4A )
+(1)  416/       0 : =$FFFFFFFFFF..      Saved_Camera_BG3_X_pos =	ramaddr( $FFFFFE4C )
+(1)  417/       0 : =$FFFFFFFFFF..      Saved_Camera_BG3_Y_pos =	ramaddr( $FFFFFE4E )
+(1)  418/       0 : =$FFFFFFFFFF..      Saved_Water_Level =		ramaddr( $FFFFFE50 )
+(1)  419/       0 : =$FFFFFFFFFF..      Saved_Water_routine =		ramaddr( $FFFFFE52 )
+(1)  420/       0 : =$FFFFFFFFFF..      Saved_Water_move =		ramaddr( $FFFFFE53 )
+(1)  421/       0 : =$FFFFFFFFFF..      Saved_Extra_life_flags =	ramaddr( $FFFFFE54 )
+(1)  422/       0 : =$FFFFFFFFFF..      Emerald_count =			ramaddr( $FFFFFE57 )
+(1)  423/       0 :                     
+(1)  424/       0 : =$FFFFFFFFFF..      Oscillation_Control =		ramaddr( $FFFFFE5E )
+(1)  425/       0 : =$FFFFFFFFFF..      Oscillating_Data =		ramaddr( $FFFFFE60 )
+(1)  426/       0 :                     
+(1)  427/       0 : =$FFFFFFFFFF..      Logspike_anim_counter =		ramaddr( $FFFFFEC0 )
+(1)  428/       0 : =$FFFFFFFFFF..      Logspike_anim_frame =		ramaddr( $FFFFFEC1 )
+(1)  429/       0 : =$FFFFFFFFFF..      Rings_anim_counter =		ramaddr( $FFFFFEC2 )
+(1)  430/       0 : =$FFFFFFFFFF..      Rings_anim_frame =		ramaddr( $FFFFFEC3 )
+(1)  431/       0 : =$FFFFFFFFFF..      Unknown_anim_counter =		ramaddr( $FFFFFEC4 )
+(1)  432/       0 : =$FFFFFFFFFF..      Unknown_anim_frame =		ramaddr( $FFFFFEC5 )
+(1)  433/       0 : =$FFFFFFFFFF..      Ring_spill_anim_counter =	ramaddr( $FFFFFEC6 )
+(1)  434/       0 : =$FFFFFFFFFF..      Ring_spill_anim_frame =		ramaddr( $FFFFFEC7 )
+(1)  435/       0 : =$FFFFFFFFFF..      Ring_spill_anim_accum =		ramaddr( $FFFFFEC8 )
+(1)  436/       0 :                     
+(1)  437/       0 : =$FFFFFFFFFF..      Camera_RAM_copy =		ramaddr( $FFFFFF10 )
+(1)  438/       0 : =$FFFFFFFFFF..      Camera_BG_copy =                ramaddr( $FFFFFF18 )
+(1)  439/       0 : =$FFFFFFFFFF..      Camera_BG2_copy =               ramaddr( $FFFFFF20 )
+(1)  440/       0 : =$FFFFFFFFFF..      Scroll_flags_copy =		ramaddr( $FFFFFF30 )
+(1)  441/       0 : =$FFFFFFFFFF..      Scroll_flags_BG_copy =          ramaddr( $FFFFFF32 )
+(1)  442/       0 : =$FFFFFFFFFF..      Scroll_flags_BG2_copy =         ramaddr( $FFFFFF34 )
+(1)  443/       0 : =$FFFFFFFFFF..      LevSel_HoldTimer =		ramaddr( $FFFFFF80 )
+(1)  444/       0 : =$FFFFFFFFFF..      Level_select_zone =		ramaddr( $FFFFFF82 )
+(1)  445/       0 : =$FFFFFFFFFF..      Sound_test_sound =		ramaddr( $FFFFFF84 )
+(1)  446/       0 :                     
+(1)  447/       0 : =$FFFFFFFFFF..      Level_select_flag =		ramaddr( $FFFFFFE0 )
+(1)  448/       0 : =$FFFFFFFFFF..      Slow_motion_flag =		ramaddr( $FFFFFFE1 )
+(1)  449/       0 : =$FFFFFFFFFF..      Debug_options_flag =		ramaddr( $FFFFFFE2 )	; if set, allows you to enable debug mode.
+(1)  450/       0 : =$FFFFFFFFFF..      Hidden_credits_flag =		ramaddr( $FFFFFFE3 )
+(1)  451/       0 : =$FFFFFFFFFF..      Correct_cheat_entries =		ramaddr( $FFFFFFE4 )
+(1)  452/       0 : =$FFFFFFFFFF..      Correct_cheat_entries_2 =	ramaddr( $FFFFFFE6 )
+(1)  453/       0 :                     
+(1)  454/       0 : =$FFFFFFFFFF..      unk_FFEA =			ramaddr( $FFFFFFEA )	; Cleared at title screen, never read from
+(1)  455/       0 : =$FFFFFFFFFF..      unk_FFEC =			ramaddr( $FFFFFFEC )	; Written to at Sonic_Floor, never read from
+(1)  456/       0 : =$FFFFFFFFFF..      unk_FFED =			ramaddr( $FFFFFFED )	; Written to at Sonic_Floor, never read from
+(1)  457/       0 : =$FFFFFFFFFF..      unk_FFEE =			ramaddr( $FFFFFFEE )	; Written to at Sonic_Floor, never read from
+(1)  458/       0 : =$FFFFFFFFFF..      unk_FFEF =			ramaddr( $FFFFFFEF )	; Written to at Sonic_Floor, never read from
+(1)  459/       0 :                     
+(1)  460/       0 : =$FFFFFFFFFF..      Demo_mode_flag =		ramaddr( $FFFFFFF0 )	; 1 if a demo is playing (2 bytes)
+(1)  461/       0 : =$FFFFFFFFFF..      Demo_number =			ramaddr( $FFFFFFF2 )	; which demo will play next (2 bytes)
+(1)  462/       0 : =$FFFFFFFFFF..      Ending_demo_number =		ramaddr( $FFFFFFF4 )	; zone for the ending demos (2 bytes)
+(1)  463/       0 : =$FFFFFFFFFF..      Graphics_Flags =		ramaddr( $FFFFFFF8 )	; misc. bitfield
+(1)  464/       0 : =$FFFFFFFFFF..      Debug_mode_flag =		ramaddr( $FFFFFFFA )	; (2 bytes)
+(1)  465/       0 : =$FFFFFFFFFF..      Checksum_fourcc =		ramaddr( $FFFFFFFC )	; (4 bytes)
+(1)  466/       0 : =$FFFFFFFFFF..      RAM_End =			ramaddr( $FFFFFFFF )
+(1)  470/       0 :                     ; ---------------------------------------------------------------------------
+(1)  471/       0 :                     ; VDP addressses
+(1)  472/       0 : =$C00000            VDP_data_port =			$C00000 ; (8=r/w, 16=r/w)
+(1)  473/       0 : =$C00004            VDP_control_port =		$C00004 ; (8=r/w, 16=r/w)
+(1)  474/       0 : =$C00011            PSG_input =			$C00011
+(1)  475/       0 :                     
+(1)  476/       0 :                     ; ---------------------------------------------------------------------------
+(1)  477/       0 :                     ; Z80 addresses
+(1)  478/       0 : =$A00000            Z80_RAM =			$A00000 ; start of Z80 RAM
+(1)  479/       0 : =$A000EA            Z80_DAC3_Pitch =		$A000EA
+(1)  480/       0 : =$A01FFD            DAC_Status =			$A01FFD
+(1)  481/       0 : =$A01FFF            DAC_Sample =			$A01FFF
+(1)  482/       0 : =$A02000            Z80_RAM_End =			$A02000 ; end of non-reserved Z80 RAM
+(1)  483/       0 : =$A04000            YM2612_A0 =			$A04000
+(1)  484/       0 : =$A04001            YM2612_D0 =			$A04001
+(1)  485/       0 : =$A04002            YM2612_A1 =			$A04002
+(1)  486/       0 : =$A04003            YM2612_D1 =			$A04003
+(1)  487/       0 : =$A10001            Z80_Version =			$A10001
+(1)  488/       0 : =$A10002            Z80_Port_1_Data =		$A10002
+(1)  489/       0 : =$A10008            Z80_Port_1_Control =		$A10008
+(1)  490/       0 : =$A1000A            Z80_Port_2_Control =		$A1000A
+(1)  491/       0 : =$A1000C            Z80_Expansion_Control =		$A1000C
+(1)  492/       0 : =$A11100            Z80_Bus_Request =		$A11100
+(1)  493/       0 : =$A11200            Z80_Reset =			$A11200
 (1)  494/       0 :                     
-(1)  495/       0 :                     ; ---------------------------------------------------------------------------
-(1)  496/       0 :                     ; Sound Driver addressses
-(1)  497/       0 : =$0                 SFXPriorityVal =		0
-(1)  498/       0 : =$1                 TempoTimeout =			1
-(1)  499/       0 : =$3                 StopMusic =			3
-(1)  500/       0 : =$9                 QueueToPlay =			9
-(1)  501/       0 : =$A                 SFXToPlay =			$A	; used for music/sfx
-(1)  502/       0 : =$B                 SFXSpecToPlay =			$B	; used for special sfx
-(1)  503/       0 : =$C                 SFXUnknown =			$C	; used for (broken) sfx
-(1)  504/       0 :                     ; ---------------------------------------------------------------------------
-(1)  505/       0 :                     ; VRAM and tile art base addresses.
-(1)  506/       0 :                     ; VRAM Reserved regions.
-(1)  507/       0 : =$C000              VRAM_Plane_A_Name_Table                  = $C000	; Extends until $CFFF
-(1)  508/       0 : =$E000              VRAM_Plane_B_Name_Table                  = $E000	; Extends until $EFFF
-(1)  509/       0 : =$A000              VRAM_Plane_A_Name_Table_2P               = $A000	; Extends until $AFFF
-(1)  510/       0 : =$8000              VRAM_Plane_B_Name_Table_2P               = $8000	; Extends until $8FFF
-(1)  511/       0 : =$1000              VRAM_Plane_Table_Size                    = $1000	; 64 cells x 32 cells x 2 bytes per cell
-(1)  512/       0 : =$F800              VRAM_Sprite_Attribute_Table              = $F800	; Extends until $FA7F
-(1)  513/       0 : =$280               VRAM_Sprite_Attribute_Table_Size         = $0280	; 640 bytes
-(1)  514/       0 : =$FC00              VRAM_Horiz_Scroll_Table                  = $FC00	; Extends until $FF7F
-(1)  515/       0 : =$380               VRAM_Horiz_Scroll_Table_Size             = $0380	; 224 lines * 2 bytes per entry * 2 PNTs
+(1)  495/       0 : =$A14000            Security_Addr =			$A14000
+(1)  496/       0 :                     
+(1)  497/       0 :                     ; ---------------------------------------------------------------------------
+(1)  498/       0 :                     ; Sound Driver addressses
+(1)  499/       0 : =$0                 SFXPriorityVal =		0
+(1)  500/       0 : =$1                 TempoTimeout =			1
+(1)  501/       0 : =$3                 StopMusic =			3
+(1)  502/       0 : =$9                 QueueToPlay =			9
+(1)  503/       0 : =$A                 SFXToPlay =			$A	; used for music/sfx
+(1)  504/       0 : =$B                 SFXSpecToPlay =			$B	; used for special sfx
+(1)  505/       0 : =$C                 SFXUnknown =			$C	; used for (broken) sfx
+(1)  506/       0 :                     ; ---------------------------------------------------------------------------
+(1)  507/       0 :                     ; VRAM and tile art base addresses.
+(1)  508/       0 :                     ; VRAM Reserved regions.
+(1)  509/       0 : =$C000              VRAM_Plane_A_Name_Table                  = $C000	; Extends until $CFFF
+(1)  510/       0 : =$E000              VRAM_Plane_B_Name_Table                  = $E000	; Extends until $EFFF
+(1)  511/       0 : =$A000              VRAM_Plane_A_Name_Table_2P               = $A000	; Extends until $AFFF
+(1)  512/       0 : =$8000              VRAM_Plane_B_Name_Table_2P               = $8000	; Extends until $8FFF
+(1)  513/       0 : =$1000              VRAM_Plane_Table_Size                    = $1000	; 64 cells x 32 cells x 2 bytes per cell
+(1)  514/       0 : =$F800              VRAM_Sprite_Attribute_Table              = $F800	; Extends until $FA7F
+(1)  515/       0 : =$280               VRAM_Sprite_Attribute_Table_Size         = $0280	; 640 bytes
+(1)  516/       0 : =$FC00              VRAM_Horiz_Scroll_Table                  = $FC00	; Extends until $FF7F
+(1)  517/       0 : =$380               VRAM_Horiz_Scroll_Table_Size             = $0380	; 224 lines * 2 bytes per entry * 2 PNTs
       22/       0 :                     
       23/       0 :                     ; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
       24/       0 :                     ; Simplifying macros and functions
@@ -7912,7 +7914,7 @@
     6678/    6112 : 7000                		moveq	#0,d0
     6679/    6114 : 1038 FE10           		move.b	(Current_Zone).w,d0
     6680/    6118 : E508                		lsl.b	#2,d0
-    6681/    611A : 21FB 0078 F7AC      		move.l	LoopTileNums(pc,d0.w),($FFFFF7AC).w
+    6681/    611A : 21FB 0078 F7AC      		move.l	LoopTileNums(pc,d0.w),(Loop_TunnelRam).w
     6682/    6120 : 6000 008E           		bra.w	LevSz_Unk
     6683/    6124 :                     ; ===========================================================================
     6684/    6124 :                     ; ---------------------------------------------------------------------------
@@ -13040,7 +13042,7 @@
    11296/    90F0 : 117C 0007 001E      		move.b	#7,anim_frame_duration(a0)
    11297/    90F6 : 117C 0002 001A      		move.b	#2,mapping_frame(a0)
    11298/    90FC : 317C FC00 0012      		move.w	#-$400,y_vel(a0)
-   11299/    9102 : 4A38 F7A7           		tst.b	($FFFFF7A7).w
+   11299/    9102 : 4A38 FF7A           		tst.b	(BossdefeatedFlag).w
    11300/    9106 : 6626                		bne.s	loc_911C
    11301/    9108 : 6100 4994           		bsr.w	SingleObjLoad
    11302/    910C : 661C                		bne.s	Obj28_Display
@@ -13082,7 +13084,7 @@
    11334/    9172 : D000                		add.b	d0,d0
    11335/    9174 : 5800                		addq.b	#4,d0
    11336/    9176 : 1140 0024           		move.b	d0,routine(a0)
-   11337/    917A : 4A38 F7A7           		tst.b	($FFFFF7A7).w
+   11337/    917A : 4A38 FF7A           		tst.b	(BossdefeatedFlag).w
    11338/    917E : 6712                		beq.s	loc_9180
    11339/    9180 : 0838 0004 FE0F      		btst	#4,(Vint_runcount+3).w
    11340/    9186 : 670A                		beq.s	loc_9180
@@ -29918,13 +29920,13 @@
    25489/   1394A : D041                		add.w	d1,d0
    25490/   1394C : 43F8 A400           		lea	(Level_Layout).w,a1
    25491/   13950 : 1231 0000           		move.b	(a1,d0.w),d1	; d1 is	the 256x256 tile Sonic is currently on
-   25492/   13954 : B238 F7AE           		cmp.b	($FFFFF7AE).w,d1
+   25492/   13954 : B238 F7AE           		cmp.b	(Loop_TunnelRam+$2).w,d1
    25493/   13958 : 6700 FA64           		beq.w	Obj01_ChkRoll
-   25494/   1395C : B238 F7AF           		cmp.b	($FFFFF7AF).w,d1
+   25494/   1395C : B238 F7AF           		cmp.b	(Loop_TunnelRam+$3).w,d1
    25495/   13960 : 6700 FA5C           		beq.w	Obj01_ChkRoll
-   25496/   13964 : B238 F7AC           		cmp.b	($FFFFF7AC).w,d1
+   25496/   13964 : B238 F7AC           		cmp.b	(Loop_TunnelRam).w,d1
    25497/   13968 : 671E                		beq.s	loc_13976
-   25498/   1396A : B238 F7AD           		cmp.b	($FFFFF7AD).w,d1
+   25498/   1396A : B238 F7AD           		cmp.b	(Loop_TunnelRam+$1).w,d1
    25499/   1396E : 6708                		beq.s	loc_13966
    25500/   13970 : 08A8 0006 0001      		bclr	#6,1(a0)
    25501/   13976 : 4E75                		rts	
@@ -36010,9 +36012,9 @@
    30610/   179A2 : 4268 0010           		clr.w	x_vel(a0)
    30611/   179A6 : 5428 0025           		addq.b	#2,routine_secondary(a0)
    30612/   179AA : 317C FFDA 003C      		move.w	#-$26,$3C(a0)
-   30613/   179B0 : 4A38 F7A7           		tst.b	($FFFFF7A7).w
+   30613/   179B0 : 4A38 FF7A           		tst.b	(BossdefeatedFlag).w
    30614/   179B4 : 6606                		bne.s	locret_179AA
-   30615/   179B6 : 11FC 0001 F7A7      		move.b	#1,($FFFFF7A7).w
+   30615/   179B6 : 11FC 0001 FF7A      		move.b	#1,(BossdefeatedFlag).w
    30616/   179BC :                     
    30617/   179BC :                     locret_179AA:
    30618/   179BC : 4E75                		rts
@@ -37157,9 +37159,9 @@
    31633/   1851E : 4268 0010           		clr.w	x_vel(a0)
    31634/   18522 : 5428 0025           		addq.b	#2,routine_secondary(a0)
    31635/   18526 : 317C FFDA 003C      		move.w	#-$26,$3C(a0)
-   31636/   1852C : 4A38 F7A7           		tst.b	($FFFFF7A7).w
+   31636/   1852C : 4A38 FF7A           		tst.b	(BossdefeatedFlag).w
    31637/   18530 : 660A                		bne.s	locret_1852A
-   31638/   18532 : 11FC 0001 F7A7      		move.b	#1,($FFFFF7A7).w
+   31638/   18532 : 11FC 0001 FF7A      		move.b	#1,(BossdefeatedFlag).w
    31639/   18538 : 4268 0012           		clr.w	y_vel(a0)
    31640/   1853C :                     
    31641/   1853C :                     locret_1852A:
@@ -37813,9 +37815,9 @@
    32285/   18B72 : 08A8 0007 0022      		bclr	#7,status(a0)
    32286/   18B78 : 4268 0010           		clr.w	x_vel(a0)
    32287/   18B7C : 117C 00E8 003C      		move.b	#-$18,$3C(a0)
-   32288/   18B82 : 4A38 F7A7           		tst.b	($FFFFF7A7).w
+   32288/   18B82 : 4A38 FF7A           		tst.b	(BossdefeatedFlag).w
    32289/   18B86 : 6606                		bne.s	loc_18B7C
-   32290/   18B88 : 11FC 0001 F7A7      		move.b	#1,($FFFFF7A7).w
+   32290/   18B88 : 11FC 0001 FF7A      		move.b	#1,(BossdefeatedFlag).w
    32291/   18B8E :                     
    32292/   18B8E :                     loc_18B7C:
    32293/   18B8E : 6000 FE80           		bra.w	loc_189FE
@@ -38752,9 +38754,9 @@
    33205/   194D6 : 08A8 0007 0022      		bclr	#7,status(a0)
    33206/   194DC : 4268 0010           		clr.w	x_vel(a0)
    33207/   194E0 : 317C FFFF 003C      		move.w	#-1,$3C(a0)
-   33208/   194E6 : 4A38 F7A7           		tst.b	($FFFFF7A7).w
+   33208/   194E6 : 4A38 FF7A           		tst.b	(BossdefeatedFlag).w
    33209/   194EA : 6606                		bne.s	loc_194A8
-   33210/   194EC : 11FC 0001 F7A7      		move.b	#1,($FFFFF7A7).w
+   33210/   194EC : 11FC 0001 FF7A      		move.b	#1,(BossdefeatedFlag).w
    33211/   194F2 :                     
    33212/   194F2 :                     loc_194A8:
    33213/   194F2 : 6000 FD20           		bra.w	loc_19202
@@ -40939,7 +40941,7 @@
    35064/   1AC30 :                     ; ===========================================================================
    35065/   1AC30 :                     
    35066/   1AC30 :                     Obj3E_BodyMain:				; XREF: Obj3E_Index
-   35067/   1AC30 : 0C38 0002 F7A7      		cmpi.b	#2,($FFFFF7A7).w
+   35067/   1AC30 : 0C38 0002 FF7A      		cmpi.b	#2,(BossdefeatedFlag).w
    35068/   1AC36 : 6716                		beq.s	Obj3E_ChkOpened
    35069/   1AC38 : 323C 002B           		move.w	#$2B,d1
    35070/   1AC3C : 343C 0018           		move.w	#$18,d2
@@ -41016,7 +41018,7 @@
    35137/   1AD16 :                     ; ===========================================================================
    35138/   1AD16 :                     
    35139/   1AD16 :                     Obj3E_MakeAnimal:
-   35140/   1AD16 : 11FC 0002 F7A7      		move.b	#2,($FFFFF7A7).w
+   35140/   1AD16 : 11FC 0002 FF7A      		move.b	#2,(BossdefeatedFlag).w
    35141/   1AD1C : 117C 000C 0024      		move.b	#$C,routine(a0)	; replace explosions with animals
    35142/   1AD22 : 117C 0006 001A      		move.b	#6,mapping_frame(a0)
    35143/   1AD28 : 317C 0096 001E      		move.w	#$96,anim_frame_duration(a0)
@@ -52227,7 +52229,7 @@ ROM size is $80000 bytes (512 kb). About $173 bytes are padding.
    40118/   80000 :                     		message "ROM size is $\{*} bytes (\{*/1024.0} kb). About $\{paddingSoFar} bytes are padding. "
    40120/   80000 :                     EndOfRom:
    40121/   80000 :                     	END
- AS V1.42 Beta [Bld 89] - source file s1.asm - page 2 - 11/12/2021 0:18:19
+ AS V1.42 Beta [Bld 89] - source file s1.asm - page 2 - 11/12/2021 0:25:03
 
 
   symbol table (* = unused):
@@ -52302,10 +52304,12 @@ ROM size is $80000 bytes (512 kb). About $173 bytes are padding.
  BLOCK_TABLE :     FFFFFFFFFFFFB000 - |  BONUSES_FLAG :    FFFFFFFFFFFFF7CD - |
  BONUS_COUNTDOWN_1 :                                       FFFFFFFFFFFFF7D2 - |
  BONUS_COUNTDOWN_2 :                                       FFFFFFFFFFFFF7D4 - |
- BOSSDEFEATED :               17872 C |  BOSSMOVE :                   178B6 C |
- BOUNDARY_BOTTOM :            13358 C |  BOUNDARY_SIDES :             1337E C |
-*BRANCHEXT :                      0 - |  BUILDSPRITES :                D670 C |
- BUSERROR :                     3D6 C |  BUTTONVINESEC :   FFFFFFFFFFFFF7E5 - |
+ BOSSDEFEATED :               17872 C |
+ BOSSDEFEATEDFLAG : FFFFFFFFFFFFFF7A - |
+ BOSSMOVE :                   178B6 C |  BOUNDARY_BOTTOM :            13358 C |
+ BOUNDARY_SIDES :             1337E C | *BRANCHEXT :                      0 - |
+ BUILDSPRITES :                D670 C |  BUSERROR :                     3D6 C |
+ BUTTONVINESEC :   FFFFFFFFFFFFF7E5 - |
  BUTTONVINE_TRIGGER :                                      FFFFFFFFFFFFF7E0 - |
  BYTE_10054 :                 10066 C |  BYTE_1005A :                 1006C C |
  BYTE_10065 :                 10077 C |  BYTE_1007A :                 1008C C |
@@ -54046,204 +54050,204 @@ ROM size is $80000 bytes (512 kb). About $173 bytes are padding.
  LOC_FFE2 :                    FFF4 C |
  LOGSPIKE_ANIM_COUNTER :                                   FFFFFFFFFFFFFEC0 - |
  LOGSPIKE_ANIM_FRAME :                                     FFFFFFFFFFFFFEC1 - |
- LOOPTILENUMS :                6194 C |  LSELECTPOINTERS :             338C C |
- LZDYNAMICWATER :              3C44 C |  LZMOVEWATER :                 3BFE C |
- LZSLIDE_MOVE :                3F8E C |  LZWATEREFFECTS :              3BE2 C |
- LZWATERSLIDES :               3F46 C |  LZWINDTUNNELS :               3E44 C |
- LZWIND_DATA :                 3F26 C |  LZWIND_LOOP :                 3E6C C |
- LZWIND_MOVE :                 3ED0 C |  LZWIND_MOVEDOWN :             3EF8 C |
-*MACEXP :                         1 - |  MAINGAMELOOP :                 388 C |
- MAINLOADBLOCKLOAD :           6CB8 C |  MAINLOADBLOCKS :             1D60C C |
- MAPPING_FRAME :                 1A - |  MAP_BOSSITEMS :              17DE6 C |
- MAP_EGGMAN :                 17D1E C |  MAP_EGGMAN2 :                1A448 C |
- MAP_FZBOSS :                 1A48A C |  MAP_OBJ08 :                  145DE C |
- MAP_OBJ0A :                  14162 C |  MAP_OBJ0B :                  11334 C |
- MAP_OBJ0C :                  11404 C |  MAP_OBJ0D :                   ED4A C |
- MAP_OBJ0E :                   A89A C |  MAP_OBJ0F :                   A7D6 C |
- MAP_OBJ11 :                   7946 C |  MAP_OBJ12 :                   E994 C |
- MAP_OBJ14 :                   B380 C |  MAP_OBJ15 :                   7C5A C |
- MAP_OBJ15A :                  7C78 C |  MAP_OBJ15B :                 10AB2 C |
- MAP_OBJ16 :                  11FAC C |  MAP_OBJ17 :                   7E0A C |
- MAP_OBJ18 :                   814E C |  MAP_OBJ18A :                  819A C |
- MAP_OBJ18B :                  81AC C |  MAP_OBJ18X :                  810C C |
- MAP_OBJ1A :                   85B2 C |  MAP_OBJ1B :                  1117E C |
- MAP_OBJ1C :                   8868 C |  MAP_OBJ1D :                   892E C |
- MAP_OBJ1E :                   8E74 C |  MAP_OBJ1F :                   9762 C |
- MAP_OBJ21 :                  1C622 C |  MAP_OBJ22 :                   9A48 C |
- MAP_OBJ23 :                   9B18 C |  MAP_OBJ24 :                   8EB8 C |
- MAP_OBJ25 :                   9FA4 C |  MAP_OBJ26 :                   A59C C |
- MAP_OBJ27 :                   8ED8 C |  MAP_OBJ28 :                   9478 C |
- MAP_OBJ28A :                  9490 C |  MAP_OBJ28B :                  94A8 C |
- MAP_OBJ29 :                   94C0 C |  MAP_OBJ2A :                   89FE C |
- MAP_OBJ2B :                   ABDC C |  MAP_OBJ2C :                   AC82 C |
- MAP_OBJ2D :                   AE6E C |  MAP_OBJ2F :                   B2E6 C |
- MAP_OBJ30 :                   B60C C |  MAP_OBJ31 :                   BB60 C |
- MAP_OBJ32 :                   BEB6 C |  MAP_OBJ33 :                   C2F8 C |
- MAP_OBJ34 :                   C9F8 C |  MAP_OBJ36 :                   CFFA C |
- MAP_OBJ38 :                  143C4 C |  MAP_OBJ39 :                   CBB6 C |
- MAP_OBJ3A :                   CBEA C |  MAP_OBJ3B :                   D120 C |
- MAP_OBJ3C :                   D2C8 C |  MAP_OBJ3E :                  1ADE2 C |
- MAP_OBJ3F :                   8F1E C |  MAP_OBJ40 :                   F7B2 C |
- MAP_OBJ41 :                   DD2C C |  MAP_OBJ42 :                   DF54 C |
- MAP_OBJ43 :                   E1B4 C |  MAP_OBJ44 :                   E262 C |
- MAP_OBJ45 :                   BC6C C |  MAP_OBJ46 :                   E916 C |
- MAP_OBJ47 :                   EB12 C |  MAP_OBJ48 :                   81BC C |
- MAP_OBJ4A :                  1447E C |  MAP_OBJ4B :                   9FE4 C |
- MAP_OBJ4C :                   F25C C |  MAP_OBJ4E :                   F540 C |
- MAP_OBJ50 :                   F940 C |  MAP_OBJ51 :                   FDE6 C |
- MAP_OBJ52 :                  1005C C |  MAP_OBJ52A :                 100B2 C |
- MAP_OBJ53 :                   8758 C |  MAP_OBJ54 :                   F222 C |
- MAP_OBJ55 :                  10250 C |  MAP_OBJ56 :                  10712 C |
- MAP_OBJ57 :                  10968 C |  MAP_OBJ57A :                 10970 C |
- MAP_OBJ59 :                  10D5A C |  MAP_OBJ5A :                  10E94 C |
- MAP_OBJ5B :                  1104E C |  MAP_OBJ5C :                  110A8 C |
- MAP_OBJ5D :                  11622 C |  MAP_OBJ5E :                  119B6 C |
- MAP_OBJ5EA :                 119F8 C |  MAP_OBJ5F :                  11C3A C |
- MAP_OBJ60 :                  11EF6 C |  MAP_OBJ61 :                  121D4 C |
- MAP_OBJ62 :                  1232A C |  MAP_OBJ63 :                  1268E C |
- MAP_OBJ64 :                  129DE C |  MAP_OBJ65 :                  12B66 C |
- MAP_OBJ66 :                  152A4 C |  MAP_OBJ67 :                  15698 C |
- MAP_OBJ69 :                  158F2 C |  MAP_OBJ69A :                 1594C C |
- MAP_OBJ6A :                  15BAA C |  MAP_OBJ6B :                  15F7A C |
- MAP_OBJ6C :                  1613C C |  MAP_OBJ6D :                   E606 C |
- MAP_OBJ6E :                  161F2 C |  MAP_OBJ70 :                  1663A C |
- MAP_OBJ71 :                  114C8 C |  MAP_OBJ76 :                  1986C C |
- MAP_OBJ78 :                  16D80 C |  MAP_OBJ79 :                  1710A C |
- MAP_OBJ7B :                  190F0 C |  MAP_OBJ7C :                   A086 C |
- MAP_OBJ7D :                  1725A C |  MAP_OBJ7E :                   CCAC C |
- MAP_OBJ7F :                   CE06 C |  MAP_OBJ80 :                   5068 C |
- MAP_OBJ82 :                  19AA2 C |  MAP_OBJ83 :                  19D80 C |
- MAP_OBJ84 :                  1A6E4 C |  MAP_OBJ86 :                  1AAC4 C |
- MAP_OBJ86A :                 1AB14 C |  MAP_OBJ87 :                   5692 C |
- MAP_OBJ88 :                   578C C |  MAP_OBJ89 :                   57C4 C |
- MAP_OBJ8A :                  172F4 C |  MAP_OBJ8B :                   5BCE C |
- MAP_SONIC :                  211E2 C |  MAP_SSWALLS :                2C564 C |
- MAP_SS_CHAOS1 :              1B9CE C |  MAP_SS_CHAOS2 :              1B9D2 C |
- MAP_SS_CHAOS3 :              1B9D6 C |  MAP_SS_DOWN :                1B9BE C |
- MAP_SS_GLASS :               1B98E C |  MAP_SS_R :                   1B97A C |
- MAP_SS_UP :                  1B9AE C |  MARKOBJGONE :                 F6BE C |
- MARK_CHKGONE :                F6E0 C |  MARK_DELETE :                 F6F2 C |
- MLB_CHKSBZPAL :               6CFE C |  MLB_NORMALPAL :               6D10 C |
- MLB_USEPAL0E :                6D0E C |  MOMCPU :                     68000 - |
-*MOMCPUNAME :                 68000 - |  MOVEDEMO_ON :                 4022 C |
-*MOVEDEMO_RECORD :             3FEA C |  MOVESONICINDEMO :             3FE2 C |
- MUSIC81 :                    745CA C |  MUSIC82 :                    74D32 C |
- MUSIC83 :                    75182 C |  MUSIC84 :                    755E0 C |
- MUSIC85 :                    75A4E C |  MUSIC86 :                    75E9A C |
- MUSIC87 :                    763EA C |  MUSIC88 :                    765D0 C |
- MUSIC89 :                    766BE C |  MUSIC8A :                    769EA C |
- MUSIC8B :                    76B96 C |  MUSIC8C :                    76E30 C |
- MUSIC8D :                    7704C C |  MUSIC8E :                    77268 C |
- MUSIC8F :                    773BE C |  MUSIC90 :                    7750E C |
- MUSIC91 :                    7766C C |  MUSIC92 :                    7893A C |
- MUSIC93 :                    78A64 C |  MUSICINDEX :                 71A9C C |
- MUSICLIST :                   37AC C |  MUSICLIST2 :                 12CDA C |
- MUSID_BOSS :                    8C - |  MUSID_CONTINUE :                90 - |
- MUSID_CREDITS :                 91 - |  MUSID_DROWNING :                92 - |
- MUSID_EMERALD :                 93 - |  MUSID_ENDING :                  8B - |
- MUSID_ENDLEVEL :                8E - |  MUSID_EXTRALIFE :               88 - |
- MUSID_FADEOUT :                 E0 - |  MUSID_FZ :                      8D - |
- MUSID_GAMEOVER :                8F - |  MUSID_GHZ :                     81 - |
- MUSID_INVINCIBLE :              87 - |  MUSID_LZ :                      82 - |
- MUSID_MZ :                      83 - |  MUSID_SBZ :                     86 - |
- MUSID_SLOWDOWN :                E3 - |  MUSID_SLZ :                     84 - |
- MUSID_SPECIALSTAGE :            89 - |  MUSID_SPEEDUP :                 E2 - |
- MUSID_STOP :                    E4 - |  MUSID_SYZ :                     85 - |
- MUSID_TITLE :                   8A - |  MUSID__END :                    94 - |
- MUSID__FIRST :                  81 - |  MUSPTR_BOSS :                71AC8 C |
- MUSPTR_CONTINUE :            71AD8 C |  MUSPTR_CREDITS :             71ADC C |
- MUSPTR_DROWNING :            71AE0 C |  MUSPTR_EMERALD :             71AE4 C |
- MUSPTR_END :                 71AE8 C |  MUSPTR_ENDING :              71AC4 C |
- MUSPTR_ENDLEVEL :            71AD0 C |  MUSPTR_EXTRALIFE :           71AB8 C |
- MUSPTR_FZ :                  71ACC C |  MUSPTR_GAMEOVER :            71AD4 C |
- MUSPTR_GHZ :                 71A9C C |  MUSPTR_INVINCIBLE :          71AB4 C |
- MUSPTR_LZ :                  71AA0 C |  MUSPTR_MZ :                  71AA4 C |
- MUSPTR_SBZ :                 71AB0 C |  MUSPTR_SLZ :                 71AA8 C |
- MUSPTR_SPECIALSTAGE :        71ABC C |  MUSPTR_SYZ :                 71AAC C |
- MUSPTR_TITLE :               71AC0 C |  MVSONIC2 :                    7B4C C |
- MVSONICONPTFM :               7B34 C |  MVSONICONPTFM2 :              7B40 C |
- MZ_OBJY_POSSAVE : FFFFFFFFFFFFF7A4 - |  NEMDEC :                      1440 C |
- NEMDEC2 :                     148A C |  NEMDEC3 :                     14CC C |
- NEMDEC4 :                     152E C |  NEM_BALL :                   2F6B6 C |
- NEM_BALLHOG :                35646 C |  NEM_BASARAN :                38212 C |
- NEM_BIGFLASH :               3AA7A C |  NEM_BLACKBIRD :              3B68E C |
- NEM_BOMB :                   38756 C |  NEM_BONUS :                  3ABEE C |
- NEM_BRIDGE :                 2F582 C |  NEM_BUBBLES :                30A3E C |
- NEM_BUMPER :                 33E4E C |  NEM_BURROBOT :               36482 C |
- NEM_BUZZ :                   35EF4 C |  NEM_CATER :                  38BCC C |
- NEM_CHICKEN :                3B532 C |  NEM_CHOPPER :                36B6C C |
- NEM_CONTSONIC :              3AEF0 C |  NEM_CORK :                   31F40 C |
- NEM_CRABMEAT :               35A06 C |  NEM_CREDITTEXT :             61F76 C |
- NEM_CUTTER :                 3467A C |  NEM_EGGMAN :                 5CC62 C |
- NEM_ELECTRIC :               34F82 C |  NEM_ENDEGGMAN :              61388 C |
- NEM_ENDEM :                  5F668 C |  NEM_ENDFLOWER :              61CEE C |
- NEM_ENDSONIC :               5F866 C |  NEM_ENDSTH :                 62574 C |
- NEM_EXHAUST :                5F548 C |  NEM_EXPLODE :                39AB8 C |
- NEM_FAN :                    33734 C |  NEM_FLAMEPIPE :              35200 C |
- NEM_FLAPDOOR :               308D4 C |  NEM_FLICKY :                 3BA5C C |
- NEM_FZBOSS :                 5E860 C |  NEM_FZEGGMAN :               5EFC8 C |
- NEM_GAMEOVER :               3A1CE C |  NEM_GARGOYLE :               319E0 C |
-*NEM_GHZGRASS :               3257E C | *NEM_GHZLOG :                 2F8D0 C |
-*NEM_GHZUNKBLOCK :            2F66E C |  NEM_GHZWALL1 :               2FD3E C |
- NEM_GHZWALL2 :               2FDDC C |  NEM_GHZ_1ST :                3C692 C |
- NEM_GHZ_2ND :                3DCF2 C |  NEM_GIRDER :                 35530 C |
-*NEM_GOGGLE :                 2C3DE C |  NEM_HARPOON :                311EC C |
- NEM_HSPRING :                3A360 C |  NEM_HUD :                    39368 C |
- NEM_JAPNAMES :               20D3A C |  NEM_JAWS :                   36DD4 C |
- NEM_LAMP :                   3A9BA C |  NEM_LAVA :                   328B0 C |
- NEM_LIVES :                  3945E C |  NEM_LZ :                     414D4 C |
- NEM_LZBLOCK1 :               3206A C |  NEM_LZBLOCK2 :               31B50 C |
- NEM_LZBLOCK3 :               31094 C |  NEM_LZDOOR1 :                3114A C |
- NEM_LZDOOR2 :                313AC C |  NEM_LZPLATFM :               31E08 C |
- NEM_LZPOLE :                 31348 C |  NEM_LZSONIC :                2C03A C |
- NEM_LZSPIKEBALL :            30754 C |  NEM_LZSWITCH :               3401A C |
- NEM_LZWHEEL :                314FE C |  NEM_MINISONIC :              3B1A0 C |
- NEM_MONITORS :               39658 C |  NEM_MOTOBUG :                37582 C |
- NEM_MZ :                     46016 C |  NEM_MZBLOCK :                331C6 C |
- NEM_MZFIRE :                 325D2 C |  NEM_MZGLASS :                324C6 C |
- NEM_MZMETAL :                3217A C |  NEM_MZSWITCH :               32408 C |
-*NEM_MZUNKBLOCK :             3332A C |  NEM_NEWTRON :                3780C C |
- NEM_ORBINAUT :               389EE C |  NEM_PIG :                    3B926 C |
- NEM_POINTS :                 3A11E C |  NEM_PPLROCK :                2FC10 C |
- NEM_PRISON :                 5D7B0 C |  NEM_PYLON :                  339DA C |
- NEM_RABBIT :                 3B3DA C |  NEM_RESULTEM :               2F2A0 C |
- NEM_RING :                   39564 C |  NEM_ROLLER :                 3705E C |
- NEM_SBZ :                    57A66 C |  NEM_SBZ2EGGMAN :             5E034 C |
- NEM_SBZBLOCK :               35102 C |  NEM_SBZDOOR1 :               3538C C |
- NEM_SBZDOOR2 :               35434 C |  NEM_SBZFLOOR :               34F2A C |
- NEM_SBZWHEEL1 :              3438A C |  NEM_SBZWHEEL2 :              343DE C |
- NEM_SEAL :                   3B80A C |  NEM_SEESAW :                 333B2 C |
- NEM_SEGALOGO :               1DC00 C |  NEM_SHIELD :                 2BD5C C |
- NEM_SIGNPOST :               3A53E C |  NEM_SLIDEFLOOR :             353DC C |
- NEM_SLZ :                    4A7FE C |  NEM_SLZBLOCK :               33C9E C |
- NEM_SLZCANNON :              33DAA C |  NEM_SLZSPIKE :               335EE C |
- NEM_SLZSWING :               33ABC C |  NEM_SLZWALL :                33978 C |
-*NEM_SMOKE :                  2BC1E C |  NEM_SPIKEPOLE :              2FAE4 C |
- NEM_SPIKES :                 2F854 C |  NEM_SPINPFORM :              34A1C C |
- NEM_SPLASH :                 2FF60 C | *NEM_SPLATS :                 3850E C |
- NEM_SQUIRREL :               3BB96 C |  NEM_SS1UPBLOCK :             2E692 C |
- NEM_SSBGCLOUD :              2DFE0 C |  NEM_SSBGFISH :               2D050 C |
- NEM_SSEMERALD :              2EF2A C |  NEM_SSEMSTARS :              2E788 C |
- NEM_SSGHOST :                2F092 C |  NEM_SSGLASS :                2F21C C |
- NEM_SSGOAL :                 2E4D4 C |  NEM_SSRBLOCK :               2E5C2 C |
- NEM_SSREDWHITE :             2E7E6 C |  NEM_SSUPDOWN :               2ED36 C |
- NEM_SSWALLS :                2C5E4 C |  NEM_SSWBLOCK :               2F142 C |
- NEM_SSZONE1 :                2E878 C |  NEM_SSZONE2 :                2E93A C |
- NEM_SSZONE3 :                2EA08 C |  NEM_SSZONE4 :                2EAD4 C |
- NEM_SSZONE5 :                2EB9C C |  NEM_SSZONE6 :                2EC66 C |
- NEM_STALK :                  2F41E C |  NEM_STARS :                  2BEF2 C |
- NEM_STOMPER :                3487E C |  NEM_SWING :                  2F468 C |
- NEM_SYZ :                    510F0 C | *NEM_SYZSPARKLE :             2BD22 C |
- NEM_SYZSPIKE1 :              340FC C |  NEM_SYZSPIKE2 :              33FB8 C |
- NEM_TITLECARD :              38D5A C |  NEM_TITLEFG :                1E26E C |
- NEM_TITLESONIC :             1F27A C |  NEM_TITLETM :                20C48 C |
- NEM_TRAPDOOR :               34D4C C |  NEM_TRYAGAIN :               60A44 C |
-*NEM_UNKEXPLODE :             3629A C | *NEM_UNKFIRE :                2C144 C |
- NEM_VSPRING :                3A462 C |  NEM_WARP :                   2C196 C |
- NEM_WATER :                  2FE3C C |  NEM_WEAPONS :                5D4C6 C |
- NEM_YADRIN :                 37E2A C | *NESTMAX :                      100 - |
- NEXT_ANIM :                     1D - |  NEXT_TILE :                     20 - |
- NORMAL_PALETTE :  FFFFFFFFFFFFFB00 - |
+ LOOPTILENUMS :                6194 C |  LOOP_TUNNELRAM :  FFFFFFFFFFFFF7AC - |
+ LSELECTPOINTERS :             338C C |  LZDYNAMICWATER :              3C44 C |
+ LZMOVEWATER :                 3BFE C |  LZSLIDE_MOVE :                3F8E C |
+ LZWATEREFFECTS :              3BE2 C |  LZWATERSLIDES :               3F46 C |
+ LZWINDTUNNELS :               3E44 C |  LZWIND_DATA :                 3F26 C |
+ LZWIND_LOOP :                 3E6C C |  LZWIND_MOVE :                 3ED0 C |
+ LZWIND_MOVEDOWN :             3EF8 C | *MACEXP :                         1 - |
+ MAINGAMELOOP :                 388 C |  MAINLOADBLOCKLOAD :           6CB8 C |
+ MAINLOADBLOCKS :             1D60C C |  MAPPING_FRAME :                 1A - |
+ MAP_BOSSITEMS :              17DE6 C |  MAP_EGGMAN :                 17D1E C |
+ MAP_EGGMAN2 :                1A448 C |  MAP_FZBOSS :                 1A48A C |
+ MAP_OBJ08 :                  145DE C |  MAP_OBJ0A :                  14162 C |
+ MAP_OBJ0B :                  11334 C |  MAP_OBJ0C :                  11404 C |
+ MAP_OBJ0D :                   ED4A C |  MAP_OBJ0E :                   A89A C |
+ MAP_OBJ0F :                   A7D6 C |  MAP_OBJ11 :                   7946 C |
+ MAP_OBJ12 :                   E994 C |  MAP_OBJ14 :                   B380 C |
+ MAP_OBJ15 :                   7C5A C |  MAP_OBJ15A :                  7C78 C |
+ MAP_OBJ15B :                 10AB2 C |  MAP_OBJ16 :                  11FAC C |
+ MAP_OBJ17 :                   7E0A C |  MAP_OBJ18 :                   814E C |
+ MAP_OBJ18A :                  819A C |  MAP_OBJ18B :                  81AC C |
+ MAP_OBJ18X :                  810C C |  MAP_OBJ1A :                   85B2 C |
+ MAP_OBJ1B :                  1117E C |  MAP_OBJ1C :                   8868 C |
+ MAP_OBJ1D :                   892E C |  MAP_OBJ1E :                   8E74 C |
+ MAP_OBJ1F :                   9762 C |  MAP_OBJ21 :                  1C622 C |
+ MAP_OBJ22 :                   9A48 C |  MAP_OBJ23 :                   9B18 C |
+ MAP_OBJ24 :                   8EB8 C |  MAP_OBJ25 :                   9FA4 C |
+ MAP_OBJ26 :                   A59C C |  MAP_OBJ27 :                   8ED8 C |
+ MAP_OBJ28 :                   9478 C |  MAP_OBJ28A :                  9490 C |
+ MAP_OBJ28B :                  94A8 C |  MAP_OBJ29 :                   94C0 C |
+ MAP_OBJ2A :                   89FE C |  MAP_OBJ2B :                   ABDC C |
+ MAP_OBJ2C :                   AC82 C |  MAP_OBJ2D :                   AE6E C |
+ MAP_OBJ2F :                   B2E6 C |  MAP_OBJ30 :                   B60C C |
+ MAP_OBJ31 :                   BB60 C |  MAP_OBJ32 :                   BEB6 C |
+ MAP_OBJ33 :                   C2F8 C |  MAP_OBJ34 :                   C9F8 C |
+ MAP_OBJ36 :                   CFFA C |  MAP_OBJ38 :                  143C4 C |
+ MAP_OBJ39 :                   CBB6 C |  MAP_OBJ3A :                   CBEA C |
+ MAP_OBJ3B :                   D120 C |  MAP_OBJ3C :                   D2C8 C |
+ MAP_OBJ3E :                  1ADE2 C |  MAP_OBJ3F :                   8F1E C |
+ MAP_OBJ40 :                   F7B2 C |  MAP_OBJ41 :                   DD2C C |
+ MAP_OBJ42 :                   DF54 C |  MAP_OBJ43 :                   E1B4 C |
+ MAP_OBJ44 :                   E262 C |  MAP_OBJ45 :                   BC6C C |
+ MAP_OBJ46 :                   E916 C |  MAP_OBJ47 :                   EB12 C |
+ MAP_OBJ48 :                   81BC C |  MAP_OBJ4A :                  1447E C |
+ MAP_OBJ4B :                   9FE4 C |  MAP_OBJ4C :                   F25C C |
+ MAP_OBJ4E :                   F540 C |  MAP_OBJ50 :                   F940 C |
+ MAP_OBJ51 :                   FDE6 C |  MAP_OBJ52 :                  1005C C |
+ MAP_OBJ52A :                 100B2 C |  MAP_OBJ53 :                   8758 C |
+ MAP_OBJ54 :                   F222 C |  MAP_OBJ55 :                  10250 C |
+ MAP_OBJ56 :                  10712 C |  MAP_OBJ57 :                  10968 C |
+ MAP_OBJ57A :                 10970 C |  MAP_OBJ59 :                  10D5A C |
+ MAP_OBJ5A :                  10E94 C |  MAP_OBJ5B :                  1104E C |
+ MAP_OBJ5C :                  110A8 C |  MAP_OBJ5D :                  11622 C |
+ MAP_OBJ5E :                  119B6 C |  MAP_OBJ5EA :                 119F8 C |
+ MAP_OBJ5F :                  11C3A C |  MAP_OBJ60 :                  11EF6 C |
+ MAP_OBJ61 :                  121D4 C |  MAP_OBJ62 :                  1232A C |
+ MAP_OBJ63 :                  1268E C |  MAP_OBJ64 :                  129DE C |
+ MAP_OBJ65 :                  12B66 C |  MAP_OBJ66 :                  152A4 C |
+ MAP_OBJ67 :                  15698 C |  MAP_OBJ69 :                  158F2 C |
+ MAP_OBJ69A :                 1594C C |  MAP_OBJ6A :                  15BAA C |
+ MAP_OBJ6B :                  15F7A C |  MAP_OBJ6C :                  1613C C |
+ MAP_OBJ6D :                   E606 C |  MAP_OBJ6E :                  161F2 C |
+ MAP_OBJ70 :                  1663A C |  MAP_OBJ71 :                  114C8 C |
+ MAP_OBJ76 :                  1986C C |  MAP_OBJ78 :                  16D80 C |
+ MAP_OBJ79 :                  1710A C |  MAP_OBJ7B :                  190F0 C |
+ MAP_OBJ7C :                   A086 C |  MAP_OBJ7D :                  1725A C |
+ MAP_OBJ7E :                   CCAC C |  MAP_OBJ7F :                   CE06 C |
+ MAP_OBJ80 :                   5068 C |  MAP_OBJ82 :                  19AA2 C |
+ MAP_OBJ83 :                  19D80 C |  MAP_OBJ84 :                  1A6E4 C |
+ MAP_OBJ86 :                  1AAC4 C |  MAP_OBJ86A :                 1AB14 C |
+ MAP_OBJ87 :                   5692 C |  MAP_OBJ88 :                   578C C |
+ MAP_OBJ89 :                   57C4 C |  MAP_OBJ8A :                  172F4 C |
+ MAP_OBJ8B :                   5BCE C |  MAP_SONIC :                  211E2 C |
+ MAP_SSWALLS :                2C564 C |  MAP_SS_CHAOS1 :              1B9CE C |
+ MAP_SS_CHAOS2 :              1B9D2 C |  MAP_SS_CHAOS3 :              1B9D6 C |
+ MAP_SS_DOWN :                1B9BE C |  MAP_SS_GLASS :               1B98E C |
+ MAP_SS_R :                   1B97A C |  MAP_SS_UP :                  1B9AE C |
+ MARKOBJGONE :                 F6BE C |  MARK_CHKGONE :                F6E0 C |
+ MARK_DELETE :                 F6F2 C |  MLB_CHKSBZPAL :               6CFE C |
+ MLB_NORMALPAL :               6D10 C |  MLB_USEPAL0E :                6D0E C |
+ MOMCPU :                     68000 - | *MOMCPUNAME :                 68000 - |
+ MOVEDEMO_ON :                 4022 C | *MOVEDEMO_RECORD :             3FEA C |
+ MOVESONICINDEMO :             3FE2 C |  MUSIC81 :                    745CA C |
+ MUSIC82 :                    74D32 C |  MUSIC83 :                    75182 C |
+ MUSIC84 :                    755E0 C |  MUSIC85 :                    75A4E C |
+ MUSIC86 :                    75E9A C |  MUSIC87 :                    763EA C |
+ MUSIC88 :                    765D0 C |  MUSIC89 :                    766BE C |
+ MUSIC8A :                    769EA C |  MUSIC8B :                    76B96 C |
+ MUSIC8C :                    76E30 C |  MUSIC8D :                    7704C C |
+ MUSIC8E :                    77268 C |  MUSIC8F :                    773BE C |
+ MUSIC90 :                    7750E C |  MUSIC91 :                    7766C C |
+ MUSIC92 :                    7893A C |  MUSIC93 :                    78A64 C |
+ MUSICINDEX :                 71A9C C |  MUSICLIST :                   37AC C |
+ MUSICLIST2 :                 12CDA C |  MUSID_BOSS :                    8C - |
+ MUSID_CONTINUE :                90 - |  MUSID_CREDITS :                 91 - |
+ MUSID_DROWNING :                92 - |  MUSID_EMERALD :                 93 - |
+ MUSID_ENDING :                  8B - |  MUSID_ENDLEVEL :                8E - |
+ MUSID_EXTRALIFE :               88 - |  MUSID_FADEOUT :                 E0 - |
+ MUSID_FZ :                      8D - |  MUSID_GAMEOVER :                8F - |
+ MUSID_GHZ :                     81 - |  MUSID_INVINCIBLE :              87 - |
+ MUSID_LZ :                      82 - |  MUSID_MZ :                      83 - |
+ MUSID_SBZ :                     86 - |  MUSID_SLOWDOWN :                E3 - |
+ MUSID_SLZ :                     84 - |  MUSID_SPECIALSTAGE :            89 - |
+ MUSID_SPEEDUP :                 E2 - |  MUSID_STOP :                    E4 - |
+ MUSID_SYZ :                     85 - |  MUSID_TITLE :                   8A - |
+ MUSID__END :                    94 - |  MUSID__FIRST :                  81 - |
+ MUSPTR_BOSS :                71AC8 C |  MUSPTR_CONTINUE :            71AD8 C |
+ MUSPTR_CREDITS :             71ADC C |  MUSPTR_DROWNING :            71AE0 C |
+ MUSPTR_EMERALD :             71AE4 C |  MUSPTR_END :                 71AE8 C |
+ MUSPTR_ENDING :              71AC4 C |  MUSPTR_ENDLEVEL :            71AD0 C |
+ MUSPTR_EXTRALIFE :           71AB8 C |  MUSPTR_FZ :                  71ACC C |
+ MUSPTR_GAMEOVER :            71AD4 C |  MUSPTR_GHZ :                 71A9C C |
+ MUSPTR_INVINCIBLE :          71AB4 C |  MUSPTR_LZ :                  71AA0 C |
+ MUSPTR_MZ :                  71AA4 C |  MUSPTR_SBZ :                 71AB0 C |
+ MUSPTR_SLZ :                 71AA8 C |  MUSPTR_SPECIALSTAGE :        71ABC C |
+ MUSPTR_SYZ :                 71AAC C |  MUSPTR_TITLE :               71AC0 C |
+ MVSONIC2 :                    7B4C C |  MVSONICONPTFM :               7B34 C |
+ MVSONICONPTFM2 :              7B40 C |  MZ_OBJY_POSSAVE : FFFFFFFFFFFFF7A4 - |
+ NEMDEC :                      1440 C |  NEMDEC2 :                     148A C |
+ NEMDEC3 :                     14CC C |  NEMDEC4 :                     152E C |
+ NEM_BALL :                   2F6B6 C |  NEM_BALLHOG :                35646 C |
+ NEM_BASARAN :                38212 C |  NEM_BIGFLASH :               3AA7A C |
+ NEM_BLACKBIRD :              3B68E C |  NEM_BOMB :                   38756 C |
+ NEM_BONUS :                  3ABEE C |  NEM_BRIDGE :                 2F582 C |
+ NEM_BUBBLES :                30A3E C |  NEM_BUMPER :                 33E4E C |
+ NEM_BURROBOT :               36482 C |  NEM_BUZZ :                   35EF4 C |
+ NEM_CATER :                  38BCC C |  NEM_CHICKEN :                3B532 C |
+ NEM_CHOPPER :                36B6C C |  NEM_CONTSONIC :              3AEF0 C |
+ NEM_CORK :                   31F40 C |  NEM_CRABMEAT :               35A06 C |
+ NEM_CREDITTEXT :             61F76 C |  NEM_CUTTER :                 3467A C |
+ NEM_EGGMAN :                 5CC62 C |  NEM_ELECTRIC :               34F82 C |
+ NEM_ENDEGGMAN :              61388 C |  NEM_ENDEM :                  5F668 C |
+ NEM_ENDFLOWER :              61CEE C |  NEM_ENDSONIC :               5F866 C |
+ NEM_ENDSTH :                 62574 C |  NEM_EXHAUST :                5F548 C |
+ NEM_EXPLODE :                39AB8 C |  NEM_FAN :                    33734 C |
+ NEM_FLAMEPIPE :              35200 C |  NEM_FLAPDOOR :               308D4 C |
+ NEM_FLICKY :                 3BA5C C |  NEM_FZBOSS :                 5E860 C |
+ NEM_FZEGGMAN :               5EFC8 C |  NEM_GAMEOVER :               3A1CE C |
+ NEM_GARGOYLE :               319E0 C | *NEM_GHZGRASS :               3257E C |
+*NEM_GHZLOG :                 2F8D0 C | *NEM_GHZUNKBLOCK :            2F66E C |
+ NEM_GHZWALL1 :               2FD3E C |  NEM_GHZWALL2 :               2FDDC C |
+ NEM_GHZ_1ST :                3C692 C |  NEM_GHZ_2ND :                3DCF2 C |
+ NEM_GIRDER :                 35530 C | *NEM_GOGGLE :                 2C3DE C |
+ NEM_HARPOON :                311EC C |  NEM_HSPRING :                3A360 C |
+ NEM_HUD :                    39368 C |  NEM_JAPNAMES :               20D3A C |
+ NEM_JAWS :                   36DD4 C |  NEM_LAMP :                   3A9BA C |
+ NEM_LAVA :                   328B0 C |  NEM_LIVES :                  3945E C |
+ NEM_LZ :                     414D4 C |  NEM_LZBLOCK1 :               3206A C |
+ NEM_LZBLOCK2 :               31B50 C |  NEM_LZBLOCK3 :               31094 C |
+ NEM_LZDOOR1 :                3114A C |  NEM_LZDOOR2 :                313AC C |
+ NEM_LZPLATFM :               31E08 C |  NEM_LZPOLE :                 31348 C |
+ NEM_LZSONIC :                2C03A C |  NEM_LZSPIKEBALL :            30754 C |
+ NEM_LZSWITCH :               3401A C |  NEM_LZWHEEL :                314FE C |
+ NEM_MINISONIC :              3B1A0 C |  NEM_MONITORS :               39658 C |
+ NEM_MOTOBUG :                37582 C |  NEM_MZ :                     46016 C |
+ NEM_MZBLOCK :                331C6 C |  NEM_MZFIRE :                 325D2 C |
+ NEM_MZGLASS :                324C6 C |  NEM_MZMETAL :                3217A C |
+ NEM_MZSWITCH :               32408 C | *NEM_MZUNKBLOCK :             3332A C |
+ NEM_NEWTRON :                3780C C |  NEM_ORBINAUT :               389EE C |
+ NEM_PIG :                    3B926 C |  NEM_POINTS :                 3A11E C |
+ NEM_PPLROCK :                2FC10 C |  NEM_PRISON :                 5D7B0 C |
+ NEM_PYLON :                  339DA C |  NEM_RABBIT :                 3B3DA C |
+ NEM_RESULTEM :               2F2A0 C |  NEM_RING :                   39564 C |
+ NEM_ROLLER :                 3705E C |  NEM_SBZ :                    57A66 C |
+ NEM_SBZ2EGGMAN :             5E034 C |  NEM_SBZBLOCK :               35102 C |
+ NEM_SBZDOOR1 :               3538C C |  NEM_SBZDOOR2 :               35434 C |
+ NEM_SBZFLOOR :               34F2A C |  NEM_SBZWHEEL1 :              3438A C |
+ NEM_SBZWHEEL2 :              343DE C |  NEM_SEAL :                   3B80A C |
+ NEM_SEESAW :                 333B2 C |  NEM_SEGALOGO :               1DC00 C |
+ NEM_SHIELD :                 2BD5C C |  NEM_SIGNPOST :               3A53E C |
+ NEM_SLIDEFLOOR :             353DC C |  NEM_SLZ :                    4A7FE C |
+ NEM_SLZBLOCK :               33C9E C |  NEM_SLZCANNON :              33DAA C |
+ NEM_SLZSPIKE :               335EE C |  NEM_SLZSWING :               33ABC C |
+ NEM_SLZWALL :                33978 C | *NEM_SMOKE :                  2BC1E C |
+ NEM_SPIKEPOLE :              2FAE4 C |  NEM_SPIKES :                 2F854 C |
+ NEM_SPINPFORM :              34A1C C |  NEM_SPLASH :                 2FF60 C |
+*NEM_SPLATS :                 3850E C |  NEM_SQUIRREL :               3BB96 C |
+ NEM_SS1UPBLOCK :             2E692 C |  NEM_SSBGCLOUD :              2DFE0 C |
+ NEM_SSBGFISH :               2D050 C |  NEM_SSEMERALD :              2EF2A C |
+ NEM_SSEMSTARS :              2E788 C |  NEM_SSGHOST :                2F092 C |
+ NEM_SSGLASS :                2F21C C |  NEM_SSGOAL :                 2E4D4 C |
+ NEM_SSRBLOCK :               2E5C2 C |  NEM_SSREDWHITE :             2E7E6 C |
+ NEM_SSUPDOWN :               2ED36 C |  NEM_SSWALLS :                2C5E4 C |
+ NEM_SSWBLOCK :               2F142 C |  NEM_SSZONE1 :                2E878 C |
+ NEM_SSZONE2 :                2E93A C |  NEM_SSZONE3 :                2EA08 C |
+ NEM_SSZONE4 :                2EAD4 C |  NEM_SSZONE5 :                2EB9C C |
+ NEM_SSZONE6 :                2EC66 C |  NEM_STALK :                  2F41E C |
+ NEM_STARS :                  2BEF2 C |  NEM_STOMPER :                3487E C |
+ NEM_SWING :                  2F468 C |  NEM_SYZ :                    510F0 C |
+*NEM_SYZSPARKLE :             2BD22 C |  NEM_SYZSPIKE1 :              340FC C |
+ NEM_SYZSPIKE2 :              33FB8 C |  NEM_TITLECARD :              38D5A C |
+ NEM_TITLEFG :                1E26E C |  NEM_TITLESONIC :             1F27A C |
+ NEM_TITLETM :                20C48 C |  NEM_TRAPDOOR :               34D4C C |
+ NEM_TRYAGAIN :               60A44 C | *NEM_UNKEXPLODE :             3629A C |
+*NEM_UNKFIRE :                2C144 C |  NEM_VSPRING :                3A462 C |
+ NEM_WARP :                   2C196 C |  NEM_WATER :                  2FE3C C |
+ NEM_WEAPONS :                5D4C6 C |  NEM_YADRIN :                 37E2A C |
+*NESTMAX :                      100 - |  NEXT_ANIM :                     1D - |
+ NEXT_TILE :                     20 - |  NORMAL_PALETTE :  FFFFFFFFFFFFFB00 - |
  NORMAL_PALETTE_LINE2 :                                    FFFFFFFFFFFFFB20 - |
  NORMAL_PALETTE_LINE3 :                                    FFFFFFFFFFFFFB40 - |
  NORMAL_PALETTE_LINE4 :                                    FFFFFFFFFFFFFB60 - |
@@ -55462,7 +55466,7 @@ ROM size is $80000 bytes (512 kb). About $173 bytes are padding.
  TARGET_PALETTE_LINE3 :                                    FFFFFFFFFFFFFBC0 - |
  TEMPARRAY_LAYERDEF :                                      FFFFFFFFFFFFA800 - |
  TEMPOTIMEOUT :                   1 - |  TEMPOWAIT :                  725FC C |
-*TIME :                     0:18:18 - |  TIMEBONUSES :                 ED02 C |
+*TIME :                     0:25:02 - |  TIMEBONUSES :                 ED02 C |
  TIMEOVER :                   1C7FA C |  TIMER :           FFFFFFFFFFFFFE22 - |
  TIMER_FRAME :     FFFFFFFFFFFFFE25 - |  TIMER_FRAMES :    FFFFFFFFFFFFFE04 - |
  TIMER_MINUTE :    FFFFFFFFFFFFFE23 - |  TIMER_SECOND :    FFFFFFFFFFFFFE24 - |
@@ -55620,10 +55624,10 @@ ROM size is $80000 bytes (512 kb). About $173 bytes are padding.
  __FORW7 :                     1640 C |  __FORW8 :                     16DA C |
  __FORW9 :                     D9CE C |
 
-   6608 symbols
+   6610 symbols
      82 unused symbols
 
- AS V1.42 Beta [Bld 89] - source file s1.asm - page 3 - 11/12/2021 0:18:19
+ AS V1.42 Beta [Bld 89] - source file s1.asm - page 3 - 11/12/2021 0:25:03
 
 
   defined macros:
@@ -55642,7 +55646,7 @@ _MOVE                                 | _TST
 
      20 macros
 
- AS V1.42 Beta [Bld 89] - source file s1.asm - page 4 - 11/12/2021 0:18:19
+ AS V1.42 Beta [Bld 89] - source file s1.asm - page 4 - 11/12/2021 0:25:03
 
 
   defined functions:
@@ -55654,7 +55658,7 @@ VDPCOMMDELTA                          | RAMADDR
 ID                                    | CHKOP                                
 NOTZ80                                |
 
- AS V1.42 Beta [Bld 89] - source file s1.asm - page 5 - 11/12/2021 0:18:19
+ AS V1.42 Beta [Bld 89] - source file s1.asm - page 5 - 11/12/2021 0:25:03
 
 
   codepages:
@@ -55663,10 +55667,10 @@ NOTZ80                                |
 STANDARD (0 changed characters)
 
 
-1.35 seconds assembly time
+1.12 seconds assembly time
 
-  48416 lines source file
-  65893 lines incl. macro expansions
+  48418 lines source file
+  65895 lines incl. macro expansions
       2 passes
       0 errors
       0 warnings

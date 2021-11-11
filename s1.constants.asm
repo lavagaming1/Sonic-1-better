@@ -294,7 +294,7 @@ Unk_F79C =                       ramaddr( $FFFFF79C )
 Unk_F7A0 =                       ramaddr( $FFFFF7A0 )
 MZ_ObjY_posSave =            ramaddr( $FFFFF7A4 )
 Sonic_Pos_Record_Index =     ramaddr( $FFFFF7A8 )
-BossdefeatedFlag =           ramaddr( $$FFFFF7A )
+BossdefeatedFlag =           ramaddr( $FFFFFF7A )
 Loop_TunnelRam =               ramaddr( $FFFFF7AC )
 BigRingGraphics =		ramaddr( $FFFFF7BE )
 
