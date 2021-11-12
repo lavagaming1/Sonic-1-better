@@ -37136,7 +37136,7 @@ AniArt_Load:				; XREF: Demo_Time; loc_F54
 ; ===========================================================================
 
 AniArt_Pause:
-		rts	
+		rts
 ; End of function AniArt_Load
 
 ; ===========================================================================
@@ -37150,12 +37150,12 @@ AniArt_Index:	dc.w AniArt_GHZ-AniArt_Index, AniArt_none-AniArt_Index
 ; ---------------------------------------------------------------------------
 
 AniArt_GHZ:				; XREF: AniArt_Index
-		subq.b	#1,($FFFFF7B1).w
+		subq.b	#1,(AnimTiles_Counter).w
 		bpl.s	loc_1C08A
-		move.b	#5,($FFFFF7B1).w ; time	to display each	frame for
+		move.b	#5,(AnimTiles_Counter).w ; time	to display each	frame for
 		lea	(Art_GhzWater).l,a1 ; load waterfall patterns
-		move.b	($FFFFF7B0).w,d0
-		addq.b	#1,($FFFFF7B0).w
+		move.b	(AnimTilesFrame).w,d0
+		addq.b	#1,(AnimTilesFrame).w
 		andi.w	#1,d0
 		beq.s	loc_1C078
 		lea	$100(a1),a1	; load next frame
@@ -37167,12 +37167,12 @@ loc_1C078:
 ; ===========================================================================
 
 loc_1C08A:
-		subq.b	#1,($FFFFF7B3).w
+		subq.b	#1,(AnimTilesCounter4).w
 		bpl.s	loc_1C0C0
-		move.b	#$F,($FFFFF7B3).w
+		move.b	#$F,(AnimTilesCounter4).w
 		lea	(Art_GhzFlower1).l,a1 ;	load big flower	patterns
-		move.b	($FFFFF7B2).w,d0
-		addq.b	#1,($FFFFF7B2).w
+		move.b	(AnimTilesFrame2).w,d0
+		addq.b	#1,(AnimTilesFrame2).w
 		andi.w	#1,d0
 		beq.s	loc_1C0AE
 		lea	$200(a1),a1
@@ -37184,16 +37184,16 @@ loc_1C0AE:
 ; ===========================================================================
 
 loc_1C0C0:
-		subq.b	#1,($FFFFF7B5).w
+		subq.b	#1,(AnimTilesCounter3).w
 		bpl.s	locret_1C10C
-		move.b	#7,($FFFFF7B5).w
-		move.b	($FFFFF7B4).w,d0
-		addq.b	#1,($FFFFF7B4).w
+		move.b	#7,(AnimTilesCounter3).w
+		move.b	(AnimTilesCounter2).w,d0
+		addq.b	#1,(AnimTilesCounter2).w
 		andi.w	#3,d0
 		move.b	byte_1C10E(pc,d0.w),d0
 		btst	#0,d0
 		bne.s	loc_1C0E8
-		move.b	#$7F,($FFFFF7B5).w
+		move.b	#$7F,(AnimTilesCounter3).w
 
 loc_1C0E8:
 		lsl.w	#7,d0
@@ -37207,7 +37207,7 @@ loc_1C0E8:
 		bsr.w	LoadTiles
 
 locret_1C10C:
-		rts	
+		rts
 ; ===========================================================================
 byte_1C10E:	dc.b 0,	1, 2, 1
 ; ===========================================================================
@@ -37216,19 +37216,19 @@ byte_1C10E:	dc.b 0,	1, 2, 1
 ; ---------------------------------------------------------------------------
 
 AniArt_MZ:				; XREF: AniArt_Index
-		subq.b	#1,($FFFFF7B1).w
+		subq.b	#1,(AnimTiles_Counter).w
 		bpl.s	loc_1C150
-		move.b	#$13,($FFFFF7B1).w
+		move.b	#$13,(AnimTiles_Counter).w
 		lea	(Art_MzLava1).l,a1 ; load lava surface patterns
 		moveq	#0,d0
-		move.b	($FFFFF7B0).w,d0
+		move.b	(AnimTilesFrame).w,d0
 		addq.b	#1,d0
 		cmpi.b	#3,d0
 		bne.s	loc_1C134
 		moveq	#0,d0
 
 loc_1C134:
-		move.b	d0,($FFFFF7B0).w
+		move.b	d0,(AnimTilesFrame).w
 		mulu.w	#$100,d0
 		adda.w	d0,a1
 		move.l	#$5C400001,(VDP_control_port).l
@@ -37236,18 +37236,18 @@ loc_1C134:
 		bsr.w	LoadTiles
 
 loc_1C150:
-		subq.b	#1,($FFFFF7B3).w
+		subq.b	#1,(AnimTilesCounter4).w
 		bpl.s	loc_1C1AE
-		move.b	#1,($FFFFF7B3).w
+		move.b	#1,(AnimTilesCounter4).w
 		moveq	#0,d0
-		move.b	($FFFFF7B0).w,d0
+		move.b	(AnimTilesFrame).w,d0
 		lea	(Art_MzLava2).l,a4 ; load lava patterns
 		ror.w	#7,d0
 		adda.w	d0,a4
 		move.l	#$5A400001,(VDP_control_port).l
 		moveq	#0,d3
-		move.b	($FFFFF7B2).w,d3
-		addq.b	#1,($FFFFF7B2).w
+		move.b	(AnimTilesFrame2).w,d3
+		addq.b	#1,(AnimTilesFrame2).w
 		move.b	(Oscillating_Data+8).w,d3
 		move.w	#3,d2
 
@@ -37267,9 +37267,9 @@ loc_1C188:
 ; ===========================================================================
 
 loc_1C1AE:
-		subq.b	#1,($FFFFF7B5).w
+		subq.b	#1,(AnimTilesCounter3).w
 		bpl.w	locret_1C1EA
-		move.b	#7,($FFFFF7B5).w
+		move.b	#7,(AnimTilesCounter3).w
 		lea	(Art_MzTorch).l,a1 ; load torch	patterns
 		moveq	#0,d0
 		move.b	($FFFFF7B6).w,d0
@@ -37290,20 +37290,20 @@ locret_1C1EA:
 ; ---------------------------------------------------------------------------
 
 AniArt_SBZ:				; XREF: AniArt_Index
-		tst.b	($FFFFF7B4).w
+		tst.b	(AnimTilesCounter2).w
 		beq.s	loc_1C1F8
-		subq.b	#1,($FFFFF7B4).w
+		subq.b	#1,(AnimTilesCounter2).w
 		bra.s	loc_1C250
 ; ===========================================================================
 
 loc_1C1F8:
-		subq.b	#1,($FFFFF7B1).w
+		subq.b	#1,(AnimTiles_Counter).w
 		bpl.s	loc_1C250
-		move.b	#7,($FFFFF7B1).w
+		move.b	#7,(AnimTiles_Counter).w
 		lea	(Art_SbzSmoke).l,a1 ; load smoke patterns
 		move.l	#$49000002,(VDP_control_port).l
-		move.b	($FFFFF7B0).w,d0
-		addq.b	#1,($FFFFF7B0).w
+		move.b	(AnimTilesFrame).w,d0
+		addq.b	#1,(AnimTilesFrame).w
 		andi.w	#7,d0
 		beq.s	loc_1C234
 		subq.w	#1,d0
@@ -37314,7 +37314,7 @@ loc_1C1F8:
 ; ===========================================================================
 
 loc_1C234:
-		move.b	#$B4,($FFFFF7B4).w
+		move.b	#$B4,(AnimTilesCounter2).w
 
 loc_1C23A:
 		move.w	#5,d1
@@ -37325,20 +37325,20 @@ loc_1C23A:
 ; ===========================================================================
 
 loc_1C250:
-		tst.b	($FFFFF7B5).w
+		tst.b	(AnimTilesCounter3).w
 		beq.s	loc_1C25C
-		subq.b	#1,($FFFFF7B5).w
+		subq.b	#1,(AnimTilesCounter3).w
 		bra.s	locret_1C2A0
 ; ===========================================================================
 
 loc_1C25C:
-		subq.b	#1,($FFFFF7B3).w
+		subq.b	#1,(AnimTilesCounter4).w
 		bpl.s	locret_1C2A0
-		move.b	#7,($FFFFF7B3).w
+		move.b	#7,(AnimTilesCounter4).w
 		lea	(Art_SbzSmoke).l,a1
 		move.l	#$4A800002,(VDP_control_port).l
-		move.b	($FFFFF7B2).w,d0
-		addq.b	#1,($FFFFF7B2).w
+		move.b	(AnimTilesFrame2).w,d0
+		addq.b	#1,(AnimTilesFrame2).w
 		andi.w	#7,d0
 		beq.s	loc_1C298
 		subq.w	#1,d0
@@ -37349,25 +37349,25 @@ loc_1C25C:
 ; ===========================================================================
 
 loc_1C298:
-		move.b	#$78,($FFFFF7B5).w
+		move.b	#$78,(AnimTilesCounter3).w
 		bra.s	loc_1C23A
 ; ===========================================================================
 
 locret_1C2A0:
-		rts	
+		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Animated pattern routine - ending sequence
 ; ---------------------------------------------------------------------------
 
 AniArt_Ending:				; XREF: AniArt_Index
-		subq.b	#1,($FFFFF7B3).w
+		subq.b	#1,(AnimTilesCounter4).w
 		bpl.s	loc_1C2F4
-		move.b	#7,($FFFFF7B3).w
+		move.b	#7,(AnimTilesCounter4).w
 		lea	(Art_GhzFlower1).l,a1 ;	load big flower	patterns
 		lea	($FFFF9400).w,a2
-		move.b	($FFFFF7B2).w,d0
-		addq.b	#1,($FFFFF7B2).w
+		move.b	(AnimTilesFrame2).w,d0
+		addq.b	#1,(AnimTilesFrame2).w
 		andi.w	#1,d0
 		beq.s	loc_1C2CE
 		lea	$200(a1),a1
@@ -37384,11 +37384,11 @@ loc_1C2CE:
 ; ===========================================================================
 
 loc_1C2F4:
-		subq.b	#1,($FFFFF7B5).w
+		subq.b	#1,(AnimTilesCounter3).w
 		bpl.s	loc_1C33C
-		move.b	#7,($FFFFF7B5).w
-		move.b	($FFFFF7B4).w,d0
-		addq.b	#1,($FFFFF7B4).w
+		move.b	#7,(AnimTilesCounter3).w
+		move.b	(AnimTilesCounter2).w,d0
+		addq.b	#1,(AnimTilesCounter2).w
 		andi.w	#7,d0
 		move.b	byte_1C334(pc,d0.w),d0
 		lsl.w	#7,d0
