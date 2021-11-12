@@ -16746,9 +16746,9 @@ loc_D646:
 
 ; ===========================================================================
 BldSpr_ScrPos:	dc.l 0			; blank
-		dc.l $FFF700		; main screen x-position
-		dc.l $FFF708		; background x-position	1
-		dc.l $FFF718		; background x-position	2
+		dc.l Camera_X_pos		; main screen x-position
+		dc.l Camera_BG_X_pos		; background x-position	1
+		dc.l Camera_BG3_X_pos		; background x-position	2
 ; ---------------------------------------------------------------------------
 ; Subroutine to	convert	mappings (etc) to proper Megadrive sprites
 ; ---------------------------------------------------------------------------
@@ -16847,16 +16847,16 @@ loc_D726:
 loc_D72E:
 		lea	$80(a4),a4
 		dbf	d7,loc_D66A
-		move.b	d5,($FFFFF62C).w
+		move.b	d5,(Sprite_count).w
 		cmpi.b	#$50,d5
 		beq.s	loc_D748
 		move.l	#0,(a2)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_D748:
 		move.b	#0,-5(a2)
-		rts	
+		rts
 ; End of function BuildSprites
 
 
@@ -20485,7 +20485,7 @@ loc_102C8:
 		subq.w	#8,d0
 		bcs.s	loc_10332
 		lsl.w	#2,d0
-		lea	($FFFFFE8A).w,a2
+		lea	(Oscillating_Data+$2A).w,a2
 		lea	(a2,d0.w),a2
 		tst.w	(a2)
 		bpl.s	loc_10332
@@ -20554,7 +20554,7 @@ Obj56_TypeIndex:dc.w Obj56_Type00-Obj56_TypeIndex, Obj56_Type01-Obj56_TypeIndex
 ; ===========================================================================
 
 Obj56_Type00:				; XREF: Obj56_TypeIndex
-		rts	
+		rts
 ; ===========================================================================
 
 Obj56_Type01:				; XREF: Obj56_TypeIndex
@@ -20579,7 +20579,7 @@ loc_10416:
 		move.w	$34(a0),d1
 		sub.w	d0,d1
 		move.w	d1,x_pos(a0)	; move object horizontally
-		rts	
+		rts
 ; ===========================================================================
 
 Obj56_Type03:				; XREF: Obj56_TypeIndex
@@ -20604,7 +20604,7 @@ loc_10444:
 		move.w	$30(a0),d1
 		sub.w	d0,d1
 		move.w	d1,y_pos(a0)	; move object vertically
-		rts	
+		rts
 ; ===========================================================================
 
 Obj56_Type05:				; XREF: Obj56_TypeIndex
@@ -20650,7 +20650,7 @@ loc_104BC:
 		move.w	$30(a0),d1
 		add.w	d0,d1
 		move.w	d1,y_pos(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_104C8:
@@ -20692,7 +20692,7 @@ loc_10520:
 		move.w	$30(a0),d1
 		add.w	d0,d1
 		move.w	d1,y_pos(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_1052C:
@@ -20723,7 +20723,7 @@ loc_1055E:
 		clr.b	subtype(a0)
 
 locret_10578:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj56_Type0C:				; XREF: Obj56_TypeIndex
@@ -20752,7 +20752,7 @@ loc_105B4:
 		move.w	$34(a0),d1
 		add.w	d0,d1
 		move.w	d1,x_pos(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_105C0:
@@ -20793,7 +20793,7 @@ loc_10618:
 		move.w	$34(a0),d1
 		add.w	d0,d1
 		move.w	d1,x_pos(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_10624:
@@ -20812,7 +20812,7 @@ Obj56_Type08:				; XREF: Obj56_TypeIndex
 		moveq	#0,d0
 		move.b	(Oscillating_Data+$28).w,d0
 		lsr.w	#1,d0
-		move.w	($FFFFFE8A).w,d3
+		move.w	(Oscillating_Data+$2A).w,d3
 		bra.s	Obj56_Move_Sqr
 ; ===========================================================================
 
@@ -20820,7 +20820,7 @@ Obj56_Type09:				; XREF: Obj56_TypeIndex
 		move.w	#$30,d1
 		moveq	#0,d0
 		move.b	(Oscillating_Data+$2C).w,d0
-		move.w	($FFFFFE8E).w,d3
+		move.w	(Oscillating_Data+$2E).w,d3
 		bra.s	Obj56_Move_Sqr
 ; ===========================================================================
 
@@ -20828,7 +20828,7 @@ Obj56_Type0A:				; XREF: Obj56_TypeIndex
 		move.w	#$50,d1
 		moveq	#0,d0
 		move.b	(Oscillating_Data+$30).w,d0
-		move.w	($FFFFFE92).w,d3
+		move.w	(Oscillating_Data+$32).w,d3
 		bra.s	Obj56_Move_Sqr
 ; ===========================================================================
 
@@ -20836,7 +20836,7 @@ Obj56_Type0B:				; XREF: Obj56_TypeIndex
 		move.w	#$70,d1
 		moveq	#0,d0
 		move.b	(Oscillating_Data+$34).w,d0
-		move.w	($FFFFFE96).w,d3
+		move.w	(Oscillating_Data+$36).w,d3
 
 Obj56_Move_Sqr:
 		tst.w	d3
@@ -20854,7 +20854,7 @@ loc_1068E:
 		neg.w	d1
 		add.w	$30(a0),d1
 		move.w	d1,y_pos(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_106AE:
@@ -20868,7 +20868,7 @@ loc_106AE:
 		addq.w	#1,d1
 		add.w	$34(a0),d1
 		move.w	d1,x_pos(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_106CC:
@@ -20882,7 +20882,7 @@ loc_106CC:
 		addq.w	#1,d1
 		add.w	$30(a0),d1
 		move.w	d1,y_pos(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_106EA:
@@ -20892,7 +20892,7 @@ loc_106EA:
 		neg.w	d1
 		add.w	$34(a0),d1
 		move.w	d1,x_pos(a0)
-		rts	
+		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - moving blocks (SYZ/SLZ/LZ)
@@ -23360,7 +23360,7 @@ loc_12378:
 		move.b	$2F(a0),d0
 		bpl.w	DeleteObject
 		andi.w	#$7F,d0
-		lea	($FFFFF7C1).w,a2
+		lea	(RotatingPlatformsTable).w,a2
 		bclr	#0,(a2,d0.w)
 		bra.w	DeleteObject
 ; ===========================================================================
@@ -23432,7 +23432,7 @@ loc_1244C:
 loc_12460:				; XREF: Obj63_Main
 		move.b	d0,$2F(a0)
 		andi.w	#$7F,d0
-		lea	($FFFFF7C1).w,a2
+		lea	(RotatingPlatformsTable).w,a2
 		bset	#0,(a2,d0.w)
 		bne.w	DeleteObject
 		add.w	d0,d0
@@ -29119,7 +29119,7 @@ Obj6F_Act1or2:
 		move.b	$2F(a0),d0
 		bpl.s	Obj6F_Delete
 		andi.w	#$7F,d0
-		lea	($FFFFF7C1).w,a2
+		lea	(RotatingPlatformsTable).w,a2
 		bclr	#0,(a2,d0.w)
 
 Obj6F_Delete:
@@ -29191,7 +29191,7 @@ loc_16378:
 loc_16380:				; XREF: Obj6F_Main
 		move.b	d0,$2F(a0)
 		andi.w	#$7F,d0
-		lea	($FFFFF7C1).w,a2
+		lea	(RotatingPlatformsTable).w,a2
 		bset	#0,(a2,d0.w)
 		beq.s	loc_1639A
 		jmp	(DeleteObject).l
@@ -35742,7 +35742,7 @@ loc_1B268:
 		lea	$70(a0),a0
 		dbf	d7,loc_1B20C
 
-		move.b	d5,($FFFFF62C).w
+		move.b	d5,(Sprite_count).w
 		cmpi.b	#$50,d5
 		beq.s	loc_1B288
 		move.l	#0,(a2)
@@ -37833,7 +37833,7 @@ HudDb_Rings:
 HudDb_ObjCount:
 		move.l	#$5EC00003,d0	; set VRAM address
 		moveq	#0,d1
-		move.b	($FFFFF62C).w,d1 ; load	"number	of objects" counter
+		move.b	(Sprite_count).w,d1 ; load	"number	of objects" counter
 		bsr.w	Hud_Secs
 		tst.b	(Update_HUD_lives).w	; does the lives counter need updating?
 		beq.s	HudDb_ChkBonus	; if not, branch

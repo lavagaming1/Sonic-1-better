@@ -209,6 +209,7 @@ Palette_fade_length =		ramaddr( $FFFFF627 )	; Number of entries to change in the
 VIntSubE_RunCount =		ramaddr( $FFFFF628 )
 
 Vint_routine =			ramaddr( $FFFFF62A )	; routine counter for V-int
+Sprite_count =			ramaddr( $FFFFF62C )
 PalCycle_Frame =		ramaddr( $FFFFF632 )	; ColorID loaded in PalCycle
 PalCycle_Timer =		ramaddr( $FFFFF634 )	; number of frames until next PalCycle call
 RNG_seed =			ramaddr( $FFFFF636 )	; used for random number generation
@@ -303,6 +304,7 @@ AnimTilesCounter4 =           ramaddr( $FFFFF7B3 )
 AnimTilesCounter2 =             ramaddr( $FFFFF7B4 )
 AnimTilesCounter3 =          ramaddr( $FFFFF7B5 )
 BigRingGraphics =		ramaddr( $FFFFF7BE )
+RotatingPlatformsTable =     	ramaddr( $FFFFF7C1 ) ;BigRingGraphics+$3 
 
 Obj_placement_routine =		ramaddr( $FFFFF76C )
 
@@ -402,7 +404,7 @@ Score =				ramaddr( $FFFFFE26 )	; 4 bytes
 ShieldFlag =                    ramaddr( $FFFFFE2C )
 InvcFlag =                    ramaddr( $FFFFFE2D )
 SpeedSHoesFlags =             ramaddr( $FFFFFE2E )
-Unk_Flags_1 =             ramaddr( $FFFFFE2F ) 
+Unk_Flags_1 =             ramaddr( $FFFFFE2F )
 				; $FFFFFE2A-$FFFFFE2F unused 6 bytes
 
 Last_star_pole_hit =		ramaddr( $FFFFFE30 )
