@@ -6742,7 +6742,7 @@ LevSz_Unk:				; XREF: LevelSizeLoad
 		lea	(Anim_Counters).w,a2
 		move.l	(a1)+,(a2)+
 		move.l	(a1)+,(a2)+
-		rts	
+		rts
 ; End of function LevelSizeLoad
 
 ; ===========================================================================
@@ -6792,18 +6792,18 @@ BgScroll_GHZ:				; XREF: BgScroll_Index
 BgScroll_LZ:				; XREF: BgScroll_Index
 		asr.l	#1,d0
 		move.w	d0,(Camera_BG_Y_pos).w
-		rts	
+		rts
 ; ===========================================================================
 
 BgScroll_MZ:				; XREF: BgScroll_Index
-		rts	
+		rts
 ; ===========================================================================
 
 BgScroll_SLZ:				; XREF: BgScroll_Index
 		asr.l	#1,d0
 		addi.w	#$C0,d0
 		move.w	d0,(Camera_BG_Y_pos).w
-		rts	
+		rts
 ; ===========================================================================
 
 BgScroll_SYZ:				; XREF: BgScroll_Index
@@ -6814,7 +6814,7 @@ BgScroll_SYZ:				; XREF: BgScroll_Index
 		asr.l	#8,d0
 		move.w	d0,(Camera_BG_Y_pos).w
 		move.w	d0,(Camera_BG2_Y_pos).w
-		rts	
+		rts
 ; ===========================================================================
 
 BgScroll_SBZ:				; XREF: BgScroll_Index
@@ -6822,13 +6822,13 @@ BgScroll_SBZ:				; XREF: BgScroll_Index
 		asl.l	#1,d0
 		asr.l	#8,d0
 		move.w	d0,(Camera_BG_Y_pos).w
-		rts	
+		rts
 ; ===========================================================================
 
 BgScroll_End:				; XREF: BgScroll_Index
 		move.w	#$1E,(Camera_BG_Y_pos).w
 		move.w	#$1E,(Camera_BG2_Y_pos).w
-		rts	
+		rts
 ; ===========================================================================
 		move.w	#$A8,(Camera_BG_X_pos).w
 		move.w	#$1E,(Camera_BG_Y_pos).w
@@ -6846,7 +6846,7 @@ BgScroll_End:				; XREF: BgScroll_Index
 DeformBgLayer:				; XREF: TitleScreen; Level; EndingSequence
 		tst.b	(Scroll_lock).w
 		beq.s	loc_628E
-		rts	
+		rts
 ; ===========================================================================
 
 loc_628E:
@@ -6951,7 +6951,7 @@ loc_6384:
 		add.l	d2,d3
 		swap	d3
 		dbf	d1,loc_6384
-		rts	
+		rts
 ; End of function Deform_GHZ
 
 ; ---------------------------------------------------------------------------
@@ -6983,7 +6983,7 @@ loc_63C6:
 		dbf	d1,loc_63C6
 		move.w	(Water_Level_1).w,d0
 		sub.w	(Camera_Y_pos).w,d0
-		rts	
+		rts
 ; End of function Deform_LZ
 
 ; ---------------------------------------------------------------------------
@@ -7027,7 +7027,7 @@ loc_6402:
 loc_6426:
 		move.l	d0,(a1)+
 		dbf	d1,loc_6426
-		rts	
+		rts
 ; End of function Deform_MZ
 
 ; ---------------------------------------------------------------------------
@@ -7086,7 +7086,7 @@ loc_6482:
 		move.l	d0,(a1)+
 		move.l	d0,(a1)+
 		dbf	d1,loc_6480
-		rts	
+		rts
 ; End of function Deform_SLZ
 
 
@@ -9677,7 +9677,7 @@ Map_obj15a:
 ; ---------------------------------------------------------------------------
 ; Object 17 - helix of spikes on a pole	(GHZ)
 ; ---------------------------------------------------------------------------
-
+HelixPriority = x_pos+2
 Obj17:					; XREF: Obj_Index
 		moveq	#0,d0
 		move.b	routine(a0),d0
@@ -9697,7 +9697,7 @@ Obj17_Main:				; XREF: Obj17_Index
 		move.w	#$4398,2(a0)
 		move.b	#7,status(a0)
 		move.b	#4,1(a0)
-		move.b	#3,priority(a0)
+		move.w	#$180,HelixPriority(a0)
 		move.b	#8,width_pixels(a0)
 		move.w	y_pos(a0),d2
 		move.w	x_pos(a0),d3
@@ -9711,12 +9711,21 @@ Obj17_Main:				; XREF: Obj17_Index
 		lsl.w	#4,d0
 		sub.w	d0,d3
 		subq.b	#2,d1
-		bcs.s	Obj17_Action
+		bcs.w	Obj17_Action
 		moveq	#0,d6
+		lea	(Object_RAM+$800).w,a1 ; start address for object RAM
+                moveq    #$5F,d0
+
+Obj17_Loop:
+        move.b   (a1),d7
+        beq.s    Obj17_MakeHelix
+        lea        $40(a1),a1
+        dbf        d0,Obj17_Loop
+        bne.w    Obj17_Action
+; ================= DW: End =================
 
 Obj17_MakeHelix:
-		bsr.w	SingleObjLoad
-		bne.s	Obj17_Action
+
 		addq.b	#1,subtype(a0)
 		move.w	a1,d5
 		subi.w	#$D000,d5
@@ -9730,7 +9739,7 @@ Obj17_MakeHelix:
 		move.l	4(a0),4(a1)
 		move.w	#$4398,2(a1)
 		move.b	#4,1(a1)
-		move.b	#3,priority(a1)
+		move.w	#$180,HelixPriority(a1)
 		move.b	#8,width_pixels(a1)
 		move.b	d6,$3E(a1)
 		addq.b	#1,d6
@@ -9739,17 +9748,20 @@ Obj17_MakeHelix:
 		cmp.w	x_pos(a0),d3
 		bne.s	loc_7D78
 		move.b	d6,$3E(a0)
-		addq.b	#1,d6
-		andi.b	#7,d6
+	;	addq.b	#1,d6
+	;	andi.b	#7,d6
 		addi.w	#$10,d3
 		addq.b	#1,subtype(a0)
 
 loc_7D78:
-		dbf	d1,Obj17_MakeHelix ; repeat d1 times (helix length)
+                dbf    d1,Obj17_Loop ; repeat d1 times (helix length)
+		;dbf	d1,Obj17_MakeHelix ; repeat d1 times (helix length)
 
 Obj17_Action:				; XREF: Obj17_Index
 		bsr.w	Obj17_RotateSpikes
-		bsr.w	DisplaySprite
+		lea	(Sprite_Table_Input).w,a1
+		adda.w	HelixPriority(a0),a1
+                jsr    DisplaySprite_Helix
 		bra.w	Obj17_ChkDel
 
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
@@ -9765,7 +9777,7 @@ Obj17_RotateSpikes:			; XREF: Obj17_Action; Obj17_Display
 		move.b	#$84,collision_flags(a0)	; make object harmful
 
 locret_7DA6:
-		rts	
+		rts
 ; End of function Obj17_RotateSpikes
 
 ; ===========================================================================
@@ -9779,7 +9791,7 @@ Obj17_ChkDel:				; XREF: Obj17_Action
 		sub.w	d1,d0
 		cmpi.w	#$280,d0
 		bhi.w	Obj17_DelAll
-		rts	
+		rts
 ; ===========================================================================
 
 Obj17_DelAll:				; XREF: Obj17_ChkDel
@@ -9799,13 +9811,15 @@ Obj17_DelLoop:
 		dbf	d2,Obj17_DelLoop ; repeat d2 times (helix length)
 
 Obj17_Delete:				; XREF: Obj17_Index
-		bsr.w	DeleteObject
-		rts	
+		bra.w	DeleteObject
+
 ; ===========================================================================
 
 Obj17_Display:				; XREF: Obj17_Index
 		bsr.w	Obj17_RotateSpikes
-		bra.w	DisplaySprite
+		lea	(Sprite_Table_Input).w,a1
+		adda.w	HelixPriority(a0),a1
+		bra.w	DisplaySprite_Helix
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - helix of spikes on a pole (GHZ)
@@ -16555,7 +16569,10 @@ loc_D348:
 		beq.s	loc_D358
 		add.w	d0,d0
 		add.w	d0,d0
-		movea.l	Obj_Index-4(pc,d0.w),a1
+                move.l  #Obj_Index,a1
+                add.w   d0,a1
+                movea.l (a1)+,a1
+
 		jsr	(a1)		; run the object"s code
 		moveq	#0,d0
 
@@ -16583,7 +16600,7 @@ loc_D378:
 
 loc_D37C:
 		dbf	d7,loc_D368
-		rts	
+		rts
 ; End of function ObjectsLoad
 
 ; ===========================================================================
@@ -16591,6 +16608,7 @@ loc_D37C:
 ; Object pointers
 ; ---------------------------------------------------------------------------
 Obj_Index:
+        dc.l DeleteObject
 	dc.l Obj01, ObjectMoveAndFall,	ObjectMoveAndFall, ObjectMoveAndFall
 	dc.l ObjectMoveAndFall, ObjectMoveAndFall, ObjectMoveAndFall, Obj08
 	dc.l Obj09, Obj0A, Obj0B, Obj0C
@@ -16690,7 +16708,9 @@ DisplaySprite:
 		move.w	priority(a0),d0
 		lsr.w	#1,d0
 		andi.w	#$380,d0
+
 		adda.w	d0,a1
+DisplaySprite_Helix:
 		cmpi.w	#$7E,(a1)
 		bcc.s	locret_D620
 		addq.w	#2,(a1)
@@ -16721,7 +16741,7 @@ DisplaySprite2:
 		move.w	a1,(a2)
 
 locret_D63E:
-		rts	
+		rts
 ; End of function DisplaySprite2
 
 ; ---------------------------------------------------------------------------
@@ -16741,7 +16761,7 @@ DeleteObject2:
 loc_D646:
 		move.l	d1,(a1)+	; clear	the object RAM
 		dbf	d0,loc_D646	; repeat $F times (length of object RAM)
-		rts	
+		rts
 ; End of function DeleteObject
 
 ; ===========================================================================
@@ -16763,14 +16783,14 @@ BuildSprites:				; XREF: TitleScreen; et al
 		moveq	#7,d7
 
 loc_D66A:
-		tst.w	(a4)
+		move.w	(a4),d0
 		beq.w	loc_D72E
 		moveq	#2,d6
 
 loc_D672:
 		movea.w	(a4,d6.w),a0
-		tst.b	(a0)
-		beq.w	loc_D726
+	;	tst.b	(a0)
+	;	beq.w	loc_D726
 		bclr	#7,1(a0)
 		move.b	1(a0),d0
 		move.b	d0,d4
@@ -16902,7 +16922,7 @@ loc_D78E:
 		dbf	d1,sub_D762
 
 locret_D794:
-		rts	
+		rts
 ; End of function sub_D762
 
 ; ===========================================================================
@@ -16945,7 +16965,7 @@ loc_D7DC:
 		dbf	d1,loc_D79E
 
 locret_D7E2:
-		rts	
+		rts
 ; ===========================================================================
 
 loc_D7E4:				; XREF: sub_D750
@@ -16982,7 +17002,7 @@ loc_D822:
 		dbf	d1,loc_D7E4
 
 locret_D828:
-		rts	
+		rts
 ; ===========================================================================
 
 loc_D82A:
@@ -17025,7 +17045,7 @@ loc_D876:
 		dbf	d1,loc_D82A
 
 locret_D87C:
-		rts	
+		rts
 ; ---------------------------------------------------------------------------
 ; Subroutine to	check if an object is on the screen
 ; ---------------------------------------------------------------------------
@@ -17047,12 +17067,12 @@ ChkObjOnScreen:
 		bge.s	NotOnScreen	; if not, branch
 
 		moveq	#0,d0		; set flag to 0
-		rts	
+		rts
 ; ===========================================================================
 
 NotOnScreen:				; XREF: ChkObjOnScreen
 		moveq	#1,d0		; set flag to 1
-		rts	
+		rts
 ; End of function ChkObjOnScreen
 
 
