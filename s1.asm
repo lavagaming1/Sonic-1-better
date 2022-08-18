@@ -31,7 +31,7 @@ StartOfRom:
     if * <> 0
 	fatal "StartOfRom was $\{*} but it should be 0"
     endif
-Vectors:	dc.l $FFFE00, EntryPoint, BusError, AddressError
+Vectors:	dc.l 0, EntryPoint, BusError, AddressError
 		dc.l IllegalInstr, ZeroDivide, ChkInstr, TrapvInstr
 		dc.l PrivilegeViol, Trace, Line1010Emu,	Line1111Emu
 		dc.l ErrorExcept, ErrorExcept, ErrorExcept, ErrorExcept
@@ -73,6 +73,7 @@ ErrorTrap:
 ; ===========================================================================
 
 EntryPoint:
+                lea     (System_Stack).w,sp
 		tst.l	(Z80_Port_1_Control).l	; test port A control
 		bne.s	PortA_Ok
 		tst.w	(Z80_Expansion_Control).l	; test port C control
@@ -16579,8 +16580,8 @@ loc_D348:
                 moveq	#$0,d0
 		move.b	(a0),d0		; load object number from RAM
 		beq.s	loc_D358
-		lsl.w	#2,d0
-
+		add.w   d0,d0
+		add.w   d0,d0
                 move.l   Obj_Index(pc,d0.w),a1
                 jsr      (a1)
 
@@ -16718,7 +16719,7 @@ DisplaySprite:
 		lsl.w	#7,d0
 		adda.w	d0,a1
 DisplaySprite_Helix:
-		cmpi.b	#$7E,(a1)
+		cmpi.w	#$7E,(a1)
 		bhs.s	locret_D620
 		addq.w	#2,(a1)
 		adda.w	(a1),a1
@@ -16772,10 +16773,7 @@ loc_D646:
 ; End of function DeleteObject
 
 ; ===========================================================================
-BldSpr_ScrPos:	dc.l 0			; blank
-		dc.l Camera_X_pos		; main screen x-position
-		dc.l Camera_BG_X_pos		; background x-position	1
-		dc.l Camera_BG3_X_pos		; background x-position	2
+
 ; ---------------------------------------------------------------------------
 ; Subroutine to	convert	mappings (etc) to proper Megadrive sprites
 ; ---------------------------------------------------------------------------
@@ -16784,106 +16782,97 @@ BldSpr_ScrPos:	dc.l 0			; blank
 
 
 BuildSprites:				; XREF: TitleScreen; et al
-		lea	(Sprite_Table).w,a2 ; set address for sprite table
-		moveq	#0,d5
-		lea	(Sprite_Table_Input).w,a4
-		moveq	#7,d7
-
-loc_D66A:
-		move.w	(a4),d0
+                lea    (Sprite_Table).w,a2 ; set address for sprite table
+                moveq    #0,d5
+                moveq    #0,d4
+                lea    (Sprite_Table_Input).w,a4
+                moveq    #7,d7
+ BuildSpritesPriorityAddresses:
+		tst.w	(a4)
 		beq.w	loc_D72E
 		moveq	#2,d6
 
-loc_D672:
-		movea.w	(a4,d6.w),a0
-	;	tst.b	(a0)
-	;	beq.w	loc_D726
-		bclr	#7,1(a0)
-	
-		move.b	1(a0),d0
-		move.b	d0,d4
+ BuildSpritesLoop:
+		movea.w    (a4,d6.w),a0
+
+		andi.b	#$7F,render_flags(a0)	; clear on-screen flag
+		move.b	render_flags(a0),d0
+		move.w	x_pos(a0),d3
+		move.w	y_pos(a0),d2
+		move.b  d0,d4
 		andi.w	#$C,d0
-		beq.s	loc_D6DE
-		movea.l	BldSpr_ScrPos(pc,d0.w),a1
-		moveq	#0,d0
-		move.b	width_pixels(a0),d0
-		move.w	x_pos(a0),d3
-		sub.w	(a1),d3
-		move.w	d3,d1
-		add.w	d0,d1
-		bmi.w	loc_D726
-		move.w	d3,d1
-		sub.w	d0,d1
-		cmpi.w	#$140,d1
-		bge.s	loc_D726
-		addi.w	#$80,d3
-		btst	#4,d4
-		beq.s	loc_D6E8
-		moveq	#0,d0
-		move.b	y_radius(a0),d0
-		move.w	y_pos(a0),d2
-		sub.w	4(a1),d2
-		move.w	d2,d1
-		add.w	d0,d1
-		bmi.s	loc_D726
-		move.w	d2,d1
-		sub.w	d0,d1
-		cmpi.w	#$E0,d1
-		bge.s	loc_D726
-		addi.w	#$80,d2
-		bra.s	loc_D700
-; ===========================================================================
+		beq.s	loc_D700
+	        moveq	#0,d0
+           	move.b	width_pixels(a0),d0
+         	sub.w	(Camera_X_pos).w,d3
+          	move.w	d3,d1
+        	add.w	d0,d1	; is the object right edge to the left of the screen?
+         	bmi.w	loc_D726	; if it is, branch
+          	move.w	d3,d1
+          	sub.w	d0,d1
+         	cmpi.w	#320,d1	; is the object left edge to the right of the screen?
+         	bge.w	loc_D726	; if it is, branch
+        	addi.w	#128,d3
+         	btst	#4,d4		; is the accurate Y check flag set?
+        	beq.s	BuildSprites_ApproxYCheck	; if not, branch
+        	moveq	#0,d0
+         	move.b	y_radius(a0),d0
+        	sub.w	(Camera_Y_pos).w,d2
+           	move.w	d2,d1
+         	add.w	d0,d1
+          	bmi.s	loc_D726	; if the object is above the screen
+          	move.w	d2,d1
+         	sub.w	d0,d1
+          	cmpi.w	#224,d1
+           	bge.s	loc_D726	; if the object is below the screen
+        	addi.w	#128,d2
+          	bra.s	loc_D700
 
-loc_D6DE:
-		move.w	x_sub(a0),d2
-		move.w	x_pos(a0),d3
-		bra.s	loc_D700
-; ===========================================================================
-
-loc_D6E8:
-		move.w	y_pos(a0),d2
-		sub.w	4(a1),d2
-		addi.w	#$80,d2
-		cmpi.w	#$60,d2
-		bcs.s	loc_D726
-		cmpi.w	#$180,d2
-		bcc.s	loc_D726
+BuildSprites_ApproxYCheck:
+          	sub.w	(Camera_Y_pos).w,d2
+        	addi.w	#128,d2
+        	andi.w	#$7FF,d2
+        	cmpi.w	#-32+128,d2	; assume Y radius to be 32 pixels
+        	blo.s	loc_D726
+        	cmpi.w	#32+128+224,d2
+              	bhs.s	loc_D726
 
 loc_D700:
-		movea.l	4(a0),a1
-		moveq	#0,d1
-		btst	#5,d4
-		bne.s	loc_D71C
-		move.b	mapping_frame(a0),d1
-		add.b	d1,d1
-		adda.w	(a1,d1.w),a1
-		move.b	(a1)+,d1
-		subq.b	#1,d1
-		bmi.s	loc_D720
+		movea.l	mappings(a0),a1
+         	moveq	#0,d1
+        	btst	#5,d4
+          	bne.s	loc_D71C
+        	move.b	mapping_frame(a0),d1
+          	add.w	d1,d1
+         	adda.w	(a1,d1.w),a1
+        	moveq	#0,d1
+         	move.b	(a1)+,d1
+        	subq.b	#1,d1
+         	bmi.s	loc_D720
 
 loc_D71C:
-		bsr.w	sub_D750
+         	bsr.w	sub_D750
 
 loc_D720:
-		bset	#7,1(a0)
+          	ori.b	#$80,render_flags(a0)
 
 loc_D726:
-		addq.w	#2,d6
-		subq.w	#2,(a4)
-		bne.w	loc_D672
-
+         	addq.w	#2,d6
+        	subq.w	#2,(a4)
+        	bne.w	BuildSpritesLoop
 loc_D72E:
 		lea	$80(a4),a4
-		dbf	d7,loc_D66A
+		dbf	d7,BuildSpritesPriorityAddresses
 		move.b	d5,(Sprite_count).w
-		cmpi.b	#$50,d5
-		beq.s	loc_D748
-		move.l	#0,(a2)
+		moveq   #0,d7
+		cmpi.b	#80,d5	; was the sprite limit reached?
+         	beq.s	+	; if it was, branch
+          	move.l	d7,(a2)	; set link field to 0
 		rts
 ; ===========================================================================
 
 loc_D748:
-		move.b	#0,-5(a2)
+		move.b	d7,-5(a2)	; set link field to 0
 		rts
 ; End of function BuildSprites
 
@@ -16891,8 +16880,11 @@ loc_D748:
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
 
-sub_D750:				; XREF: BuildSprites
+sub_D750:
 		movea.w	2(a0),a3
+		cmpi.b	#80,d5
+         	bhs.s	DrawSprite_Done
++
 		btst	#0,d4
 		bne.s	loc_D796
 		btst	#1,d4
@@ -16904,8 +16896,7 @@ sub_D750:				; XREF: BuildSprites
 
 
 sub_D762:				; XREF: sub_D762; SS_ShowLayout
-		cmpi.b	#$50,d5
-		beq.s	locret_D794
+
 		move.b	(a1)+,d0
 		ext.w	d0
 		add.w	d2,d0
@@ -16929,7 +16920,7 @@ loc_D78E:
 		move.w	d0,(a2)+
 		dbf	d1,sub_D762
 
-locret_D794:
+DrawSprite_Done:
 		rts
 ; End of function sub_D762
 
@@ -16940,8 +16931,6 @@ loc_D796:
 		bne.w	loc_D82A
 
 loc_D79E:
-		cmpi.b	#$50,d5
-		beq.s	locret_D7E2
 		move.b	(a1)+,d0
 		ext.w	d0
 		add.w	d2,d0
@@ -16977,8 +16966,6 @@ locret_D7E2:
 ; ===========================================================================
 
 loc_D7E4:				; XREF: sub_D750
-		cmpi.b	#$50,d5
-		beq.s	locret_D828
 		move.b	(a1)+,d0
 		move.b	(a1),d4
 		ext.w	d0
@@ -17014,8 +17001,6 @@ locret_D828:
 ; ===========================================================================
 
 loc_D82A:
-		cmpi.b	#$50,d5
-		beq.s	locret_D87C
 		move.b	(a1)+,d0
 		move.b	(a1),d4
 		ext.w	d0
@@ -17250,7 +17235,7 @@ loc_D9D2:
 -	; subtract number of objects that have been moved out of range (from the right side)
 		cmp.w	-6(a0),d6
 		bgt.s	loc_D9F0
-		tst.b	-2(a0)
+		tst.b	-4(a0)
 		bpl.s	+
 		subq.b	#1,(a2)
 +
@@ -17337,7 +17322,7 @@ ChkLoadObj:
 		move.w	d0,y_pos(a1)
 		rol.w	#2,d1
 		andi.b	#3,d1
-		move.b	d1,1(a1)
+		move.b	d1,render_flags(a1)
 		move.b	d1,status(a1)
 		move.b	(a0)+,d0
 		bpl.s	loc_DA80
@@ -17345,7 +17330,7 @@ ChkLoadObj:
 		move.b	d2,respawn_index(a1)
 
 loc_DA80:
-		_move.b	d0,0(a1)
+		move.b	d0,0(a1)
 		move.b	(a0)+,subtype(a1)
 		moveq	#0,d0
 
