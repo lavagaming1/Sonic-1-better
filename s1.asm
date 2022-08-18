@@ -12602,11 +12602,11 @@ Map_obj7C:
 ; Object 26 - monitors
 ; ---------------------------------------------------------------------------
 
-Obj26:					; XREF: Obj_Index
+Obj26:     ; XREF: Obj_Index
 		moveq	#0,d0
 		move.b	routine(a0),d0
 		move.w	Obj26_Index(pc,d0.w),d1
-		jmp	Obj26_Index(pc,d1.w)
+		jmp	Obj26_Index(pc,d1.w)    
 ; ===========================================================================
 Obj26_Index:	dc.w Obj26_Main-Obj26_Index
 		dc.w Obj26_Solid-Obj26_Index
@@ -12632,7 +12632,7 @@ Obj26_Main:				; XREF: Obj26_Index
 		beq.s	Obj26_NotBroken	; if not, branch
 		move.b	#8,routine(a0)	; run "Obj26_Display" routine
 		move.b	#$B,mapping_frame(a0)	; use broken monitor frame
-		rts	
+		rts
 ; ===========================================================================
 
 Obj26_NotBroken:			; XREF: Obj26_Main
@@ -12740,7 +12740,7 @@ Obj26_Display:				; XREF: Obj26_Index
 		sub.w	d1,d0
 		cmpi.w	#$280,d0
 		bhi.w	DeleteObject
-		rts	
+		rts
 ; ===========================================================================
 
 Obj26_BreakOpen:			; XREF: Obj26_Index
@@ -16662,23 +16662,7 @@ Obj_Index:
 
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
-; ObjectFall:
-ObjectMoveAndFall:
-		move.l	x_pos(a0),d2	; load x position
-		move.l	y_pos(a0),d3	; load y position
-		move.w	x_vel(a0),d0	; load x speed
-		ext.l	d0
-		asl.l	#8,d0		; shift velocity to line up with the middle 16 bits of the 32-bit position
-		add.l	d0,d2		; add x speed to x position	; note this affects the subpixel position x_sub(a0) = 2+x_pos(a0)
-		move.w	y_vel(a0),d0	; load y speed
-		addi.w	#$38,y_vel(a0)	; increase vertical speed (apply gravity)
-		ext.l	d0
-		asl.l	#8,d0		; shift velocity to line up with the middle 16 bits of the 32-b
-		add.l	d0,d3		; add old y speed to y position	; note this affects the subpixel position y_sub(a0) = 2+y_pos(a0)
-		move.l	d2,x_pos(a0)	; store new x position
-		move.l	d3,y_pos(a0)	; store new y position
-		rts
-; End of function ObjectMoveAndFall
+
 
 ; ---------------------------------------------------------------------------
 ; Subroutine translating object	speed to update	object position
@@ -16689,6 +16673,8 @@ ObjectMoveAndFall:
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
 ; SpeedToPos:
+ObjectMoveAndFall:
+                addi.w	#$38,y_vel(a0)	; increase vertical speed (apply gravity)
 ObjectMove:
                 lea     x_vel(a0),a5  ; 8 cycles
         	move.l  (a5),d0  ;12 cycles (x vel+yvel)
@@ -16698,7 +16684,7 @@ ObjectMove:
          	asl.l	#$8,d1 ; multyply by $80  (whatever pixels) (depends on value)
           	add.l	d1,-(a5) ; add our x value  (y pos)
 	; and now d1 contains y vel !  ; (20 cycles)
-       	        ext.l   d0    ;(4 cycles)
+                ext.l   d0    ;(4 cycles)
           	asl.l	#$8,d0  ;depends on value)
           	add.l	d0,-(a5)    ;20 cycles
 		rts
@@ -35245,7 +35231,7 @@ Map_obj3E:
 
 
 TouchResponse:				; XREF: Obj01
-		nop	
+	;	nop
 		move.w	x_pos(a0),d2	; load Sonic's x-axis value
 		move.w	y_pos(a0),d3	; load Sonic's y-axis value
 		subq.w	#8,d2
@@ -35253,20 +35239,20 @@ TouchResponse:				; XREF: Obj01
 		move.b	y_radius(a0),d5	; load Sonic's height
 		subq.b	#3,d5
 		sub.w	d5,d3
-		cmpi.b	#$39,mapping_frame(a0)	; is Sonic ducking?
-		bne.s	Touch_NoDuck	; if not, branch
-		addi.w	#$C,d3
-		moveq	#$A,d5
+	;	cmpi.b	#$39,mapping_frame(a0)	; is Sonic ducking?
+	;	bne.s	Touch_NoDuck	; if not, branch
+	;	addi.w	#$C,d3
+	;	moveq	#$A,d5
 
-Touch_NoDuck:
+;Touch_NoDuck:
 		move.w	#$10,d4
 		add.w	d5,d5
 		lea	(Object_RAM+$800).w,a1 ; begin checking the object RAM
-		move.w	#$5F,d6
+		moveq	#$5F,d6
 
 Touch_Loop:
-		tst.b	1(a1)
-		bpl.s	Touch_NextObj
+         ; 	tst.b	render_flags(a1)
+	;	bpl.s	Touch_NextObj
 		move.b	collision_flags(a1),d0	; load touch response number
 		bne.s	Touch_Height	; if touch response is not 0, branch
 
@@ -35275,7 +35261,7 @@ Touch_NextObj:
 		dbf	d6,Touch_Loop	; repeat $5F more times
 
 		moveq	#0,d0
-		rts	
+		rts
 ; ===========================================================================
 Touch_Sizes:	dc.b  $14, $14		; width, height
 		dc.b   $C, $14
@@ -35354,29 +35340,26 @@ loc_1AEB6:
 
 Touch_ChkValue:
 		move.b	collision_flags(a1),d1	; load touch response number
+		bmi.w	Touch_ChkHurt	; if yes, branch
+
 		andi.b	#$C0,d1		; is touch response $40	or higher?
 		beq.w	Touch_Enemy	; if not, branch
 		cmpi.b	#$C0,d1		; is touch response $C0	or higher?
 		beq.w	Touch_Special	; if yes, branch
-		tst.b	d1		; is touch response $80-$BF ?
-		bmi.w	Touch_ChkHurt	; if yes, branch
 
 ; touch	response is $40-$7F
-
-		move.b	collision_flags(a1),d0
-		andi.b	#$3F,d0
-		cmpi.b	#6,d0		; is touch response $46	?
+		cmpi.b	#$26,ID(a1)		; is touch response $46	?
 		beq.s	Touch_Monitor	; if yes, branch
-		cmpi.w	#$5A,$30(a0)
+		cmpi.w	#$5A,invulnerable_time(a0)
 		bcc.w	locret_1AEF2
 		addq.b	#2,routine(a1)	; advance the object"s routine counter
 
 locret_1AEF2:
-		rts	
+		rts
 ; ===========================================================================
 
 Touch_Monitor:
-		tst.w	y_vel(a0)		; is Sonic moving upwards?
+ 	        tst.w	y_vel(a0)		; is Sonic moving upwards?
 		bpl.s	loc_1AF1E	; if not, branch
 		move.w	y_pos(a0),d0
 		subi.w	#$10,d0
@@ -35387,7 +35370,7 @@ Touch_Monitor:
 		tst.b	routine_secondary(a1)
 		bne.s	locret_1AF2E
 		addq.b	#4,routine_secondary(a1)	; advance the monitor"s routine counter
-		rts	
+		rts
 ; ===========================================================================
 
 loc_1AF1E:
@@ -35397,7 +35380,7 @@ loc_1AF1E:
 		addq.b	#2,routine(a1)	; advance the monitor"s routine counter
 
 locret_1AF2E:
-		rts	
+		rts
 ; ===========================================================================
 
 Touch_Enemy:				; XREF: Touch_ChkValue
@@ -35419,7 +35402,7 @@ loc_1AF40:
 		bset	#7,status(a1)
 
 locret_1AF68:
-		rts	
+		rts
 ; ===========================================================================
 
 Touch_KillEnemy:
@@ -35441,7 +35424,7 @@ loc_1AF82:
 
 loc_1AF9C:
 		bsr.w	AddPoints
-		_move.b	#$27,0(a1)	; change object	to points
+		move.b	#$27,ID(a1)	; change object	to points
 		move.b	#0,routine(a1)
 		tst.w	y_vel(a0)
 		bmi.s	loc_1AFC2
@@ -35449,17 +35432,17 @@ loc_1AF9C:
 		cmp.w	y_pos(a1),d0
 		bcc.s	loc_1AFCA
 		neg.w	y_vel(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_1AFC2:
 		addi.w	#$100,y_vel(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_1AFCA:
 		subi.w	#$100,y_vel(a0)
-		rts	
+		rts
 ; ===========================================================================
 Enemy_Points:	dc.w 10, 20, 50, 100
 ; ===========================================================================
@@ -35473,12 +35456,12 @@ Touch_ChkHurt:				; XREF: Touch_ChkValue
 
 loc_1AFE6:				; XREF: Touch_Hurt
 		moveq	#-1,d0
-		rts	
+		rts
 ; ===========================================================================
 
 Touch_Hurt:				; XREF: Touch_ChkHurt
-		nop	
-		tst.w	$30(a0)
+
+		tst.w	invulnerable_time(a0)
 		bne.s	loc_1AFE6
 		movea.l	a1,a2
 
@@ -35499,7 +35482,7 @@ HurtSonic:
 		beq.w	Hurt_NoRings	; if not, branch
 		jsr	(SingleObjLoad).l
 		bne.s	Hurt_Shield
-		_move.b	#$37,0(a1)	; load bouncing	multi rings object
+		move.b	#$37,ID(a1)	; load bouncing	multi rings object
 		move.w	x_pos(a0),x_pos(a1)
 		move.w	y_pos(a0),y_pos(a1)
 
@@ -35524,7 +35507,7 @@ Hurt_Reverse:
 Hurt_ChkSpikes:
 		move.w	#0,inertia(a0)
 		move.b	#$1A,anim(a0)
-		move.w	#$78,$30(a0)
+		move.w	#$78,invulnerable_time(a0)
 		move.w	#SndID_Death,d0		; load normal damage sound
 		cmpi.b	#$36,(a2)	; was damage caused by spikes?
 		bne.s	Hurt_Sound	; if not, branch
@@ -35535,7 +35518,7 @@ Hurt_ChkSpikes:
 Hurt_Sound:
 		jsr	(PlaySound_Special).l
 		moveq	#-1,d0
-		rts	
+		rts
 ; ===========================================================================
 
 Hurt_NoRings:
