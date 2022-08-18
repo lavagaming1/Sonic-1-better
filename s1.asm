@@ -12330,15 +12330,15 @@ Obj37_Loop:
 		bne.w	Obj37_ResetCounter
 
 Obj37_MakeRings:			; XREF: Obj37_CountRings
-		_move.b	#$37,0(a1)	; load bouncing	ring object
+		move.b	#$37,ID(a1)	; load bouncing	ring object
 		addq.b	#2,routine(a1)
 		move.b	#8,y_radius(a1)
 		move.b	#8,x_radius(a1)
 		move.w	x_pos(a0),x_pos(a1)
 		move.w	y_pos(a0),y_pos(a1)
-		move.l	#Map_obj25,4(a1)
-		move.w	#$27B2,2(a1)
-		move.b	#4,1(a1)
+		move.l	#Map_obj25,mappings(a1)
+		move.w	#$27B2,art_tile(a1)
+		move.b	#4,render_flags(a1)
 		move.b	#3,priority(a1)
 		move.b	#$47,collision_flags(a1)
 		move.b	#8,width_pixels(a1)
@@ -12375,8 +12375,18 @@ Obj37_ResetCounter:			; XREF: Obj37_Loop
 
 Obj37_Bounce:				; XREF: Obj37_Index
 		move.b	(Ring_spill_anim_frame).w,mapping_frame(a0)
-		bsr.w	ObjectMove
-		addi.w	#$18,y_vel(a0)
+		lea     x_vel(a0),a5            ; 8
+                move.l  (a5),d0                 ; 12
+                move.w  d0,d1                   ; 4
+                swap    d0                      ; 4
+                ext.l   d1                      ; 4
+                asl.l   #$8,d1                  ; 24 (8+(2*8))
+                add.l   d1,-(a5)                ; 22
+                ext.l   d0                      ; 4
+                asl.l   #$8,d0                  ; 24 (8+(2*8))
+                add.l   d0,-(a5)                ; 22
+                lea     $A(a5),a5
+                add.w	#$18,(a5)
 		bmi.s	Obj37_ChkDel
 		move.b	(Vint_runcount+3).w,d0
 		add.b	d7,d0
@@ -12385,11 +12395,12 @@ Obj37_Bounce:				; XREF: Obj37_Index
 		jsr	(ObjHitFloor).l
 		tst.w	d1
 		bpl.s	Obj37_ChkDel
+
 		add.w	d1,y_pos(a0)
-		move.w	y_vel(a0),d0
-		asr.w	#2,d0
-		sub.w	d0,y_vel(a0)
-		neg.w	y_vel(a0)
+		move.w  (a5),d2
+		asr.w	#2,d2
+		sub.w	d2,(a5)
+		neg.w	(a5)
 
 Obj37_ChkDel:				; XREF: Obj37_Bounce
 		tst.b	(Ring_spill_anim_counter).w
@@ -12408,7 +12419,7 @@ Obj37_Collect:				; XREF: Obj37_Index
 		bsr.w	CollectRing
 
 Obj37_Sparkle:				; XREF: Obj37_Index
-		lea	(Ani_obj25).l,a1
+		lea	Ani_obj25(pc),a1
 		bsr.w	AnimateSprite
 		bra.w	DisplaySprite
 ; ===========================================================================
@@ -27532,7 +27543,7 @@ ObjHitFloor2:
 		move.b	#0,d3
 
 locret_14E4E:
-		rts	
+		rts
 ; End of function ObjHitFloor2
 
 

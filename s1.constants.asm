@@ -11,6 +11,10 @@ Size_of_Snd_driver_guess =	$1760 ; approximate post-compressed size of the Z80 D
 ; Object Status Table offsets (for everything between Object_RAM and Primary_Collision)
 ; ---------------------------------------------------------------------------
 ; universally followed object conventions:
+ID = $0
+render_flags = $1
+art_tile = $2
+mappings = $4
 x_pos =			  8 ; and 9 ... some objects use $A and $B as well when extra precision is required (see ObjectMove) ... for screen-space objects this is called x_pixel instead
 x_sub =			 $A ; and $B
 y_pos =			 $C ; and $D ... some objects use $E and $F as well when extra precision is required ... screen-space objects use y_pixel instead
