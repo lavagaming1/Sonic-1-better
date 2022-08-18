@@ -16690,18 +16690,17 @@ ObjectMoveAndFall:
 
 ; SpeedToPos:
 ObjectMove:
-		move.l	x_pos(a0),d2	; load x position
-		move.l	y_pos(a0),d3	; load y position
-		move.w	x_vel(a0),d0	; load x speed
-		ext.l	d0
-		asl.l	#8,d0		; shift velocity to line up with the middle 16 bits of the 32-bit position
-		add.l	d0,d2		; add x speed to x position	; note this affects the subpixel position x_sub(a0) = 2+x_pos(a0)
-		move.w	y_vel(a0),d0	; load y speed
-		ext.l	d0
-		asl.l	#8,d0		; shift velocity to line up with the middle 16 bits of the 32-b
-		add.l	d0,d3		; add old y speed to y position	; note this affects the subpixel position y_sub(a0) = 2+y_pos(a0)
-		move.l	d2,x_pos(a0)	; store new x position
-		move.l	d3,y_pos(a0)	; store new y position
+                lea     x_vel(a0),a5  ; 8 cycles
+        	move.l  (a5),d0  ;12 cycles (x vel+yvel)
+                move.w  d0,d1       ; 4 cycles  (d1 y vel into y pos)
+        	swap    d0  ; swap to the first word (4 cycles)
+          	ext.l   d1
+         	asl.l	#$8,d1 ; multyply by $80  (whatever pixels) (depends on value)
+          	add.l	d1,-(a5) ; add our x value  (y pos)
+	; and now d1 contains y vel !  ; (20 cycles)
+       	        ext.l   d0    ;(4 cycles)
+          	asl.l	#$8,d0  ;depends on value)
+          	add.l	d0,-(a5)    ;20 cycles
 		rts
 ; End of function ObjectMove
 
@@ -16713,11 +16712,10 @@ ObjectMove:
 
 
 DisplaySprite:
-		lea	(Sprite_Table_Input).w,a1
-		moveq   #0,d0
-		move.b	priority(a0),d0
-		lsl.w	#7,d0
-		adda.w	d0,a1
+         	moveq   #0,d0
+         	move.b  priority(a0),d0
+                add.w   d0,d0
+                movea.w PriorityId(pc,d0.w),a1     ; get values
 DisplaySprite_Helix:
 		cmpi.w	#$7E,(a1)
 		bhs.s	locret_D620
@@ -16728,6 +16726,14 @@ DisplaySprite_Helix:
 locret_D620:
 		rts
 ; End of function DisplaySprite
+PriorityId:    dc.w  0+Sprite_Table_Input
+               dc.w  $80+Sprite_Table_Input
+               dc.w  $100+Sprite_Table_Input
+               dc.w  $180+Sprite_Table_Input
+               dc.w  $200+Sprite_Table_Input
+               dc.w  $280+Sprite_Table_Input
+               dc.w  $300+Sprite_Table_Input
+               dc.w  $380+Sprite_Table_Input
 
 ; ---------------------------------------------------------------------------
 ; Subroutine to	display	a 2nd sprite/object, when a1 is	the object RAM
@@ -16864,15 +16870,14 @@ loc_D72E:
 		lea	$80(a4),a4
 		dbf	d7,BuildSpritesPriorityAddresses
 		move.b	d5,(Sprite_count).w
-		moveq   #0,d7
-		cmpi.b	#80,d5	; was the sprite limit reached?
-         	beq.s	+	; if it was, branch
-          	move.l	d7,(a2)	; set link field to 0
+		cmpi.b	#$50,d5	; was the sprite limit reached?
+         	beq.s	loc_D748	; if it was, branch
+          	move.l	#0,(a2)	; set link field to 0
 		rts
 ; ===========================================================================
 
 loc_D748:
-		move.b	d7,-5(a2)	; set link field to 0
+		move.b	#0,-5(a2)	; set link field to 0
 		rts
 ; End of function BuildSprites
 
@@ -16880,11 +16885,11 @@ loc_D748:
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
 
-sub_D750:
+sub_D750:				; XREF: BuildSprites
 		movea.w	2(a0),a3
-		cmpi.b	#80,d5
-         	bhs.s	DrawSprite_Done
-+
+		cmpi.b	#$50,d5
+		bhs.s	locret_D794
+
 		btst	#0,d4
 		bne.s	loc_D796
 		btst	#1,d4
@@ -16920,7 +16925,7 @@ loc_D78E:
 		move.w	d0,(a2)+
 		dbf	d1,sub_D762
 
-DrawSprite_Done:
+locret_D794:
 		rts
 ; End of function sub_D762
 
@@ -16931,6 +16936,7 @@ loc_D796:
 		bne.w	loc_D82A
 
 loc_D79E:
+
 		move.b	(a1)+,d0
 		ext.w	d0
 		add.w	d2,d0
@@ -16966,6 +16972,7 @@ locret_D7E2:
 ; ===========================================================================
 
 loc_D7E4:				; XREF: sub_D750
+
 		move.b	(a1)+,d0
 		move.b	(a1),d4
 		ext.w	d0
@@ -17001,6 +17008,7 @@ locret_D828:
 ; ===========================================================================
 
 loc_D82A:
+
 		move.b	(a1)+,d0
 		move.b	(a1),d4
 		ext.w	d0
