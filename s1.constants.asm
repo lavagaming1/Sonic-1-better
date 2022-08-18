@@ -46,8 +46,17 @@ subtype =		$28
 ; ---------------------------------------------------------------------------
 ; conventions specific to some objects
 inertia =		$14 ; and $15 ; directionless representation of speed... not updated in the air
-next_tile =		$20 ; and $21 and $22 and $23 ; used for Sonic's art buffer
-
+next_tile =		$20 ; this is the tile size its a buffer /.... also contains whatever value the s1 engine does here d2-d6/a4-a6
+invulnerable_time = $30
+invincibility_timer = $32
+speed_shoes_timer = $34
+next_tilt = $36
+tilt  = $37
+stick_to_convex = $38
+restart_countdown = $3A
+jumping = $3C
+Interact = $3D
+move_lock = $3E
 ; ---------------------------------------------------------------------------
 ; some variables and functions to help define those constants (redefined before a new set of IDs)
 offset :=	0		; this is the start of the pointer table
