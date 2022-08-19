@@ -254,6 +254,7 @@ Plc_Buffer_Reg10 =		ramaddr( $FFFFF6F0 )
 Plc_Buffer_Reg14 =		ramaddr( $FFFFF6F4 )
 Plc_Buffer_Reg18 =		ramaddr( $FFFFF6F8 )
 Plc_Buffer_Reg1A =		ramaddr( $FFFFF6FA )
+
 				; $FFFFF6FC-$FFFFF6FF	; unused
 Camera_RAM =			ramaddr( $FFFFF700 )
 Camera_X_pos =			ramaddr( $FFFFF700 )
@@ -273,6 +274,7 @@ Camera_Min_Y_pos_now =		ramaddr( $FFFFF72C )
 Camera_Max_Y_pos_now =		ramaddr( $FFFFF72E )
 Camera_Min_X_pos_now =		ramaddr( $FFFFF730 )	; unused
 Camera_Max_X_pos_now =		ramaddr( $FFFFF732 )	; unused
+Screen_Y_wrap_value =           ramaddr( $FFFFF734 ) 
 				; $FFFFF734-$FFFFF739	; unused
 Camera_X_pos_diff =		ramaddr( $FFFFF73A )	; was "Camera_Unk"
 Camera_Y_pos_diff =		ramaddr( $FFFFF73C )	; was "Camera_Unk2"

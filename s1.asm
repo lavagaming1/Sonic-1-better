@@ -3946,6 +3946,10 @@ loc_3946:
 		jsr	(FloorLog_Unk).l
 		bsr.w	ColIndexLoad
 		bsr.w	LZWaterEffects
+		
+		move.w	(Camera_X_pos).w,(Camera_X_pos_copy).w
+		move.w	(Camera_Y_pos).w,(Camera_Y_pos_copy).w
+		
 		move.b	#1,(Object_RAM).w ; load	Sonic object
 		tst.w	(Demo_mode_flag).w
 		bmi.s	Level_ChkDebug
@@ -6599,7 +6603,7 @@ LevelSizeLoad:				; XREF: TitleScreen; Level; EndingSequence
 		move.w	d0,(Camera_Max_X_pos_now).w
 		move.w	#$1010,(Horiz_block_crossed_flag).w
 		move.w	(a0)+,d0
-		move.w	d0,(Camera_Y_pos_bias).w
+		move.w	d0,(Camera_Y_pos_bias).w  
 		bra.w	LevSz_ChkLamp
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -6859,7 +6863,8 @@ loc_628E:
 		bsr.w	ScrollVertical
 		bsr.w	DynScrResizeLoad
 		move.w	(Camera_X_pos).w,(Hscroll_Factor).w
-		move.w	(Camera_Y_pos).w,(Vscroll_Factor).w
+		move.w	(Camera_Y_pos).w,(Vscroll_Factor).w  
+
 		move.w	(Camera_BG_X_pos).w,(Hscroll_Factor_BG).w
 		move.w	(Camera_BG_Y_pos).w,(Vscroll_Factor_BG).w
 		move.w	(Camera_BG3_X_pos).w,(Hscroll_Factor_BG2).w
@@ -9379,9 +9384,9 @@ Obj15_Index:	dc.w Obj15_Main-Obj15_Index, Obj15_SetSolid-Obj15_Index
 
 Obj15_Main:				; XREF: Obj15_Index
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj15,4(a0) ; GHZ and MZ specific code
-		move.w	#$4380,2(a0)
-		move.b	#4,1(a0)
+		move.l	#Map_obj15,mappings(a0) ; GHZ and MZ specific code
+		move.w	#$4380,art_tile(a0)
+		move.b	#4,render_flags(a0)
 		move.b	#3,priority(a0)
 		move.b	#$18,width_pixels(a0)
 		move.b	#8,y_radius(a0)
@@ -9389,8 +9394,8 @@ Obj15_Main:				; XREF: Obj15_Index
 		move.w	x_pos(a0),$3A(a0)
 		cmpi.b	#3,(Current_Zone).w ; check if level is SLZ
 		bne.s	Obj15_NotSLZ
-		move.l	#Map_obj15a,4(a0) ; SLZ	specific code
-		move.w	#$43DC,2(a0)
+		move.l	#Map_obj15a,mappings(a0) ; SLZ	specific code
+		move.w	#$43DC,art_tile(a0)
 		move.b	#$20,width_pixels(a0)
 		move.b	#$10,y_radius(a0)
 		move.b	#$99,collision_flags(a0)
@@ -9398,8 +9403,8 @@ Obj15_Main:				; XREF: Obj15_Index
 Obj15_NotSLZ:
 		cmpi.b	#5,(Current_Zone).w ; check if level is SBZ
 		bne.s	Obj15_SetLength
-		move.l	#Map_obj15b,4(a0) ; SBZ	specific code
-		move.w	#$391,2(a0)
+		move.l	#Map_obj15b,mappings(a0) ; SBZ	specific code
+		move.w	#$391,art_tile(a0)
 		move.b	#$18,width_pixels(a0)
 		move.b	#$18,y_radius(a0)
 		move.b	#$86,collision_flags(a0)
@@ -9759,29 +9764,17 @@ loc_7D78:
 		;dbf	d1,Obj17_MakeHelix ; repeat d1 times (helix length)
 
 Obj17_Action:				; XREF: Obj17_Index
-		bsr.w	Obj17_RotateSpikes
-		lea	(Sprite_Table_Input).w,a1
+                lea	(Sprite_Table_Input).w,a1
 		adda.w	HelixPriority(a0),a1
-                jsr    DisplaySprite_Helix
-		bra.w	Obj17_ChkDel
-
-; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
-
-
-Obj17_RotateSpikes:			; XREF: Obj17_Action; Obj17_Display
+                pea    DisplaySprite_Helix
 		move.b	(Logspike_anim_frame).w,d0
 		move.b	#0,collision_flags(a0)	; make object harmless
 		add.b	$3E(a0),d0
 		andi.b	#7,d0
 		move.b	d0,mapping_frame(a0)	; change current frame
-		bne.s	locret_7DA6
+		bne.s	Obj17_ChkDel
 		move.b	#$84,collision_flags(a0)	; make object harmful
 
-locret_7DA6:
-		rts
-; End of function Obj17_RotateSpikes
-
-; ===========================================================================
 
 Obj17_ChkDel:				; XREF: Obj17_Action
 		move.w	x_pos(a0),d0
@@ -9817,7 +9810,14 @@ Obj17_Delete:				; XREF: Obj17_Index
 ; ===========================================================================
 
 Obj17_Display:				; XREF: Obj17_Index
-		bsr.w	Obj17_RotateSpikes
+		move.b	(Logspike_anim_frame).w,d0
+		move.b	#0,collision_flags(a0)	; make object harmless
+		add.b	$3E(a0),d0
+		andi.b	#7,d0
+		move.b	d0,mapping_frame(a0)	; change current frame
+		bne.s	+
+		move.b	#$84,collision_flags(a0)	; make object harmful
++
 		lea	(Sprite_Table_Input).w,a1
 		adda.w	HelixPriority(a0),a1
 		bra.w	DisplaySprite_Helix
@@ -13020,9 +13020,9 @@ Obj0E_Index:	dc.w Obj0E_Main-Obj0E_Index
 Obj0E_Main:				; XREF: Obj0E_Index
 		addq.b	#2,routine(a0)
 		move.w	#$F0,x_pos(a0)
-		move.w	#$DE,x_sub(a0)
-		move.l	#Map_obj0E,4(a0)
-		move.w	#$2300,2(a0)
+		move.w	#$DE,y_pos(a0)
+		move.l	#Map_obj0E,mappings(a0)
+		move.w	#$2300,art_tile(a0)
 		move.b	#1,priority(a0)
 		move.b	#29,anim_delay(a0)	; set time delay to 0.5	seconds
 		lea	(Ani_obj0E).l,a1
@@ -13036,7 +13036,7 @@ Obj0E_Delay:				; XREF: Obj0E_Index
 ; ===========================================================================
 
 Obj0E_Wait:				; XREF: Obj0E_Delay
-		rts	
+		rts
 ; ===========================================================================
 
 Obj0E_Move:				; XREF: Obj0E_Index
@@ -13048,7 +13048,7 @@ Obj0E_Move:				; XREF: Obj0E_Index
 Obj0E_Display:
 		bra.w	DisplaySprite
 ; ===========================================================================
-		rts	
+		rts
 ; ===========================================================================
 
 Obj0E_Animate:				; XREF: Obj0E_Index
@@ -13056,7 +13056,7 @@ Obj0E_Animate:				; XREF: Obj0E_Index
 		bsr.w	AnimateSprite
 		bra.w	DisplaySprite
 ; ===========================================================================
-		rts	
+		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Object 0F - "PRESS START BUTTON" and "TM" from title screen
@@ -15237,7 +15237,7 @@ Obj34_Loop:
 		move.w	(a3),x_pos(a1)	; load start x-position
 		move.w	(a3)+,$32(a1)	; load finish x-position (same as start)
 		move.w	(a3)+,$30(a1)	; load main x-position
-		move.w	(a2)+,x_sub(a1)
+		move.w	(a2)+,y_pos(a1)
 		move.b	(a2)+,routine(a1)
 		move.b	(a2)+,d0
 		bne.s	Obj34_ActNumber
@@ -15282,7 +15282,7 @@ loc_C3C8:
 ; ===========================================================================
 
 locret_C3D8:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj34_Wait:				; XREF: Obj34_Index
@@ -15312,7 +15312,7 @@ Obj34_Move2:
 ; ===========================================================================
 
 locret_C412:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj34_ChangeArt:			; XREF: Obj34_ChkPos2
@@ -16782,21 +16782,21 @@ BuildSprites:				; XREF: TitleScreen; et al
  BuildSpritesPriorityAddresses:
 		tst.w	(a4)
 		beq.w	loc_D72E
-		moveq	#2,d6
+		lea	2(a4),a5
 
  BuildSpritesLoop:
-		movea.w    (a4,d6.w),a0
+		movea.w    (a5)+,a0
 
 		andi.b	#$7F,render_flags(a0)	; clear on-screen flag
-		move.b	render_flags(a0),d0
+		move.b	render_flags(a0),d4
 		move.w	x_pos(a0),d3
 		move.w	y_pos(a0),d2
-		move.b  d0,d4
-		andi.w	#$C,d0
+		btst	#2,d4		; is this to be positioned by screen coordinates?
 		beq.s	loc_D700
+
 	        moveq	#0,d0
            	move.b	width_pixels(a0),d0
-         	sub.w	(Camera_X_pos).w,d3
+         	sub.w	(Hscroll_Factor).w,d3
           	move.w	d3,d1
         	add.w	d0,d1	; is the object right edge to the left of the screen?
          	bmi.w	loc_D726	; if it is, branch
@@ -16805,29 +16805,21 @@ BuildSprites:				; XREF: TitleScreen; et al
          	cmpi.w	#320,d1	; is the object left edge to the right of the screen?
          	bge.w	loc_D726	; if it is, branch
         	addi.w	#128,d3
-         	btst	#4,d4		; is the accurate Y check flag set?
-        	beq.s	BuildSprites_ApproxYCheck	; if not, branch
-        	moveq	#0,d0
-         	move.b	y_radius(a0),d0
-        	sub.w	(Camera_Y_pos).w,d2
-           	move.w	d2,d1
-         	add.w	d0,d1
-          	bmi.s	loc_D726	; if the object is above the screen
-          	move.w	d2,d1
-         	sub.w	d0,d1
-          	cmpi.w	#224,d1
-           	bge.s	loc_D726	; if the object is below the screen
-        	addi.w	#128,d2
-          	bra.s	loc_D700
 
-BuildSprites_ApproxYCheck:
-          	sub.w	(Camera_Y_pos).w,d2
+        	sub.w	Camera_Y_pos.w,d2
+         	move.b	y_radius(a0),d0
+
+                add.w   d0,d2
+                and.w	#$7FF,d2
+          	move.w	d0,d1
+		add.w	d0,d0
+                addi.w	#224,d0
+          	cmp.w	d0,d1
+          	bhs.s	loc_D726 ;Render_Sprites_NextObj
+
         	addi.w	#128,d2
-        	andi.w	#$7FF,d2
-        	cmpi.w	#-32+128,d2	; assume Y radius to be 32 pixels
-        	blo.s	loc_D726
-        	cmpi.w	#32+128+224,d2
-              	bhs.s	loc_D726
+		sub.w	d1,d2
+
 
 loc_D700:
 		movea.l	mappings(a0),a1
@@ -24047,7 +24039,13 @@ Obj01_Control:				; XREF: Obj01_Index
 		andi.w	#6,d0
 		move.w	Obj01_Modes(pc,d0.w),d1
 		jsr	Obj01_Modes(pc,d1.w)
-+
++       ;
+;		cmpi.w	#-$100,(Camera_Min_Y_pos_now).w	; is vertical wrapping enabled?
+ ;         	bne.s	+				; if not, branch
+  ;       	move.w	(Screen_Y_wrap_value).w,d0
+   ;       	and.w	d0,y_pos(a0)			; perform wrapping of Sonic's y position
+
+;+
 		bsr.s	Sonic_Display
 		bsr.w	Sonic_RecordPos
 		bsr.w	Sonic_Water
@@ -25548,7 +25546,7 @@ locret_139C2:
 
 
 Sonic_Animate:				; XREF: Obj01_Control; et al
-		lea	(SonicAniData).l,a1
+		lea	SonicAniData(pc),a1
 		moveq	#0,d0
 		move.b	anim(a0),d0
 		cmp.b	next_anim(a0),d0	; is animation set to restart?
@@ -25641,10 +25639,10 @@ loc_13A78:
 		neg.w	d2
 
 loc_13A9C:
-		lea	(SonAni_Run).l,a1 ; use	running	animation
+		lea	SonAni_Run(pc),a1 ; use	running	animation
 		cmpi.w	#$600,d2	; is Sonic at running speed?
 		bcc.s	loc_13AB4	; if yes, branch
-		lea	(SonAni_Walk).l,a1 ; use walking animation
+		lea	SonAni_Walk(pc),a1 ; use walking animation
 		move.b	d0,d1
 		lsr.b	#1,d1
 		add.b	d1,d0
@@ -25673,10 +25671,10 @@ SAnim_RollJump:				; XREF: SAnim_WalkRun
 		neg.w	d2
 
 loc_13ADE:
-		lea	(SonAni_Roll2).l,a1 ; use fast animation
+		lea	SonAni_Roll2(pc),a1 ; use fast animation
 		cmpi.w	#$600,d2	; is Sonic moving fast?
 		bcc.s	loc_13AF0	; if yes, branch
-		lea	(SonAni_Roll).l,a1 ; use slower	animation
+		lea	SonAni_Roll(pc),a1 ; use slower	animation
 
 loc_13AF0:
 		neg.w	d2
@@ -25707,7 +25705,7 @@ loc_13B1E:
 loc_13B26:
 		lsr.w	#6,d2
 		move.b	d2,anim_frame_duration(a0)	; modify frame duration
-		lea	(SonAni_Push).l,a1
+		lea	SonAni_Push(pc),a1
 		move.b	status(a0),d1
 		andi.b	#1,d1
 		andi.b	#$FC,render_flags(a0)
@@ -37645,29 +37643,20 @@ loc_1C518:
 ; ---------------------------------------------------------------------------
 
 Obj21:					; XREF: Obj_Index
-		moveq	#0,d0
-		move.b	routine(a0),d0
-		move.w	Obj21_Index(pc,d0.w),d1
-		jmp	Obj21_Index(pc,d1.w)
-; ===========================================================================
-Obj21_Index:	dc.w Obj21_Main-Obj21_Index
-		dc.w Obj21_Flash-Obj21_Index
-; ===========================================================================
-
-Obj21_Main:				; XREF: Obj21_Main
+                tst.b   routine(a0)
+                bne.s   Obj21_Flash
 		addq.b	#2,routine(a0)
 		move.w	#$90,x_pos(a0)
-		move.w	#$108,x_sub(a0)
-		move.l	#Map_obj21,4(a0)
-		move.w	#$6CA,2(a0)
-		move.b	#0,1(a0)
-		move.b	#0,priority(a0)
+		move.w	#$108,y_pos(a0)
+		move.l	#Map_obj21,mappings(a0)
+		move.w	#$6CA,art_tile(a0)
 
 Obj21_Flash:				; XREF: Obj21_Main
 		tst.w	(Ring_count).w	; do you have any rings?
 		beq.s	Obj21_Flash2	; if not, branch
 		clr.b	mapping_frame(a0)		; make all counters yellow
-		jmp	(DisplaySprite).l
+		lea    Sprite_Table_Input.w,a1
+		jmp	(DisplaySprite_Helix).l
 ; ===========================================================================
 
 Obj21_Flash2:

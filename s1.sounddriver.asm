@@ -1484,7 +1484,7 @@ loc_72716:
 ; ===========================================================================
 
 locret_72720:
-		rts	
+		rts
 
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
@@ -1501,21 +1501,20 @@ WriteFMIorII:
 
 ; sub_7272E:
 WriteFMI:
-		move.b	(YM2612_A0).l,d2
+                lea     YM2612_A0.l,a0
+		move.b	(a0),d2
 		btst	#7,d2
 		bne.s	WriteFMI
-		move.b	d0,(YM2612_A0).l
-		nop	
-		nop	
-		nop	
+		move.b	d0,(a0)
+
 
 loc_72746:
-		move.b	(YM2612_A0).l,d2
+		move.b	(a0),d2
 		btst	#7,d2
 		bne.s	loc_72746
 
-		move.b	d1,(YM2612_D0).l
-		rts	
+		move.b	d1,1(a0)
+		rts
 ; End of function WriteFMI
 
 ; ===========================================================================
@@ -1534,9 +1533,9 @@ WriteFMII:
 		btst	#7,d2
 		bne.s	WriteFMII
 		move.b	d0,(YM2612_A1).l
-		nop	
-		nop	
-		nop	
+		nop
+		nop
+		nop
 
 loc_7277C:
 		move.b	(YM2612_A0).l,d2
@@ -1544,7 +1543,7 @@ loc_7277C:
 		bne.s	loc_7277C
 
 		move.b	d1,(YM2612_D1).l
-		rts	
+		rts
 ; End of function WriteFMII
 
 ; ===========================================================================
@@ -1587,7 +1586,7 @@ loc_72866:
 		jsr	PSGUpdateVolFX(pc)
 		jsr	DoModulation(pc)
 		jsr	PSGUpdateFreq(pc)
-		rts	
+		rts
 ; End of function PSGUpdateTrack
 
 
