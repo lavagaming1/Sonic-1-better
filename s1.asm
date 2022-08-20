@@ -13313,7 +13313,7 @@ Obj2C_Animate:
 Ani_obj2C:
 		dc.w byte_AC6A-Ani_obj2C
 byte_AC6A:	dc.b 7,	0, 1, 2, 3, $FF
-		align 2
+		even
 
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - Jaws enemy (LZ)
@@ -13340,9 +13340,9 @@ Obj2D_Main:				; XREF: Obj2D_Index
 		addq.b	#2,routine(a0)
 		move.b	#$13,y_radius(a0)
 		move.b	#8,x_radius(a0)
-		move.l	#Map_obj2D,4(a0)
-		move.w	#$4A6,2(a0)
-		ori.b	#4,1(a0)
+		move.l	#Map_obj2D,mappings(a0)
+		move.w	#$4A6,art_tile(a0)
+		ori.b	#4,render_flags(a0)
 		move.b	#4,priority(a0)
 		move.b	#5,collision_flags(a0)
 		move.b	#$C,width_pixels(a0)
@@ -15433,7 +15433,7 @@ Obj3A_Index:	dc.w Obj3A_ChkPLC-Obj3A_Index
 Obj3A_ChkPLC:				; XREF: Obj3A_Index
 		tst.l	(Plc_Buffer).w	; are the pattern load cues empty?
 		beq.s	Obj3A_Main	; if yes, branch
-		rts	
+		rts
 ; ===========================================================================
 
 Obj3A_Main:
@@ -15442,11 +15442,11 @@ Obj3A_Main:
 		moveq	#6,d1
 
 Obj3A_Loop:
-		_move.b	#$3A,0(a1)
+		move.b	ID(a0),ID(a1)
 		move.w	(a2),x_pos(a1)	; load start x-position
 		move.w	(a2)+,$32(a1)	; load finish x-position (same as start)
 		move.w	(a2)+,$30(a1)	; load main x-position
-		move.w	(a2)+,x_sub(a1)	; load y-position
+		move.w	(a2)+,y_pos(a1)	; load y-position
 		move.b	(a2)+,routine(a1)
 		move.b	(a2)+,d0
 		cmpi.b	#6,d0
@@ -15455,9 +15455,9 @@ Obj3A_Loop:
 
 loc_C5CA:
 		move.b	d0,mapping_frame(a1)
-		move.l	#Map_obj3A,4(a1)
-		move.w	#$8580,2(a1)
-		move.b	#0,1(a1)
+		move.l	#Map_obj3A,mappings(a1)
+		move.w	#$8580,art_tile(a1)
+		move.b	#0,render_flags(a1)
 		lea	$40(a1),a1
 		dbf	d1,Obj3A_Loop	; repeat 6 times
 
@@ -15481,7 +15481,7 @@ loc_C5FE:				; XREF: loc_C61A
 ; ===========================================================================
 
 locret_C60E:
-		rts	
+		rts
 ; ===========================================================================
 
 loc_C610:				; XREF: loc_C61A
@@ -15535,7 +15535,7 @@ Obj3A_SetDelay:
 		move.w	#180,anim_frame_duration(a0)	; set time delay to 3 seconds
 
 locret_C692:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj3A_AddBonus:				; XREF: Obj3A_ChkBonus
@@ -15980,7 +15980,12 @@ Map_obj39:
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - "SONIC HAS PASSED" title card
 ; ---------------------------------------------------------------------------
-Map_obj3A:	dc.w byte_CBEA-Map_obj3A
+Map_obj3A:
+                include "mappings/ScoreTally.asm"
+
+
+
+           	dc.w byte_CBEA-Map_obj3A
 		dc.w byte_CC13-Map_obj3A
 		dc.w byte_CC32-Map_obj3A
 		dc.w byte_CC51-Map_obj3A
@@ -16028,7 +16033,7 @@ byte_CC75:	dc.b 7			; RING BONUS
 		dc.b $FF, 4, $18, $6E, $F6
 		dc.b $F8, $D, $FF, $F8,	$28
 		dc.b $F8, 1, 1,	$70, $48
-		align 2
+		even
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - special stage results screen
 ; ---------------------------------------------------------------------------
@@ -16271,7 +16276,7 @@ Obj36_Wait:
 		beq.s	loc_CFA4	; if yes, branch
 		subq.w	#1,$38(a0)	; subtract 1 from time delay
 		bne.s	locret_CFE6
-		tst.b	1(a0)
+		tst.b	render_flags(a0)
 		bpl.s	locret_CFE6
 		move.w	#SndID_SpikesMove2,d0
 		jsr	(PlaySound_Special).l ;	play "spikes moving" sound
@@ -30666,12 +30671,12 @@ Obj3D_Loop:
 
 Obj3D_LoadBoss:				; XREF: Obj3D_Main
 		move.b	(a2)+,routine(a1)
-		_move.b	#$3D,0(a1)
+		move.b	#$3D,ID(a1)
 		move.w	x_pos(a0),x_pos(a1)
 		move.w	y_pos(a0),y_pos(a1)
-		move.l	#Map_Eggman,4(a1)
-		move.w	#$400,2(a1)
-		move.b	#4,1(a1)
+		move.l	#Map_Eggman,mappings(a1)
+		move.w	#$400,art_tile(a1)
+		move.b	#4,render_flags(a1)
 		move.b	#$20,width_pixels(a1)
 		move.b	#3,priority(a1)
 		move.b	(a2)+,anim(a1)
@@ -31058,8 +31063,8 @@ Obj48_Main:				; XREF: Obj48_Index
 		addq.b	#2,routine(a0)
 		move.w	#$4080,angle(a0)
 		move.w	#-$200,$3E(a0)
-		move.l	#Map_BossItems,4(a0)
-		move.w	#$46C,2(a0)
+		move.l	#Map_BossItems,mappings(a0)
+		move.w	#$46C,art_tile(a0)
 		lea	subtype(a0),a2
 		move.b	#0,(a2)+
 		moveq	#5,d1
@@ -31235,7 +31240,7 @@ byte_17CF4:	dc.b 3,	8, 9, $FF
 byte_17CF8:	dc.b 1,	8, 9, $FF
 byte_17CFC:	dc.b $F, 7, $FF, 0
 byte_17D00:	dc.b 2,	9, 8, $B, $C, $B, $C, 9, 8, $FE, 2, 0
-		align 2
+		even
 
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - Eggman (boss levels)
@@ -35318,9 +35323,9 @@ Obj3E_Var:	dc.b 2,	$20, 4,	0	; routine, width, priority, frame
 ; ===========================================================================
 
 Obj3E_Main:				; XREF: Obj3E_Index
-		move.l	#Map_obj3E,4(a0)
-		move.w	#$49D,2(a0)
-		move.b	#4,1(a0)
+		move.l	#Map_obj3E,mappings(a0)
+		move.w	#$49D,art_tile(a0)
+		move.b	#4,render_flags(a0)
 		move.w	y_pos(a0),$30(a0)
 		moveq	#0,d0
 		move.b	subtype(a0),d0
