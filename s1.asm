@@ -484,7 +484,7 @@ loc_B5E:
 VintRet:
 		addq.l	#1,(Vint_runcount).w
 		movem.l	(sp)+,d0-a6
-		rte	
+		rte
 ; ===========================================================================
 ; off_B6E:
 Vint_SwitchTbl:	dc.w Vint_Lag-Vint_SwitchTbl, loc_C32-Vint_SwitchTbl
@@ -654,7 +654,7 @@ Demo_Time:				; XREF: loc_D50; PalToCRAM
 		subq.w	#1,(Demo_Time_left).w ; subtract 1 from time	left
 
 Demo_TimeEnd:
-		rts	
+		rts
 ; End of function Demo_Time
 
 ; ===========================================================================
@@ -702,7 +702,7 @@ loc_E64:
 		subq.w	#1,(Demo_Time_left).w
 
 locret_E70:
-		rts	
+		rts
 ; ===========================================================================
 
 loc_E72:				; XREF: Vint_SwitchTbl
@@ -768,14 +768,14 @@ loc_F54:
 		jsr	(AniArt_Load).l
 		jsr	(HudUpdate).l
 		bsr.w	ProcessDPLC
-		rts	
+		rts
 ; ===========================================================================
 
 loc_F8A:				; XREF: Vint_SwitchTbl
 		bsr.w	Do_ControllerPal
 		addq.b	#1,(VIntSubE_RunCount).w
 		move.b	#$E,(Vint_routine).w
-		rts	
+		rts
 ; ===========================================================================
 
 loc_F9A:				; XREF: Vint_SwitchTbl
@@ -826,7 +826,7 @@ loc_1060:
 		subq.w	#1,(Demo_Time_left).w
 
 locret_106C:
-		rts	
+		rts
 
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
@@ -871,7 +871,7 @@ loc_10D4:				; XREF: Do_ControllerPal
 		move.w	#$83,(DMA_data_thunk).w
 		move.w	(DMA_data_thunk).w,(a5)
 		startZ80
-		rts	
+		rts
 ; End of function Do_ControllerPal
 
 ; ---------------------------------------------------------------------------
@@ -899,7 +899,7 @@ PalToCRAM:
 		bne.s	loc_119E
 
 locret_119C:
-		rte	
+		rte
 ; ===========================================================================
 
 loc_119E:				; XREF: PalToCRAM
@@ -3213,6 +3213,7 @@ TitleScreen:				; XREF: GameModeArray
 		move.w	#$8720,(a6)
 		clr.b	(Water_fullscreen_flag).w
 		bsr.w	ClearScreen
+		jsr     Init_SpriteTable
 		lea	(Object_RAM).w,a1
 		moveq	#0,d0
 		move.w	#$7FF,d1
@@ -3288,6 +3289,7 @@ Title_LoadText:
 		bsr.w	Pal_FadeFrom
 		move	#$2700,sr
 		bsr.w	ClearScreen
+		jsr     Init_SpriteTable
 		lea	(VDP_control_port).l,a5
 		lea	(VDP_data_port).l,a6
 		lea	(Camera_BG_X_pos).w,a3
@@ -3352,7 +3354,7 @@ loc_317C:
 		cmpi.w	#$1C00,d0	; has Sonic object passed x-position $1C00?
 		bcs.s	Title_ChkRegion	; if not, branch
 		move.b	#0,(Game_Mode).w ; go to Sega screen
-		rts	
+		rts
 ; ===========================================================================
 
 Title_ChkRegion:
@@ -3859,6 +3861,7 @@ Level_ClrVars3:
 
 		move	#$2700,sr
 		bsr.w	ClearScreen
+		jsr     Init_SpriteTable
 		lea	(VDP_control_port).l,a6
 		move.w	#$8B03,(a6)
 		move.w	#$8230,(a6)
@@ -6049,7 +6052,7 @@ Obj88_Main:				; XREF: Obj88_Index
 		cmpi.b	#2,(Object_RAM+mapping_frame).w
 		beq.s	Obj88_Main2
 		addq.l	#4,sp
-		rts	
+		rts
 ; ===========================================================================
 
 Obj88_Main2:				; XREF: Obj88_Main
@@ -6137,7 +6140,7 @@ Obj89_Move:				; XREF: Obj89_Index
 		cmpi.w	#$C0,x_pos(a0)	; has object reached $C0?
 		beq.s	Obj89_Delay	; if yes, branch
 		addi.w	#$10,x_pos(a0)	; move object to the right
-		bra.w	DisplaySprite
+		jmp	DisplaySprite
 ; ===========================================================================
 
 Obj89_Delay:				; XREF: Obj89_Move
@@ -6150,7 +6153,7 @@ Obj89_GotoCredits:			; XREF: Obj89_Index
 		move.b	#$1C,(Game_Mode).w ; exit to credits
 
 Obj89_Display:
-		bra.w	DisplaySprite
+		jmp	DisplaySprite
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - Sonic on the ending	sequence
@@ -13032,7 +13035,7 @@ Obj0E_Delay:				; XREF: Obj0E_Index
 		subq.b	#1,anim_delay(a0)	; subtract 1 from time delay
 		bpl.s	Obj0E_Wait	; if time remains, branch
 		addq.b	#2,routine(a0)	; go to	next routine
-		bra.w	DisplaySprite
+		jmp	DisplaySprite
 ; ===========================================================================
 
 Obj0E_Wait:				; XREF: Obj0E_Delay
@@ -13046,17 +13049,15 @@ Obj0E_Move:				; XREF: Obj0E_Index
 		addq.b	#2,routine(a0)
 
 Obj0E_Display:
-		bra.w	DisplaySprite
+		jmp	DisplaySprite
 ; ===========================================================================
-		rts
 ; ===========================================================================
 
 Obj0E_Animate:				; XREF: Obj0E_Index
 		lea	(Ani_obj0E).l,a1
 		bsr.w	AnimateSprite
-		bra.w	DisplaySprite
+		jmp	DisplaySprite
 ; ===========================================================================
-		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Object 0F - "PRESS START BUTTON" and "TM" from title screen
@@ -13067,7 +13068,7 @@ Obj0F:					; XREF: Obj_Index
 		move.b	routine(a0),d0
 		move.w	Obj0F_Index(pc,d0.w),d1
 		jsr	Obj0F_Index(pc,d1.w)
-		bra.w	DisplaySprite
+		jmp	DisplaySprite
 ; ===========================================================================
 Obj0F_Index:	dc.w Obj0F_Main-Obj0F_Index
 		dc.w Obj0F_PrsStart-Obj0F_Index
@@ -15253,10 +15254,10 @@ Obj34_ActNumber:
 
 Obj34_MakeSprite:
 		move.b	d0,mapping_frame(a1)	; display frame	number d0
-		move.l	#Map_obj34,4(a1)
-		move.w	#$8580,2(a1)
+		move.l	#S3kConvertedOb34,mappings(a1)
+		move.w	#$8580,art_tile(a1)
 		move.b	#$78,width_pixels(a1)
-		move.b	#0,1(a1)
+		move.b	#0,render_flags(a1)
 		move.b	#0,priority(a1)
 		move.w	#60,anim_frame_duration(a1)	; set time delay to 1 second
 		lea	$40(a1),a1	; next object
@@ -15852,18 +15853,18 @@ Obj7F_Main:				; XREF: Obj7F_Index
 		bcs.w	DeleteObject	; if you have 0	emeralds, branch
 
 Obj7F_Loop:
-		_move.b	#$7F,0(a1)
+		move.b	#$7F,0(a1)
 		move.w	(a2)+,x_pos(a1)	; set x-position
-		move.w	#$F0,x_sub(a1)	; set y-position
+		move.w	#$F0,y_pos(a1)	; set y-position
 		lea	(Emerald_count+1).w,a3 ; check which emeralds	you have
 		move.b	(a3,d2.w),d3
 		move.b	d3,mapping_frame(a1)
 		move.b	d3,anim(a1)
 		addq.b	#1,d2
 		addq.b	#2,routine(a1)
-		move.l	#Map_obj7F,4(a1)
-		move.w	#$8541,2(a1)
-		move.b	#0,1(a1)
+		move.l	#Map_obj7F,mappings(a1)
+		move.w	#$8541,art_tile(a1)
+		move.b	#0,render_flags(a1)
 		lea	$40(a1),a1	; next object
 		dbf	d1,Obj7F_Loop	; loop for d1 number of	emeralds
 
@@ -15990,7 +15991,9 @@ byte_CB8A:	dc.b 5			; FINAL
 		dc.b $F8, 5, 0,	$2E, $F4
 		dc.b $F8, 5, 0,	0, 4
 		dc.b $F8, 5, 0,	$26, $14
-		align 2
+		even
+S3kConvertedOb34:
+	     include "mappings/TitleCardS3k.asm"
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - "GAME OVER"	and "TIME OVER"
 ; ---------------------------------------------------------------------------
@@ -16730,12 +16733,12 @@ PriorityId:    dc.w  0+Sprite_Table_Input
 
 DisplaySprite2:
 		lea	(Sprite_Table_Input).w,a2
-		move.w	priority(a1),d0
-		lsr.w	#1,d0
-		andi.w	#$380,d0
-		adda.w	d0,a2
+            	moveq   #0,d0
+         	move.b  priority(a1),d0
+                add.w   d0,d0
+                movea.w PriorityId(pc,d0.w),a2     ; get values
 		cmpi.w	#$7E,(a2)
-		bcc.s	locret_D63E
+		bhs.s	locret_D63E
 		addq.w	#2,(a2)
 		adda.w	(a2),a2
 		move.w	a1,(a2)
@@ -16765,119 +16768,6 @@ loc_D646:
 ; End of function DeleteObject
 
 ; ===========================================================================
-
-; ---------------------------------------------------------------------------
-; Subroutine to	convert	mappings (etc) to proper Megadrive sprites
-; ---------------------------------------------------------------------------
-
-; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
-
-
-BuildSprites:				; XREF: TitleScreen; et al
-                lea    (Sprite_Table).w,a2 ; set address for sprite table
-                moveq    #0,d5
-                moveq    #0,d4
-                lea    (Sprite_Table_Input).w,a4
-                moveq    #7,d7
- BuildSpritesPriorityAddresses:
-		tst.w	(a4)
-		beq.w	loc_D72E
-		lea	2(a4),a5
-
- BuildSpritesLoop:
-		movea.w    (a5)+,a0
-
-		andi.b	#$7F,render_flags(a0)	; clear on-screen flag
-		move.b	render_flags(a0),d4
-		move.w	x_pos(a0),d3
-		move.w	y_pos(a0),d2
-		btst	#2,d4		; is this to be positioned by screen coordinates?
-		beq.s	loc_D700
-
-	        moveq	#0,d0
-           	move.b	width_pixels(a0),d0
-         	sub.w	(Hscroll_Factor).w,d3
-          	move.w	d3,d1
-        	add.w	d0,d1	; is the object right edge to the left of the screen?
-         	bmi.w	loc_D726	; if it is, branch
-          	move.w	d3,d1
-          	sub.w	d0,d1
-         	cmpi.w	#320,d1	; is the object left edge to the right of the screen?
-         	bge.w	loc_D726	; if it is, branch
-        	addi.w	#128,d3
-
-        	sub.w	Camera_Y_pos.w,d2
-         	move.b	y_radius(a0),d0
-
-                add.w   d0,d2
-                and.w	#$7FF,d2
-          	move.w	d0,d1
-		add.w	d0,d0
-                addi.w	#224,d0
-          	cmp.w	d0,d1
-          	bhs.s	loc_D726 ;Render_Sprites_NextObj
-
-        	addi.w	#128,d2
-		sub.w	d1,d2
-
-
-loc_D700:
-		movea.l	mappings(a0),a1
-         	moveq	#0,d1
-        	btst	#5,d4
-          	bne.s	loc_D71C
-        	move.b	mapping_frame(a0),d1
-          	add.w	d1,d1
-         	adda.w	(a1,d1.w),a1
-        	moveq	#0,d1
-         	move.b	(a1)+,d1
-        	subq.b	#1,d1
-         	bmi.s	loc_D720
-
-loc_D71C:
-         	bsr.w	sub_D750
-
-loc_D720:
-          	ori.b	#$80,render_flags(a0)
-
-loc_D726:
-         	addq.w	#2,d6
-        	subq.w	#2,(a4)
-        	bne.w	BuildSpritesLoop
-loc_D72E:
-		lea	$80(a4),a4
-		dbf	d7,BuildSpritesPriorityAddresses
-		move.b	d5,(Sprite_count).w
-		cmpi.b	#$50,d5	; was the sprite limit reached?
-         	beq.s	loc_D748	; if it was, branch
-          	move.l	#0,(a2)	; set link field to 0
-		rts
-; ===========================================================================
-
-loc_D748:
-		move.b	#0,-5(a2)	; set link field to 0
-		rts
-; End of function BuildSprites
-
-
-; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
-
-
-sub_D750:				; XREF: BuildSprites
-		movea.w	2(a0),a3
-		cmpi.b	#$50,d5
-		bhs.s	locret_D794
-
-		btst	#0,d4
-		bne.s	loc_D796
-		btst	#1,d4
-		bne.w	loc_D7E4
-; End of function sub_D750
-
-
-; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
-
-
 sub_D762:				; XREF: sub_D762; SS_ShowLayout
 
 		move.b	(a1)+,d0
@@ -16906,125 +16796,537 @@ loc_D78E:
 locret_D794:
 		rts
 ; End of function sub_D762
+; ---------------------------------------------------------------------------
+; Subroutine to	convert	mappings (etc) to proper Megadrive sprites
+; ---------------------------------------------------------------------------
+Init_SpriteTable:
+		clr.w	(Spritemask_flag).w
+		lea	(Sprite_Table).w,a0
 
-; ===========================================================================
 
-loc_D796:
-		btst	#1,d4
-		bne.w	loc_D82A
+; =============== S U B R O U T I N E =======================================
 
-loc_D79E:
 
-		move.b	(a1)+,d0
-		ext.w	d0
-		add.w	d2,d0
-		move.w	d0,(a2)+
-		move.b	(a1)+,d4
-		move.b	d4,(a2)+
-		addq.b	#1,d5
-		move.b	d5,(a2)+
-		move.b	(a1)+,d0
-		lsl.w	#8,d0
-		move.b	(a1)+,d0
-		add.w	a3,d0
-		eori.w	#$800,d0
-		move.w	d0,(a2)+
-		move.b	(a1)+,d0
-		ext.w	d0
-		neg.w	d0
-		add.b	d4,d4
-		andi.w	#$18,d4
-		addq.w	#8,d4
-		sub.w	d4,d0
-		add.w	d3,d0
-		andi.w	#$1FF,d0
-		bne.s	loc_D7DC
-		addq.w	#1,d0
+Init_SpriteTable2:
+		moveq	#0,d0
+		moveq	#1,d1
+		moveq	#$4F,d7
 
-loc_D7DC:
-		move.w	d0,(a2)+
-		dbf	d1,loc_D79E
-
-locret_D7E2:
+.loop:
+		move.w	d0,(a0)
+		move.b	d1,3(a0)
+		addq.w	#1,d1
+		addq.w	#8,a0
+		dbf	d7,.loop
+		move.b	d0,-5(a0)
 		rts
-; ===========================================================================
+; End of function Init_SpriteTable2
 
-loc_D7E4:				; XREF: sub_D750
 
-		move.b	(a1)+,d0
-		move.b	(a1),d4
-		ext.w	d0
-		neg.w	d0
-		lsl.b	#3,d4
-		andi.w	#$18,d4
-		addq.w	#8,d4
-		sub.w	d4,d0
-		add.w	d2,d0
-		move.w	d0,(a2)+
-		move.b	(a1)+,(a2)+
-		addq.b	#1,d5
-		move.b	d5,(a2)+
-		move.b	(a1)+,d0
-		lsl.w	#8,d0
-		move.b	(a1)+,d0
-		add.w	a3,d0
-		eori.w	#$1000,d0
-		move.w	d0,(a2)+
-		move.b	(a1)+,d0
-		ext.w	d0
-		add.w	d3,d0
-		andi.w	#$1FF,d0
-		bne.s	loc_D822
-		addq.w	#1,d0
+; =============== S U B R O U T I N E =======================================
 
-loc_D822:
-		move.w	d0,(a2)+
-		dbf	d1,loc_D7E4
 
-locret_D828:
+
+; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
+BuildSprites:
+	        moveq	#$4F,d7
+		moveq	#0,d6
+		lea	(Sprite_Table_Input).w,a5
+		lea	(Sprite_Table).w,a6
+
+
+loc_1AD4A:
+		tst.w	(a5)
+		beq.w	Render_Sprites_NextLevel
+		lea	2(a5),a4
+
+loc_1AD54:
+		movea.w	(a4)+,a0 ; a0=object
+		andi.b	#$7F,render_flags(a0)	; clear on-screen flag
+		move.b	render_flags(a0),d6
+		move.w	x_pos(a0),d0
+		move.w	y_pos(a0),d1
+		btst	#2,d6		; is this to be positioned by screen coordinates?
+		beq.s	loc_1ADB2	; if it is, branch
+		moveq	#0,d2
+		move.b	width_pixels(a0),d2
+		sub.w	Camera_X_pos.w,d0
+		move.w	d0,d3
+		add.w	d2,d3		; is the object right edge to the left of the screen?
+		bmi.s	Render_Sprites_NextObj	; if it is, branch
+		move.w	d0,d3
+		sub.w	d2,d3
+		cmpi.w	#320,d3		; is the object left edge to the right of the screen?
+		bge.s	Render_Sprites_NextObj	; if it is, branch
+		addi.w	#128,d0
+		sub.w	Camera_Y_pos.w,d1
+		move.b	y_radius(a0),d2
+		add.w	d2,d1
+		and.w	#$7FF,d1
+		move.w	d2,d3
+		add.w	d2,d2
+		addi.w	#224,d2
+		cmp.w	d2,d1
+		bhs.s	Render_Sprites_NextObj	; if the object is below the screen
+		addi.w	#128,d1
+		sub.w	d3,d1
+
+loc_1ADB2:
+		ori.b	#$80,render_flags(a0)	; set on-screen flag
+		tst.w	d7
+		bmi.s	Render_Sprites_NextObj
+		movea.l	mappings(a0),a1
+		moveq	#0,d4
+		btst	#5,d6		; is the static mappings flag set?
+		bne.s	loc_1ADD8	; if it is, branch
+		move.b	mapping_frame(a0),d4
+		add.w	d4,d4
+		adda.w	(a1,d4.w),a1
+		;moveq   #0,d4 ; this here is a byte in s1 format ''"lava
+		move.w	(a1)+,d4
+		subq.w	#1,d4		; get number of pieces
+		bmi.s	Render_Sprites_NextObj	; if there are 0 pieces, branch
+
+loc_1ADD8:
+		move.w	art_tile(a0),d5
+		jsr	sub_1AF6C(pc)
+
+Render_Sprites_NextObj:
+		subq.w	#2,(a5)		; decrement object count
+		bne.w	loc_1AD54	; if there are objects left, repeat
+
+Render_Sprites_NextLevel:
+
+
+		lea	$80(a5),a5	; load next priority level
+
+		cmpi.b  #1,ID(a5)
+		blo.w   loc_1AD4A
+		;cmpa.l	#Object_RAM,a5
+		;blo.w	loc_1AD4A
+		move.w	d7,d6
+		bmi.s	loc_1AE18
+		moveq	#0,d0
+
+loc_1AE10:
+
+		move.w	d0,(a6)
+		addq.w	#8,a6
+		dbf	d7,loc_1AE10
+
+loc_1AE18:
+
+		subi.w	#$4F,d6
+		neg.w	d6
+		move.b	d6,(Sprite_count).w
+		tst.w	(Spritemask_flag).w
+		beq.s	locret_1AE56
+		cmpi.b	#6,(Object_RAM+routine).w
+		bhs.s	loc_1AE34
+		clr.w	(Spritemask_flag).w
+
+loc_1AE34:
+		lea	(Sprite_Table-4).w,a0
+		move.w	#$7C0,d0
+		moveq	#$4E,d1
+
+loc_1AE3E:
+		addq.w	#8,a0
+		cmp.w	(a0),d0
+		dbeq	d1,loc_1AE3E
+		bne.s	locret_1AE56
+		move.w	#1,2(a0)
+		clr.w	$A(a0)
+		subq.w	#1,d1
+		bpl.s	loc_1AE3E
+
+locret_1AE56:
 		rts
-; ===========================================================================
+; ---------------------------------------------------------------------------
 
-loc_D82A:
 
-		move.b	(a1)+,d0
-		move.b	(a1),d4
-		ext.w	d0
-		neg.w	d0
-		lsl.b	#3,d4
-		andi.w	#$18,d4
-		addq.w	#8,d4
-		sub.w	d4,d0
-		add.w	d2,d0
-		move.w	d0,(a2)+
-		move.b	(a1)+,d4
-		move.b	d4,(a2)+
-		addq.b	#1,d5
-		move.b	d5,(a2)+
-		move.b	(a1)+,d0
-		lsl.w	#8,d0
-		move.b	(a1)+,d0
-		add.w	a3,d0
-		eori.w	#$1800,d0
-		move.w	d0,(a2)+
-		move.b	(a1)+,d0
-		ext.w	d0
-		neg.w	d0
-		add.b	d4,d4
-		andi.w	#$18,d4
-		addq.w	#8,d4
-		sub.w	d4,d0
-		add.w	d3,d0
-		andi.w	#$1FF,d0
-		bne.s	loc_D876
-		addq.w	#1,d0
+; End of function Render_Sprites
 
-loc_D876:
-		move.w	d0,(a2)+
-		dbf	d1,loc_D82A
 
-locret_D87C:
+; =============== S U B R O U T I N E =======================================
+
+
+sub_1AF6C:
+		lsr.b	#1,d6
+		bcs.s	loc_1AF9E
+		lsr.b	#1,d6
+		bcs.w	loc_1B038
+
+loc_1AF76:
+		move.b	(a1)+,d2
+		ext.w	d2
+		add.w	d1,d2
+		move.w	d2,(a6)+
+		move.b	(a1)+,(a6)+
+		addq.w	#1,a6
+		move.w	(a1)+,d2
+		add.w	d5,d2
+		move.w	d2,(a6)+
+		move.w	(a1)+,d2
+		add.w	d0,d2
+		andi.w	#$1FF,d2
+		bne.s	loc_1AF94
+		addq.w	#1,d2
+
+loc_1AF94:
+		move.w	d2,(a6)+
+		subq.w	#1,d7
+		dbmi	d4,loc_1AF76
 		rts
+; ---------------------------------------------------------------------------
+
+loc_1AF9E:
+		lsr.b	#1,d6
+		bcs.s	loc_1AFE8
+
+loc_1AFA2:
+		move.b	(a1)+,d2
+		ext.w	d2
+		add.w	d1,d2
+		move.w	d2,(a6)+
+		move.b	(a1)+,d6
+		move.b	d6,(a6)+
+		addq.w	#1,a6
+		move.w	(a1)+,d2
+		add.w	d5,d2
+		eori.w	#$800,d2
+		move.w	d2,(a6)+
+		move.w	(a1)+,d2
+		neg.w	d2
+		move.b	byte_1AFD8(pc,d6.w),d6
+		sub.w	d6,d2
+		add.w	d0,d2
+		andi.w	#$1FF,d2
+		bne.s	loc_1AFCE
+		addq.w	#1,d2
+
+loc_1AFCE:
+		move.w	d2,(a6)+
+		subq.w	#1,d7
+		dbmi	d4,loc_1AFA2
+		rts
+; ---------------------------------------------------------------------------
+byte_1AFD8:	dc.b 8
+		dc.b 8
+		dc.b 8
+		dc.b 8
+		dc.b $10
+		dc.b $10
+		dc.b $10
+		dc.b $10
+		dc.b $18
+		dc.b $18
+		dc.b $18
+		dc.b $18
+		dc.b $20
+		dc.b $20
+		dc.b $20
+		dc.b $20
+; ---------------------------------------------------------------------------
+
+loc_1AFE8:
+		move.b	(a1)+,d2
+		ext.w	d2
+		neg.w	d2
+		move.b	(a1),d6
+		move.b	byte_1B028(pc,d6.w),d6
+		sub.w	d6,d2
+		add.w	d1,d2
+		move.w	d2,(a6)+
+		move.b	(a1)+,d6
+		move.b	d6,(a6)+
+		addq.w	#1,a6
+		move.w	(a1)+,d2
+		add.w	d5,d2
+		eori.w	#$1800,d2
+		move.w	d2,(a6)+
+		move.w	(a1)+,d2
+		neg.w	d2
+		move.b	byte_1AFD8(pc,d6.w),d6
+		sub.w	d6,d2
+		add.w	d0,d2
+		andi.w	#$1FF,d2
+		bne.s	loc_1B01E
+		addq.w	#1,d2
+
+loc_1B01E:
+		move.w	d2,(a6)+
+		subq.w	#1,d7
+		dbmi	d4,loc_1AFE8
+		rts
+; ---------------------------------------------------------------------------
+byte_1B028:	dc.b 8
+		dc.b $10
+		dc.b $18
+		dc.b $20
+		dc.b 8
+		dc.b $10
+		dc.b $18
+		dc.b $20
+		dc.b 8
+		dc.b $10
+		dc.b $18
+		dc.b $20
+		dc.b 8
+		dc.b $10
+		dc.b $18
+		dc.b $20
+; ---------------------------------------------------------------------------
+
+loc_1B038:
+		move.b	(a1)+,d2
+		ext.w	d2
+		neg.w	d2
+		move.b	(a1)+,d6
+		move.b	d6,2(a6)
+		move.b	byte_1B028(pc,d6.w),d6
+		sub.w	d6,d2
+		add.w	d1,d2
+		move.w	d2,(a6)+
+		addq.w	#2,a6
+		move.w	(a1)+,d2
+		add.w	d5,d2
+		eori.w	#$1000,d2
+		move.w	d2,(a6)+
+		move.w	(a1)+,d2
+		add.w	d0,d2
+		andi.w	#$1FF,d2
+		bne.s	loc_1B066
+		addq.w	#1,d2
+
+loc_1B066:
+		move.w	d2,(a6)+
+		subq.w	#1,d7
+		dbmi	d4,loc_1B038
+		rts
+; End of function sub_1AF6C
+
+
+; =============== S U B R O U T I N E =======================================
+
+
+sub_1B070:
+		lsr.b	#1,d6
+		bcs.s	loc_1B0C2
+		lsr.b	#1,d6
+		bcs.w	loc_1B19C
+
+loc_1B07A:
+		move.b	(a1)+,d2
+		ext.w	d2
+		add.w	d1,d2
+		cmpi.w	#$60,d2
+		bls.s	loc_1B0BA
+		cmpi.w	#$160,d2
+		bhs.s	loc_1B0BA
+		move.w	d2,(a6)+
+		move.b	(a1)+,(a6)+
+		addq.w	#1,a6
+		move.w	(a1)+,d2
+		add.w	d5,d2
+		move.w	d2,(a6)+
+		move.w	(a1)+,d2
+		add.w	d0,d2
+		cmpi.w	#$60,d2
+		bls.s	loc_1B0B2
+		cmpi.w	#$1C0,d2
+		bhs.s	loc_1B0B2
+		move.w	d2,(a6)+
+		subq.w	#1,d7
+		dbmi	d4,loc_1B07A
+		rts
+; ---------------------------------------------------------------------------
+
+loc_1B0B2:
+		subq.w	#6,a6
+		dbf	d4,loc_1B07A
+		rts
+; ---------------------------------------------------------------------------
+
+loc_1B0BA:
+		addq.w	#5,a1
+		dbf	d4,loc_1B07A
+		rts
+; ---------------------------------------------------------------------------
+
+loc_1B0C2:
+		lsr.b	#1,d6
+		bcs.s	loc_1B12C
+
+loc_1B0C6:
+		move.b	(a1)+,d2
+		ext.w	d2
+		add.w	d1,d2
+		cmpi.w	#$60,d2
+		bls.s	loc_1B114
+		cmpi.w	#$160,d2
+		bhs.s	loc_1B114
+		move.w	d2,(a6)+
+		move.b	(a1)+,d6
+		move.b	d6,(a6)+
+		addq.w	#1,a6
+		move.w	(a1)+,d2
+		add.w	d5,d2
+		eori.w	#$800,d2
+		move.w	d2,(a6)+
+		move.w	(a1)+,d2
+		neg.w	d2
+		move.b	byte_1B11C(pc,d6.w),d6
+		sub.w	d6,d2
+		add.w	d0,d2
+		cmpi.w	#$60,d2
+		bls.s	loc_1B10C
+		cmpi.w	#$1C0,d2
+		bhs.s	loc_1B10C
+		move.w	d2,(a6)+
+		subq.w	#1,d7
+		dbmi	d4,loc_1B0C6
+		rts
+; ---------------------------------------------------------------------------
+
+loc_1B10C:
+		subq.w	#6,a6
+		dbf	d4,loc_1B0C6
+		rts
+; ---------------------------------------------------------------------------
+
+loc_1B114:
+		addq.w	#5,a1
+		dbf	d4,loc_1B0C6
+		rts
+; ---------------------------------------------------------------------------
+byte_1B11C:	dc.b 8
+		dc.b 8
+		dc.b 8
+		dc.b 8
+		dc.b $10
+		dc.b $10
+		dc.b $10
+		dc.b $10
+		dc.b $18
+		dc.b $18
+		dc.b $18
+		dc.b $18
+		dc.b $20
+		dc.b $20
+		dc.b $20
+		dc.b $20
+; ---------------------------------------------------------------------------
+
+loc_1B12C:
+		move.b	(a1)+,d2
+		ext.w	d2
+		neg.w	d2
+		move.b	(a1),d6
+		move.b	byte_1B18C(pc,d6.w),d6
+		sub.w	d6,d2
+		add.w	d1,d2
+		cmpi.w	#$60,d2
+		bls.s	loc_1B184
+		cmpi.w	#$160,d2
+		bhs.s	loc_1B184
+		move.w	d2,(a6)+
+		move.b	(a1)+,d6
+		move.b	d6,(a6)+
+		addq.w	#1,a6
+		move.w	(a1)+,d2
+		add.w	d5,d2
+		eori.w	#$1800,d2
+		move.w	d2,(a6)+
+		move.w	(a1)+,d2
+		neg.w	d2
+		move.b	byte_1B11C(pc,d6.w),d6
+		sub.w	d6,d2
+		add.w	d0,d2
+		cmpi.w	#$60,d2
+		bls.s	loc_1B17C
+		cmpi.w	#$1C0,d2
+		bhs.s	loc_1B17C
+		move.w	d2,(a6)+
+		subq.w	#1,d7
+		dbmi	d4,loc_1B12C
+		rts
+; ---------------------------------------------------------------------------
+
+loc_1B17C:
+		subq.w	#6,a6
+		dbf	d4,loc_1B12C
+		rts
+; ---------------------------------------------------------------------------
+
+loc_1B184:
+		addq.w	#5,a1
+		dbf	d4,loc_1B12C
+		rts
+; ---------------------------------------------------------------------------
+byte_1B18C:	dc.b 8
+		dc.b $10
+		dc.b $18
+		dc.b $20
+		dc.b 8
+		dc.b $10
+		dc.b $18
+		dc.b $20
+		dc.b 8
+		dc.b $10
+		dc.b $18
+		dc.b $20
+		dc.b 8
+		dc.b $10
+		dc.b $18
+		dc.b $20
+; ---------------------------------------------------------------------------
+
+loc_1B19C:
+		move.b	(a1)+,d2
+		ext.w	d2
+		neg.w	d2
+		move.b	(a1)+,d6
+		move.b	d6,2(a6)
+		move.b	byte_1B18C(pc,d6.w),d6
+		sub.w	d6,d2
+		add.w	d1,d2
+		cmpi.w	#$60,d2
+		bls.s	loc_1B1EC
+		cmpi.w	#$160,d2
+		bhs.s	loc_1B1EC
+		move.w	d2,(a6)+
+		addq.w	#2,a6
+		move.w	(a1)+,d2
+		add.w	d5,d2
+		eori.w	#$1000,d2
+		move.w	d2,(a6)+
+		move.w	(a1)+,d2
+		add.w	d0,d2
+		cmpi.w	#$60,d2
+		bls.s	loc_1B1E4
+		cmpi.w	#$1C0,d2
+		bhs.s	loc_1B1E4
+		move.w	d2,(a6)+
+		subq.w	#1,d7
+		dbmi	d4,loc_1B19C
+		rts
+; ---------------------------------------------------------------------------
+
+loc_1B1E4:
+		subq.w	#6,a6
+		dbf	d4,loc_1B19C
+		rts
+; ---------------------------------------------------------------------------
+
+loc_1B1EC:
+		addq.w	#4,a1
+		dbf	d4,loc_1B19C
+		rts
+; End of function sub_1B070
+
+
+
 ; ---------------------------------------------------------------------------
 ; Subroutine to	check if an object is on the screen
 ; ---------------------------------------------------------------------------
@@ -19604,7 +19906,7 @@ loc_F9FE:
 
 loc_FA12:
 		move.w	d4,d2
-		bsr.w	MvSonicOnPtfm
+		jsr	MvSonicOnPtfm
 		moveq	#0,d4
 		rts	
 ; ===========================================================================
@@ -19634,14 +19936,14 @@ loc_FA44:
 
 loc_FA58:
 		move.w	d4,d2
-		bsr.w	MvSonicOnPtfm
+		jsr	MvSonicOnPtfm
 		moveq	#0,d4
 		rts	
 ; ===========================================================================
 
 SolidObject2F:				; XREF: Obj2F_Solid
 		lea	(Object_RAM).w,a1
-		tst.b	1(a0)
+		tst.b	render_flags(a0)
 		bpl.w	loc_FB92
 		move.w	x_pos(a1),d0
 		sub.w	x_pos(a0),d0
@@ -30321,7 +30623,7 @@ Obj8A_Index:	dc.w Obj8A_Main-Obj8A_Index
 Obj8A_Main:				; XREF: Obj8A_Index
 		addq.b	#2,routine(a0)
 		move.w	#$120,x_pos(a0)
-		move.w	#$F0,x_sub(a0)
+		move.w	#$F0,y_pos(a0)
 		move.l	#Map_obj8A,4(a0)
 		move.w	#$5A0,2(a0)
 		move.w	(Ending_demo_number).w,d0 ; load	credits	index number
@@ -35611,7 +35913,7 @@ loc_1B144:
 
 Touch_D7orE1:				; XREF: Touch_Special
 		addq.b	#1,collision_property(a1)
-		rts	
+		rts
 ; End of function Touch_Special
 
 ; ---------------------------------------------------------------------------
@@ -37618,7 +37920,7 @@ loc_1C4FA:				; XREF: AniArt_MZextra
 AniArt_GiantRing:			; XREF: AniArt_Load
 		tst.w	(BigRingGraphics).w
 		bne.s	loc_1C518
-		rts	
+		rts
 ; ===========================================================================
 
 loc_1C518:

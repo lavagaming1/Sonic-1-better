@@ -181,7 +181,7 @@ CmdID__End =		id(CmdPtr_End)		; E5
 ramaddr function x,-(-x)&$FFFFFFFF
 
 ; ---------------------------------------------------------------------------
-; RAM variables  
+; RAM variables
 RAM_Start =			ramaddr( $FFFF0000 )	; 4 bytes ; start of RAM
 
 Chunk_Table =			ramaddr( $FFFF0000 )	; $A3FF bytes
@@ -196,7 +196,8 @@ Sonic_Stat_Record_Buf = 	ramaddr( $FFFFCB00 )	; $2FF bytes
 
 Horiz_Scroll_Buf = 		ramaddr( $FFFFCC00 )	; $3FF bytes
 Object_RAM =			ramaddr( $FFFFD000 )	; The various objects in the game are loaded in this area. Each game mode uses different objects, so some slots are reused.
-
+Spritemask_flag =			ramaddr( $FFFFF5C0 )
+Sprites_drawn =			ramaddr( $FFFFF5C2 ) 
 Game_Mode =			ramaddr( $FFFFF600 )	; 1 byte ; see GameModesArray (master level trigger, Mstr_Lvl_Trigger)
 Ctrl_1_Logical =		ramaddr( $FFFFF602 )	; 2 bytes
 Ctrl_1_Held_Logical =		ramaddr( $FFFFF602 )	; 1 byte
