@@ -1,22 +1,21 @@
-; ---------------------------------------------------------------------------
-; Sprite mappings - helix of spikes on a pole (GHZ)
-; ---------------------------------------------------------------------------
-		dc.w byte_7E08-Map_obj17, byte_7E0E-Map_obj17
-		dc.w byte_7E14-Map_obj17, byte_7E1A-Map_obj17
-		dc.w byte_7E20-Map_obj17, byte_7E26-Map_obj17
-		dc.w byte_7E2D+1-Map_obj17, byte_7E2C-Map_obj17
-byte_7E08:	dc.b 1
-		dc.b $F0, 1, 0,	0, $FC
-byte_7E0E:	dc.b 1
-		dc.b $F5, 5, 0,	2, $F8
-byte_7E14:	dc.b 1
-		dc.b $F8, 5, 0,	6, $F8
-byte_7E1A:	dc.b 1
-		dc.b $FB, 5, 0,	$A, $F8
-byte_7E20:	dc.b 1
-		dc.b 0,	1, 0, $E, $FC
-byte_7E26:	dc.b 1
-		dc.b 4,	0, 0, $10, $FD
-byte_7E2C:	dc.b 1
-byte_7E2D:	dc.b $F4, 0, 0,	$11, $FD
-		align 2
+; --------------------------------------------------------------------------------
+; Sprite mappings - output from SonMapEd - Sonic 3 & Knuckles format
+; --------------------------------------------------------------------------------
+
+SME_3HOuV:	
+		dc.w SME_3HOuV_C-SME_3HOuV, SME_3HOuV_14-SME_3HOuV	
+		dc.w SME_3HOuV_1C-SME_3HOuV, SME_3HOuV_24-SME_3HOuV	
+		dc.w SME_3HOuV_2C-SME_3HOuV, SME_3HOuV_34-SME_3HOuV	
+SME_3HOuV_C:	dc.b 0, 1	
+		dc.b $F0, 1, 0, 0, $FF, $FC	
+SME_3HOuV_14:	dc.b 0, 1	
+		dc.b $F5, 5, 0, 2, $FF, $F8	
+SME_3HOuV_1C:	dc.b 0, 1	
+		dc.b $F8, 5, 0, 6, $FF, $F8	
+SME_3HOuV_24:	dc.b 0, 1	
+		dc.b $FB, 5, 0, $A, $FF, $F8	
+SME_3HOuV_2C:	dc.b 0, 1	
+		dc.b 0, 1, 0, $E, $FF, $FC	
+SME_3HOuV_34:	dc.b 0, 1	
+		dc.b 4, 0, 0, $10, $FF, $FD	
+		even

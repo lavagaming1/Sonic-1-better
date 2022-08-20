@@ -1,51 +1,51 @@
-; ---------------------------------------------------------------------------
-; Sprite mappings - Buzz Bomber	enemy
-; ---------------------------------------------------------------------------
-		dc.w byte_9A42-Map_obj22, byte_9A61-Map_obj22
-		dc.w byte_9A80-Map_obj22, byte_9AA4-Map_obj22
-		dc.w byte_9AC8-Map_obj22, byte_9AE7-Map_obj22
-byte_9A42:	dc.b 6
-		dc.b $F4, 9, 0,	0, $E8
-		dc.b $F4, 9, 0,	$F, 0
-		dc.b 4,	8, 0, $15, $E8
-		dc.b 4,	4, 0, $18, 0
-		dc.b $F1, 8, 0,	$1A, $EC
-		dc.b $F1, 4, 0,	$1D, 4
-byte_9A61:	dc.b 6
-		dc.b $F4, 9, 0,	0, $E8
-		dc.b $F4, 9, 0,	$F, 0
-		dc.b 4,	8, 0, $15, $E8
-		dc.b 4,	4, 0, $18, 0
-		dc.b $F4, 8, 0,	$1F, $EC
-		dc.b $F4, 4, 0,	$22, 4
-byte_9A80:	dc.b 7
-		dc.b 4,	0, 0, $30, $C
-		dc.b $F4, 9, 0,	0, $E8
-		dc.b $F4, 9, 0,	$F, 0
-		dc.b 4,	8, 0, $15, $E8
-		dc.b 4,	4, 0, $18, 0
-		dc.b $F1, 8, 0,	$1A, $EC
-		dc.b $F1, 4, 0,	$1D, 4
-byte_9AA4:	dc.b 7
-		dc.b 4,	4, 0, $31, $C
-		dc.b $F4, 9, 0,	0, $E8
-		dc.b $F4, 9, 0,	$F, 0
-		dc.b 4,	8, 0, $15, $E8
-		dc.b 4,	4, 0, $18, 0
-		dc.b $F4, 8, 0,	$1F, $EC
-		dc.b $F4, 4, 0,	$22, 4
-byte_9AC8:	dc.b 6
-		dc.b $F4, $D, 0, 0, $EC
-		dc.b 4,	$C, 0, 8, $EC
-		dc.b 4,	0, 0, $C, $C
-		dc.b $C, 4, 0, $D, $F4
-		dc.b $F1, 8, 0,	$1A, $EC
-		dc.b $F1, 4, 0,	$1D, 4
-byte_9AE7:	dc.b 4
-		dc.b $F4, $D, 0, 0, $EC
-		dc.b 4,	$C, 0, 8, $EC
-		dc.b 4,	0, 0, $C, $C
-		dc.b $C, 4, 0, $D, $F4
-		dc.b $F4, 8, 0,	$1F, $EC
-		dc.b $F4, 4, 0,	$22, 4
-		align 2
+; --------------------------------------------------------------------------------
+; Sprite mappings - output from SonMapEd - Sonic 3 & Knuckles format
+; --------------------------------------------------------------------------------
+
+SME_MtInP:	
+		dc.w SME_MtInP_C-SME_MtInP, SME_MtInP_32-SME_MtInP	
+		dc.w SME_MtInP_58-SME_MtInP, SME_MtInP_84-SME_MtInP	
+		dc.w SME_MtInP_B0-SME_MtInP, SME_MtInP_D6-SME_MtInP	
+SME_MtInP_C:	dc.b 0, 6	
+		dc.b $F4, 9, 0, 0, $FF, $E8	
+		dc.b $F4, 9, 0, $F, 0, 0	
+		dc.b 4, 8, 0, $15, $FF, $E8	
+		dc.b 4, 4, 0, $18, 0, 0	
+		dc.b $F1, 8, 0, $1A, $FF, $EC	
+		dc.b $F1, 4, 0, $1D, 0, 4	
+SME_MtInP_32:	dc.b 0, 6	
+		dc.b $F4, 9, 0, 0, $FF, $E8	
+		dc.b $F4, 9, 0, $F, 0, 0	
+		dc.b 4, 8, 0, $15, $FF, $E8	
+		dc.b 4, 4, 0, $18, 0, 0	
+		dc.b $F4, 8, 0, $1F, $FF, $EC	
+		dc.b $F4, 4, 0, $22, 0, 4	
+SME_MtInP_58:	dc.b 0, 7	
+		dc.b 4, 0, 0, $30, 0, $C	
+		dc.b $F4, 9, 0, 0, $FF, $E8	
+		dc.b $F4, 9, 0, $F, 0, 0	
+		dc.b 4, 8, 0, $15, $FF, $E8	
+		dc.b 4, 4, 0, $18, 0, 0	
+		dc.b $F1, 8, 0, $1A, $FF, $EC	
+		dc.b $F1, 4, 0, $1D, 0, 4	
+SME_MtInP_84:	dc.b 0, 7	
+		dc.b 4, 4, 0, $31, 0, $C	
+		dc.b $F4, 9, 0, 0, $FF, $E8	
+		dc.b $F4, 9, 0, $F, 0, 0	
+		dc.b 4, 8, 0, $15, $FF, $E8	
+		dc.b 4, 4, 0, $18, 0, 0	
+		dc.b $F4, 8, 0, $1F, $FF, $EC	
+		dc.b $F4, 4, 0, $22, 0, 4	
+SME_MtInP_B0:	dc.b 0, 6	
+		dc.b $F4, $D, 0, 0, $FF, $EC	
+		dc.b 4, $C, 0, 8, $FF, $EC	
+		dc.b 4, 0, 0, $C, 0, $C	
+		dc.b $C, 4, 0, $D, $FF, $F4	
+		dc.b $F1, 8, 0, $1A, $FF, $EC	
+		dc.b $F1, 4, 0, $1D, 0, 4	
+SME_MtInP_D6:	dc.b 0, 4	
+		dc.b $F4, $D, 0, 0, $FF, $EC	
+		dc.b 4, $C, 0, 8, $FF, $EC	
+		dc.b 4, 0, 0, $C, 0, $C	
+		dc.b $C, 4, 0, $D, $FF, $F4	
+		even

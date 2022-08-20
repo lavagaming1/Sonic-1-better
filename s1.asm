@@ -8921,9 +8921,9 @@ Obj11_Index:	dc.w Obj11_Main-Obj11_Index, Obj11_Action-Obj11_Index
 
 Obj11_Main:				; XREF: Obj11_Index
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj11,4(a0)
-		move.w	#$438E,2(a0)
-		move.b	#4,1(a0)
+		move.l	#Map_obj11,mappings(a0)
+		move.w	#$438E,art_tile(a0)
+		move.b	#4,render_flags(a0)
 		move.b	#3,priority(a0)
 		move.b	#$80,width_pixels(a0)
 		move.w	y_pos(a0),d2
@@ -13043,8 +13043,8 @@ Obj0E_Wait:				; XREF: Obj0E_Delay
 ; ===========================================================================
 
 Obj0E_Move:				; XREF: Obj0E_Index
-		subq.w	#8,x_sub(a0)
-		cmpi.w	#$96,x_sub(a0)
+		subq.w	#8,y_pos(a0)
+		cmpi.w	#$96,y_pos(a0)
 		bne.s	Obj0E_Display
 		addq.b	#2,routine(a0)
 
@@ -13231,9 +13231,9 @@ Obj2B_Index:	dc.w Obj2B_Main-Obj2B_Index
 
 Obj2B_Main:				; XREF: Obj2B_Index
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj2B,4(a0)
-		move.w	#$47B,2(a0)
-		move.b	#4,1(a0)
+		move.l	#Map_obj2B,mappings(a0)
+		move.w	#$47B,art_tile(a0)
+		move.b	#4,render_flags(a0)
 		move.b	#4,priority(a0)
 		move.b	#9,collision_flags(a0)
 		move.b	#$10,width_pixels(a0)
