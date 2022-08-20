@@ -9702,15 +9702,15 @@ Obj17_Index:	dc.w Obj17_Main-Obj17_Index
 
 Obj17_Main:				; XREF: Obj17_Index
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj17,4(a0)
-		move.w	#$4398,2(a0)
+		move.l	#Map_obj17,mappings(a0)
+		move.w	#$4398,art_tile(a0)
 		move.b	#7,status(a0)
-		move.b	#4,1(a0)
+		move.b	#4,render_flags(a0)
 		move.w	#$180,HelixPriority(a0)
 		move.b	#8,width_pixels(a0)
 		move.w	y_pos(a0),d2
 		move.w	x_pos(a0),d3
-		_move.b	0(a0),d4
+		move.b	ID(a0),d4
 		lea	subtype(a0),a2	; move helix length to a2
 		moveq	#0,d1
 		move.b	(a2),d1		; move a2 to d1
@@ -9742,12 +9742,12 @@ Obj17_MakeHelix:
 		andi.w	#$7F,d5
 		move.b	d5,(a2)+
 		move.b	#8,routine(a1)
-		_move.b	d4,0(a1)
+		move.b	d4,ID(a1)
 		move.w	d2,y_pos(a1)
 		move.w	d3,x_pos(a1)
-		move.l	4(a0),4(a1)
-		move.w	#$4398,2(a1)
-		move.b	#4,1(a1)
+		move.l	mappings(a0),mappings(a1)
+		move.w	#$4398,art_tile(a1)
+		move.b	#4,render_flags(a1)
 		move.w	#$180,HelixPriority(a1)
 		move.b	#8,width_pixels(a1)
 		move.b	d6,$3E(a1)
@@ -12779,7 +12779,7 @@ Obj2E_Main:				; XREF: Obj2E_Index
 		movea.l	#Map_obj26,a1
 		add.b	d0,d0
 		adda.w	(a1,d0.w),a1
-		addq.w	#2,a1 ; in s1 this is a #1 
+		addq.w	#2,a1 ; in s1 this is a #1
 		move.l	a1,mappings(a0)
 
 Obj2E_Move:				; XREF: Obj2E_Index
@@ -13194,7 +13194,7 @@ Map_obj0E:
 ; ---------------------------------------------------------------------------
 ; Object 2B - Chopper enemy (GHZ)
 ; ---------------------------------------------------------------------------
-
+ObChopperSavedY = $30
 Obj2B:					; XREF: Obj_Index
 		moveq	#0,d0
 		move.b	routine(a0),d0
@@ -13215,14 +13215,14 @@ Obj2B_Main:				; XREF: Obj2B_Index
 		move.b	#9,collision_flags(a0)
 		move.b	#$10,width_pixels(a0)
 		move.w	#-$700,y_vel(a0)	; set vertical speed
-		move.w	y_pos(a0),$30(a0)
+		move.w	y_pos(a0),ObChopperSavedY(a0)
 
 Obj2B_ChgSpeed:				; XREF: Obj2B_Index
 		lea	(Ani_obj2B).l,a1
 		bsr.w	AnimateSprite
 		bsr.w	ObjectMove
 		addi.w	#$18,y_vel(a0)	; reduce speed
-		move.w	$30(a0),d0
+		move.w	ObChopperSavedY(a0),d0
 		cmp.w	y_pos(a0),d0
 		bcc.s	Obj2B_ChgAni
 		move.w	d0,y_pos(a0)
@@ -13251,7 +13251,7 @@ Ani_obj2B:
 byte_ABBE:	dc.b 7,	0, 1, $FF
 byte_ABC2:	dc.b 3,	0, 1, $FF
 byte_ABC6:	dc.b 7,	0, $FF
-		align 2
+		even
 
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - Chopper enemy (GHZ)
@@ -13276,9 +13276,9 @@ Obj2C_Index:	dc.w Obj2C_Main-Obj2C_Index
 
 Obj2C_Main:				; XREF: Obj2C_Index
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj2C,4(a0)
-		move.w	#$2486,2(a0)
-		ori.b	#4,1(a0)
+		move.l	#Map_obj2C,mappings(a0)
+		move.w	#$2486,art_tile(a0)
+		ori.b	#4,render_flags(a0)
 		move.b	#$A,collision_flags(a0)
 		move.b	#4,priority(a0)
 		move.b	#$10,width_pixels(a0)
@@ -16156,6 +16156,8 @@ Obj36_Main:				; XREF: Obj36_Index
 		adda.w	d0,a1
 		move.b	(a1)+,mapping_frame(a0)
 		move.b	(a1)+,width_pixels(a0)
+		addq.w  #8,y_pos(a0)
+		move.b	#$10,y_radius(a0)
 		move.w	x_pos(a0),$30(a0)
 		move.w	y_pos(a0),$32(a0)
 
