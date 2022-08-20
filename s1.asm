@@ -12412,7 +12412,7 @@ Obj37_Delete:				; XREF: Obj37_Index
 ; Object 4B - giant ring for entry to special stage
 ; ---------------------------------------------------------------------------
 
-Obj4B:					; XREF: Obj_Index
+Obj4B:	rts				; XREF: Obj_Index
 		moveq	#0,d0
 		move.b	routine(a0),d0
 		move.w	Obj4B_Index(pc,d0.w),d1
@@ -16161,7 +16161,6 @@ Obj36_Main:				; XREF: Obj36_Index
 		adda.w	d0,a1
 		move.b	(a1)+,mapping_frame(a0)
 		move.b	(a1)+,width_pixels(a0)
-		addq.w  #8,y_pos(a0)
 		move.b	#$10,y_radius(a0)
 		move.w	x_pos(a0),$30(a0)
 		move.w	y_pos(a0),$32(a0)
