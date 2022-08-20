@@ -1,13 +1,14 @@
-; ---------------------------------------------------------------------------
-; Sprite mappings - animals
-; ---------------------------------------------------------------------------
-		dc.w byte_948A-Map_obj28a
-		dc.w byte_9490-Map_obj28a
-		dc.w byte_9484-Map_obj28a
-byte_9484:	dc.b 1
-		dc.b $F4, 6, 0,	0, $F8
-byte_948A:	dc.b 1
-		dc.b $FC, 5, 0,	6, $F8
-byte_9490:	dc.b 1
-		dc.b $FC, 5, 0,	$A, $F8
-		align 2
+; --------------------------------------------------------------------------------
+; Sprite mappings - output from SonMapEd - Sonic 3 & Knuckles format
+; --------------------------------------------------------------------------------
+
+SME_jEeAB:	
+		dc.w SME_jEeAB_6-SME_jEeAB, SME_jEeAB_E-SME_jEeAB	
+		dc.w SME_jEeAB_16-SME_jEeAB	
+SME_jEeAB_6:	dc.b 0, 1	
+		dc.b $FC, 5, 0, 6, $FF, $F8	
+SME_jEeAB_E:	dc.b 0, 1	
+		dc.b $FC, 5, 0, $A, $FF, $F8	
+SME_jEeAB_16:	dc.b 0, 1	
+		dc.b $F4, 6, 0, 0, $FF, $F8	
+		even

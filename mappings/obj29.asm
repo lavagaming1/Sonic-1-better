@@ -1,24 +1,26 @@
-; ---------------------------------------------------------------------------
-; Sprite mappings - points that	appear when you	destroy	something
-; ---------------------------------------------------------------------------
-		dc.w byte_94BC-Map_obj29, byte_94C2-Map_obj29
-		dc.w byte_94C8-Map_obj29, byte_94CE-Map_obj29
-		dc.w byte_94D4-Map_obj29, byte_94DA-Map_obj29
-		dc.w byte_94E5-Map_obj29
-byte_94BC:	dc.b 1
-		dc.b $FC, 4, 0,	0, $F8	; 100 points
-byte_94C2:	dc.b 1
-		dc.b $FC, 4, 0,	2, $F8	; 200 points
-byte_94C8:	dc.b 1
-		dc.b $FC, 4, 0,	4, $F8	; 500 points
-byte_94CE:	dc.b 1
-		dc.b $FC, 8, 0,	6, $F8	; 1000 points
-byte_94D4:	dc.b 1
-		dc.b $FC, 0, 0,	6, $FC	; 10 points
-byte_94DA:	dc.b 2
-		dc.b $FC, 8, 0,	6, $F4	; 10,000 points
-		dc.b $FC, 4, 0,	7, 1
-byte_94E5:	dc.b 2
-		dc.b $FC, 8, 0,	6, $F4	; 100,000 points
-		dc.b $FC, 4, 0,	7, 6
-		align 2
+; --------------------------------------------------------------------------------
+; Sprite mappings - output from SonMapEd - Sonic 3 & Knuckles format
+; --------------------------------------------------------------------------------
+
+SME_hC8nb:	
+		dc.w SME_hC8nb_E-SME_hC8nb, SME_hC8nb_16-SME_hC8nb	
+		dc.w SME_hC8nb_1E-SME_hC8nb, SME_hC8nb_26-SME_hC8nb	
+		dc.w SME_hC8nb_2E-SME_hC8nb, SME_hC8nb_36-SME_hC8nb	
+		dc.w SME_hC8nb_44-SME_hC8nb	
+SME_hC8nb_E:	dc.b 0, 1	
+		dc.b $FC, 4, 0, 0, $FF, $F8	
+SME_hC8nb_16:	dc.b 0, 1	
+		dc.b $FC, 4, 0, 2, $FF, $F8	
+SME_hC8nb_1E:	dc.b 0, 1	
+		dc.b $FC, 4, 0, 4, $FF, $F8	
+SME_hC8nb_26:	dc.b 0, 1	
+		dc.b $FC, 8, 0, 6, $FF, $F8	
+SME_hC8nb_2E:	dc.b 0, 1	
+		dc.b $FC, 0, 0, 6, $FF, $FC	
+SME_hC8nb_36:	dc.b 0, 2	
+		dc.b $FC, 8, 0, 6, $FF, $F4	
+		dc.b $FC, 4, 0, 7, 0, 1	
+SME_hC8nb_44:	dc.b 0, 2	
+		dc.b $FC, 8, 0, 6, $FF, $F4	
+		dc.b $FC, 4, 0, 7, 0, 6	
+		even

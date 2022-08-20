@@ -11053,9 +11053,9 @@ Obj24_Index:	dc.w Obj24_Main-Obj24_Index
 
 Obj24_Main:				; XREF: Obj24_Index
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj24,4(a0)
-		move.w	#$41C,2(a0)
-		move.b	#4,1(a0)
+		move.l	#Map_obj24,mappings(a0)
+		move.w	#$41C,art_tile(a0)
+		move.b	#4,render_flags(a0)
 		move.b	#1,priority(a0)
 		move.b	#0,collision_flags(a0)
 		move.b	#$C,width_pixels(a0)
@@ -11094,16 +11094,16 @@ Obj27_LoadAnimal:			; XREF: Obj27_Index
 		addq.b	#2,routine(a0)
 		bsr.w	SingleObjLoad
 		bne.s	Obj27_Main
-		_move.b	#$28,0(a1)	; load animal object
+		move.b	#$28,ID(a1)	; load animal object
 		move.w	x_pos(a0),x_pos(a1)
 		move.w	y_pos(a0),y_pos(a1)
 		move.w	$3E(a0),$3E(a1)
 
 Obj27_Main:				; XREF: Obj27_Index
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj27,4(a0)
-		move.w	#$5A0,2(a0)
-		move.b	#4,1(a0)
+		move.l	#Map_obj27,mappings(a0)
+		move.w	#$5A0,art_tile(a0)
+		move.b	#4,render_flags(a0)
 		move.b	#1,priority(a0)
 		move.b	#0,collision_flags(a0)
 		move.b	#$C,width_pixels(a0)
@@ -11174,39 +11174,15 @@ Map_obj24:
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - explosion
 ; ---------------------------------------------------------------------------
-Map_obj27:	dc.w byte_8ED0-Map_obj27, byte_8ED6-Map_obj27
-		dc.w byte_8EDC-Map_obj27, byte_8EE2-Map_obj27
-		dc.w byte_8EF7-Map_obj27
-byte_8ED0:	dc.b 1
-		dc.b $F8, 9, 0,	0, $F4
-byte_8ED6:	dc.b 1
-		dc.b $F0, $F, 0, 6, $F0
-byte_8EDC:	dc.b 1
-		dc.b $F0, $F, 0, $16, $F0
-byte_8EE2:	dc.b 4
-		dc.b $EC, $A, 0, $26, $EC
-		dc.b $EC, 5, 0,	$2F, 4
-		dc.b 4,	5, $18,	$2F, $EC
-		dc.b $FC, $A, $18, $26,	$FC
-byte_8EF7:	dc.b 4
-		dc.b $EC, $A, 0, $33, $EC
-		dc.b $EC, 5, 0,	$3C, 4
-		dc.b 4,	5, $18,	$3C, $EC
-		dc.b $FC, $A, $18, $33,	$FC
-		align 2
+Map_obj27:
+          	include	"mappings/MapOb27.asm"
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - explosion from when	a boss is destroyed
 ; ---------------------------------------------------------------------------
-Map_obj3F:	dc.w byte_8ED0-Map_obj3F
-		dc.w byte_8F16-Map_obj3F
-		dc.w byte_8F1C-Map_obj3F
-		dc.w byte_8EE2-Map_obj3F
-		dc.w byte_8EF7-Map_obj3F
-byte_8F16:	dc.b 1
-		dc.b $F0, $F, 0, $40, $F0
-byte_8F1C:	dc.b 1
-		dc.b $F0, $F, 0, $50, $F0
-		align 2
+Map_obj3F:
+                include	"mappings/MapOb3F.asm"
+
+
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Object 28 - animals
@@ -12791,8 +12767,8 @@ Obj2E_Index:	dc.w Obj2E_Main-Obj2E_Index
 
 Obj2E_Main:				; XREF: Obj2E_Index
 		addq.b	#2,routine(a0)
-		move.w	#$680,2(a0)
-		move.b	#$24,1(a0)
+		move.w	#$680,art_tile(a0)
+		move.b	#$24,render_flags(a0)
 		move.b	#3,priority(a0)
 		move.b	#8,width_pixels(a0)
 		move.w	#-$300,y_vel(a0)
@@ -12803,15 +12779,15 @@ Obj2E_Main:				; XREF: Obj2E_Index
 		movea.l	#Map_obj26,a1
 		add.b	d0,d0
 		adda.w	(a1,d0.w),a1
-		addq.w	#1,a1
-		move.l	a1,4(a0)
+		addq.w	#2,a1 ; in s1 this is a #1 
+		move.l	a1,mappings(a0)
 
 Obj2E_Move:				; XREF: Obj2E_Index
 		tst.w	y_vel(a0)		; is object moving?
 		bpl.w	Obj2E_ChkEggman	; if not, branch
 		bsr.w	ObjectMove
 		addi.w	#$18,y_vel(a0)	; reduce object	speed
-		rts	
+		rts
 ; ===========================================================================
 
 Obj2E_ChkEggman:			; XREF: Obj2E_Move
