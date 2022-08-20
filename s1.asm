@@ -1,7 +1,7 @@
 ; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ; ASSEMBLY OPTIONS:
 ;
-padToPowerOfTwo = 1
+padToPowerOfTwo = 0
 ;	| If 1, pads the end of the ROM to the next power of two bytes (for real hardware)
 ;
 skipChecksumCheck = 0
@@ -3952,7 +3952,7 @@ loc_3946:
 		
 		move.w	(Camera_X_pos).w,(Camera_X_pos_copy).w
 		move.w	(Camera_Y_pos).w,(Camera_Y_pos_copy).w
-		
+
 		move.b	#1,(Object_RAM).w ; load	Sonic object
 		tst.w	(Demo_mode_flag).w
 		bmi.s	Level_ChkDebug
@@ -10170,7 +10170,7 @@ Map_obj18b:
 ; ---------------------------------------------------------------------------
 
 Obj19:					; XREF: Obj_Index
-		rts	
+		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - swinging ball on a chain from GHZ boss
@@ -10196,15 +10196,15 @@ Obj1A_Index:	dc.w Obj1A_Main-Obj1A_Index, Obj1A_ChkTouch-Obj1A_Index
 
 Obj1A_Main:				; XREF: Obj1A_Index
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj1A,4(a0)
-		move.w	#$4000,2(a0)
-		ori.b	#4,1(a0)
+		move.l	#Map_obj1A,mappings(a0)
+		move.w	#$4000,art_tile(a0)
+		ori.b	#4,render_flags(a0)
 		move.b	#4,priority(a0)
 		move.b	#7,$38(a0)	; set time delay for collapse
 		move.b	#$64,width_pixels(a0)
 		move.b	subtype(a0),mapping_frame(a0)
 		move.b	#$38,y_radius(a0)
-		bset	#4,1(a0)
+		bset	#4,render_flags(a0)
 
 Obj1A_ChkTouch:				; XREF: Obj1A_Index
 		tst.b	$3A(a0)		; has Sonic touched the	platform?
@@ -10267,20 +10267,20 @@ loc_82FC:
 		move.b	#6,routine(a0)	; run "Obj1A_Display" routine
 
 locret_8308:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj1A_TimeZero:				; XREF: Obj1A_Display
 		bsr.w	ObjectMoveAndFall
 		bsr.w	DisplaySprite
-		tst.b	1(a0)
+		tst.b	render_flags(a0)
 		bpl.s	Obj1A_Delete
-		rts	
+		rts
 ; ===========================================================================
 
 Obj1A_Delete:				; XREF: Obj1A_Index
 		bsr.w	DeleteObject
-		rts	
+		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Object 53 - collapsing floors	(MZ, SLZ, SBZ)
@@ -10299,20 +10299,20 @@ Obj53_Index:	dc.w Obj53_Main-Obj53_Index, Obj53_ChkTouch-Obj53_Index
 
 Obj53_Main:				; XREF: Obj53_Index
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj53,4(a0)
-		move.w	#$42B8,2(a0)
+		move.l	#Map_obj53,mappings(a0)
+		move.w	#$42B8,art_tile(a0)
 		cmpi.b	#3,(Current_Zone).w ; check if level is SLZ
 		bne.s	Obj53_NotSLZ
-		move.w	#$44E0,2(a0)	; SLZ specific code
+		move.w	#$44E0,art_tile(a0)	; SLZ specific code
 		addq.b	#2,mapping_frame(a0)
 
 Obj53_NotSLZ:
 		cmpi.b	#5,(Current_Zone).w ; check if level is SBZ
 		bne.s	Obj53_NotSBZ
-		move.w	#$43F5,2(a0)	; SBZ specific code
+		move.w	#$43F5,art_tile(a0)	; SBZ specific code
 
 Obj53_NotSBZ:
-		ori.b	#4,1(a0)
+		ori.b	#4,render_flags(a0)
 		move.b	#4,priority(a0)
 		move.b	#7,$38(a0)
 		move.b	#$44,width_pixels(a0)
@@ -10331,11 +10331,11 @@ Obj53_Solid:
 		bpl.s	Obj53_MarkAsGone
 		btst	#3,status(a1)
 		beq.s	Obj53_MarkAsGone
-		bclr	#0,1(a0)
+		bclr	#0,render_flags(a0)
 		move.w	x_pos(a1),d0
 		sub.w	x_pos(a0),d0
 		bcc.s	Obj53_MarkAsGone
-		bset	#0,1(a0)
+		bset	#0,render_flags(a0)
 
 Obj53_MarkAsGone:
 		bra.w	MarkObjGone
@@ -10386,20 +10386,20 @@ loc_842E:
 		move.b	#6,routine(a0)	; run "Obj53_Display" routine
 
 locret_843A:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj53_TimeZero:				; XREF: Obj53_Display
 		bsr.w	ObjectMoveAndFall
 		bsr.w	DisplaySprite
-		tst.b	1(a0)
+		tst.b	render_flags(a0)
 		bpl.s	Obj53_Delete
-		rts	
+		rts
 ; ===========================================================================
 
 Obj53_Delete:				; XREF: Obj53_Index
 		bsr.w	DeleteObject
-		rts	
+		rts
 ; ===========================================================================
 
 Obj53_Collapse:				; XREF: Obj53_ChkTouch
@@ -10429,12 +10429,13 @@ loc_8486:				; XREF: Obj53_Collapse
 		moveq	#0,d0
 		move.b	mapping_frame(a0),d0
 		add.w	d0,d0
-		movea.l	4(a0),a3
-		adda.w	(a3,d0.w),a3
-		addq.w	#1,a3
-		bset	#5,1(a0)
-		_move.b	0(a0),d4
-		move.b	1(a0),d5
+		movea.l	mappings(a0),a3
+		adda.w	(a3,d0.w),a3	; put address of appropriate frame to a3
+         	move.w	(a3)+,d1	; amount of pieces the frame consists of
+          	subq.w	#1,d1
+		bset	#5,render_flags(a0)
+		move.b	ID(a0),d4
+		move.b	render_flags(a0),d5
 		movea.l	a0,a1
 		bra.s	loc_84B2
 ; ===========================================================================
@@ -10442,16 +10443,16 @@ loc_8486:				; XREF: Obj53_Collapse
 loc_84AA:
 		bsr.w	SingleObjLoad
 		bne.s	loc_84F2
-		addq.w	#5,a3
+		addq.w	#6,a3  ; in s1 this is a 5
 
 loc_84B2:
 		move.b	#6,routine(a1)
-		_move.b	d4,0(a1)
-		move.l	a3,4(a1)
-		move.b	d5,1(a1)
+		move.b	d4,ID(a1)
+		move.l	a3,mappings(a1)
+		move.b	d5,render_flags(a1)
 		move.w	x_pos(a0),x_pos(a1)
 		move.w	y_pos(a0),y_pos(a1)
-		move.w	2(a0),2(a1)
+		move.w	art_tile(a0),art_tile(a1)
 		move.b	priority(a0),priority(a1)
 		move.b	width_pixels(a0),width_pixels(a1)
 		move.b	(a4)+,$38(a1)
@@ -10490,7 +10491,7 @@ SlopeObject2:				; XREF: Obj1A_WalkOff; et al
 		sub.w	x_pos(a0),d0
 		add.w	d1,d0
 		lsr.w	#1,d0
-		btst	#0,1(a0)
+		btst	#0,render_flags(a0)
 		beq.s	loc_854E
 		not.w	d0
 		add.w	d1,d0
@@ -10508,7 +10509,7 @@ loc_854E:
 		sub.w	d2,x_pos(a1)
 
 locret_856E:
-		rts	
+		rts
 ; End of function SlopeObject2
 
 ; ===========================================================================
@@ -10517,7 +10518,7 @@ locret_856E:
 ; ---------------------------------------------------------------------------
 Obj1A_SlopeData:
 		binclude	misc/ghzledge.bin
-		align 2
+		even
 
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - GHZ	collapsing ledge
@@ -10552,9 +10553,9 @@ Obj1C_Main:				; XREF: Obj1C_Index
 		move.b	subtype(a0),d0	; copy object type to d0
 		mulu.w	#$A,d0		; multiply by $A
 		lea	Obj1C_Var(pc,d0.w),a1
-		move.l	(a1)+,4(a0)
-		move.w	(a1)+,2(a0)
-		ori.b	#4,1(a0)
+		move.l	(a1)+,mappings(a0)
+		move.w	(a1)+,art_tile(a0)
+		ori.b	#4,render_flags(a0)
 		move.b	(a1)+,mapping_frame(a0)
 		move.b	(a1)+,width_pixels(a0)
 		move.b	(a1)+,priority(a0)
@@ -12027,9 +12028,9 @@ Obj23_Main:				; XREF: Obj23_Index
 		subq.w	#1,$32(a0)
 		bpl.s	Obj23_ChkCancel
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj23,4(a0)
-		move.w	#$2444,2(a0)
-		move.b	#4,1(a0)
+		move.l	#Map_obj23,mappings(a0)
+		move.w	#$2444,art_tile(a0)
+		move.b	#4,render_flags(a0)
 		move.b	#3,priority(a0)
 		move.b	#8,width_pixels(a0)
 		andi.b	#3,status(a0)
@@ -13262,7 +13263,7 @@ Obj2B_ChgAni:
 		move.b	#2,anim(a0)	; use stationary animation
 
 locret_ABB6:
-		rts	
+		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Animation script - Chopper enemy
@@ -16167,9 +16168,9 @@ Obj36_Var:	dc.b 0,	$14		; frame	number,	object width
 
 Obj36_Main:				; XREF: Obj36_Index
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj36,4(a0)
-		move.w	#$51B,2(a0)
-		ori.b	#4,1(a0)
+		move.l	#Map_obj36,mappings(a0)
+		move.w	#$51B,art_tile(a0)
+		ori.b	#4,render_flags(a0)
 		move.b	#4,priority(a0)
 		move.b	subtype(a0),d0
 		andi.b	#$F,subtype(a0)
@@ -16250,7 +16251,7 @@ Obj36_Display:
 		sub.w	d1,d0
 		cmpi.w	#$280,d0
 		bhi.w	DeleteObject
-		rts	
+		rts
 ; ===========================================================================
 
 Obj36_Type0x:				; XREF: Obj36_Solid
@@ -16275,7 +16276,7 @@ Obj36_Type01:				; XREF: Obj36_TypeIndex
 		move.b	$34(a0),d0
 		add.w	$32(a0),d0
 		move.w	d0,y_pos(a0)	; move the object vertically
-		rts	
+		rts
 ; ===========================================================================
 
 Obj36_Type02:				; XREF: Obj36_TypeIndex
@@ -16284,7 +16285,7 @@ Obj36_Type02:				; XREF: Obj36_TypeIndex
 		move.b	$34(a0),d0
 		add.w	$30(a0),d0
 		move.w	d0,x_pos(a0)	; move the object horizontally
-		rts	
+		rts
 ; ===========================================================================
 
 Obj36_Wait:
@@ -16319,7 +16320,7 @@ loc_CFC6:
 		move.w	#60,$38(a0)	; set time delay to 1 second
 
 locret_CFE6:
-		rts	
+		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - spikes
@@ -16428,9 +16429,9 @@ Obj3C_Index:	dc.w Obj3C_Main-Obj3C_Index
 
 Obj3C_Main:				; XREF: Obj3C_Index
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj3C,4(a0)
-		move.w	#$450F,2(a0)
-		move.b	#4,1(a0)
+		move.l	#Map_obj3C,mappings(a0)
+		move.w	#$450F,art_tile(a0)
+		move.b	#4,render_flags(a0)
 		move.b	#$10,width_pixels(a0)
 		move.b	#4,priority(a0)
 		move.b	subtype(a0),mapping_frame(a0)
@@ -16466,7 +16467,7 @@ Obj3C_ChkSpeed:
 		cmp.w	x_pos(a1),d0	; is Sonic to the right	of the block?
 		bcs.s	Obj3C_Smash	; if yes, branch
 		subq.w	#8,x_pos(a1)
-		lea	(Obj3C_FragSpd2).l,a4 ;	use fragments that move	left
+		lea	Obj3C_FragSpd2(pc),a4 ;	use fragments that move	left
 
 Obj3C_Smash:
 		move.w	x_vel(a1),inertia(a1)
@@ -16480,9 +16481,9 @@ Obj3C_FragMove:				; XREF: Obj3C_Index
 		bsr.w	ObjectMove
 		addi.w	#$70,y_vel(a0)	; make fragment	fall faster
 		bsr.w	DisplaySprite
-		tst.b	1(a0)
+		tst.b	render_flags(a0)
 		bpl.w	DeleteObject
-		rts	
+		rts
 
 ; ---------------------------------------------------------------------------
 ; Subroutine to	smash a	block (GHZ walls and MZ	blocks)
@@ -16495,12 +16496,13 @@ SmashObject:				; XREF: Obj3C_Smash
 		moveq	#0,d0
 		move.b	mapping_frame(a0),d0
 		add.w	d0,d0
-		movea.l	4(a0),a3
-		adda.w	(a3,d0.w),a3
-		addq.w	#1,a3
-		bset	#5,1(a0)
-		_move.b	0(a0),d4
-		move.b	1(a0),d5
+		movea.l	mappings(a0),a3
+		adda.w	(a3,d0.w),a3	; put address of appropriate frame to a3
+         	move.w	(a3)+,d1	; amount of pieces the frame consists of
+          	subq.w	#1,d1
+		bset	#5,render_flags(a0)
+		move.b	ID(a0),d4
+		move.b	render_flags(a0),d5
 		movea.l	a0,a1
 		bra.s	Smash_LoadFrag
 ; ===========================================================================
@@ -16508,16 +16510,16 @@ SmashObject:				; XREF: Obj3C_Smash
 Smash_Loop:
 		bsr.w	SingleObjLoad
 		bne.s	Smash_PlaySnd
-		addq.w	#5,a3
+		addq.w	#6,a3
 
 Smash_LoadFrag:				; XREF: SmashObject
 		move.b	#4,routine(a1)
-		_move.b	d4,0(a1)
-		move.l	a3,4(a1)
-		move.b	d5,1(a1)
+		_move.b	d4,ID(a1)
+		move.l	a3,mappings(a1)
+		move.b	d5,render_flags(a1)
 		move.w	x_pos(a0),x_pos(a1)
 		move.w	y_pos(a0),y_pos(a1)
-		move.w	2(a0),2(a1)
+		move.w	art_tile(a0),art_tile(a1)
 		move.b	priority(a0),priority(a1)
 		move.b	width_pixels(a0),width_pixels(a1)
 		move.w	(a4)+,x_vel(a1)
@@ -17898,9 +17900,9 @@ Obj42_Index:	dc.w Obj42_Main-Obj42_Index
 
 Obj42_Main:				; XREF: Obj42_Index
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj42,4(a0)
-		move.w	#$49B,2(a0)
-		move.b	#4,1(a0)
+		move.l	#Map_obj42,mappings(a0)
+		move.w	#$49B,art_tile(a0)
+		move.b	#4,render_flags(a0)
 		move.b	#4,priority(a0)
 		move.b	#$14,width_pixels(a0)
 		move.b	#$10,y_radius(a0)
@@ -17937,7 +17939,7 @@ loc_DDEA:
 		move.b	#1,anim(a0)
 		tst.b	subtype(a0)		; check	object type
 		beq.s	locret_DE12	; if type is 00, branch
-		move.w	#$249B,2(a0)
+		move.w	#$249B,art_tile(a0)
 		move.b	#8,routine_secondary(a0)	; run type 01 newtron subroutine
 		move.b	#4,anim(a0)	; use different	animation
 
@@ -17972,7 +17974,7 @@ loc_DE42:
 		move.w	#0,y_vel(a0)	; stop newtron falling
 		addq.b	#2,routine_secondary(a0)
 		move.b	#2,anim(a0)
-		btst	#5,2(a0)
+		btst	#5,art_tile(a0)
 		beq.s	Obj42_Move
 		addq.b	#1,anim(a0)
 
@@ -18021,7 +18023,7 @@ Obj42_FireMissile:
 		move.b	#1,$32(a0)
 		bsr.w	SingleObjLoad
 		bne.s	locret_DF14
-		_move.b	#$23,0(a1)	; load missile object
+		_move.b	#$23,ID(a1)	; load missile object
 		move.w	x_pos(a0),x_pos(a1)
 		move.w	y_pos(a0),y_pos(a1)
 		subq.w	#8,y_pos(a1)
@@ -18038,7 +18040,7 @@ loc_DF04:
 		move.b	#1,subtype(a1)
 
 locret_DF14:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj42_Delete:				; XREF: Obj42_Index
@@ -18263,9 +18265,9 @@ Obj44_Index:	dc.w Obj44_Main-Obj44_Index
 
 Obj44_Main:				; XREF: Obj44_Index
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj44,4(a0)
-		move.w	#$434C,2(a0)
-		ori.b	#4,1(a0)
+		move.l	#Map_obj44,mappings(a0)
+		move.w	#$434C,art_tile(a0)
+		ori.b	#4,render_flags(a0)
 		move.b	#8,width_pixels(a0)
 		move.b	#6,priority(a0)
 		move.b	subtype(a0),mapping_frame(a0)	; copy object type number to frame number
@@ -40318,74 +40320,72 @@ Off_Objects:	dc.w ObjPos_GHZ1-Off_Objects, ObjPos_Null-Off_Objects
 		dc.w ObjPos_SBZ1pf1-Off_Objects, ObjPos_SBZ1pf2-Off_Objects
 		dc.b $FF, $FF, 0, 0, 0,	0
 ObjPos_GHZ1:	binclude	levels/objpos/ghz1.bin
-		align 2
+		even
 ObjPos_GHZ2:	binclude	levels/objpos/ghz2.bin
-		align 2
+		even
 ObjPos_GHZ3:	binclude	levels/objpos/ghz3.bin
-		align 2
+		even
 ObjPos_LZ1:	binclude	levels/objpos/lz1.bin
-		align 2
+		even
 ObjPos_LZ2:	binclude	levels/objpos/lz2.bin
-		align 2
+		even
 ObjPos_LZ3:	binclude	levels/objpos/lz3.bin
-		align 2
+		even
 ObjPos_SBZ3:	binclude	levels/objpos/sbz3.bin
-		align 2
+		even
 ObjPos_LZ1pf1:	binclude	levels/objpos/lz1pf1.bin
-		align 2
+		even
 ObjPos_LZ1pf2:	binclude	levels/objpos/lz1pf2.bin
-		align 2
+		even
 ObjPos_LZ2pf1:	binclude	levels/objpos/lz2pf1.bin
-		align 2
+		even
 ObjPos_LZ2pf2:	binclude	levels/objpos/lz2pf2.bin
-		align 2
+		even
 ObjPos_LZ3pf1:	binclude	levels/objpos/lz3pf1.bin
-		align 2
+		even
 ObjPos_LZ3pf2:	binclude	levels/objpos/lz3pf2.bin
-		align 2
+		even
 ObjPos_MZ1:	binclude	levels/objpos/mz1.bin
-		align 2
+		even
 ObjPos_MZ2:	binclude	levels/objpos/mz2.bin
-		align 2
+	        even
 ObjPos_MZ3:	binclude	levels/objpos/mz3.bin
-		align 2
+	even
 ObjPos_SLZ1:	binclude	levels/objpos/slz1.bin
-		align 2
+	even
 ObjPos_SLZ2:	binclude	levels/objpos/slz2.bin
-		align 2
+		even
 ObjPos_SLZ3:	binclude	levels/objpos/slz3.bin
-		align 2
+		even
 ObjPos_SYZ1:	binclude	levels/objpos/syz1.bin
-		align 2
+		even
 ObjPos_SYZ2:	binclude	levels/objpos/syz2.bin
-		align 2
+		even
 ObjPos_SYZ3:	binclude	levels/objpos/syz3.bin
-		align 2
+		even
 ObjPos_SBZ1:	binclude	levels/objpos/sbz1.bin
-		align 2
+	even
 ObjPos_SBZ2:	binclude	levels/objpos/sbz2.bin
-		align 2
+		even
 ObjPos_FZ:	binclude	levels/objpos/fz.bin
-		align 2
+		even
 ObjPos_SBZ1pf1:	binclude	levels/objpos/sbz1pf1.bin
-		align 2
+		even
 ObjPos_SBZ1pf2:	binclude	levels/objpos/sbz1pf2.bin
-		align 2
+		even
 ObjPos_SBZ1pf3:	binclude	levels/objpos/sbz1pf3.bin
-		align 2
+		even
 ObjPos_SBZ1pf4:	binclude	levels/objpos/sbz1pf4.bin
-		align 2
+		even
 ObjPos_SBZ1pf5:	binclude	levels/objpos/sbz1pf5.bin
-		align 2
+		even
 ObjPos_SBZ1pf6:	binclude	levels/objpos/sbz1pf6.bin
-		align 2
+		even
 ObjPos_End:	binclude	levels/objpos/ending.bin
-		align 2
+		even
 ObjPos_Null:	dc.b $FF, $FF, 0, 0, 0,	0
 ; ---------------------------------------------------------------------------
-		rept $62A
-		dc.b $FF
-		endm
+	          align $8000
 
 ; SoundDriver:
 	include	"s1.sounddriver.asm"

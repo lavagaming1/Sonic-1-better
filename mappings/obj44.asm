@@ -1,22 +1,23 @@
-; ---------------------------------------------------------------------------
-; Sprite mappings - walls (GHZ)
-; ---------------------------------------------------------------------------
-		dc.w byte_E256-Map_obj44
-		dc.w byte_E26B-Map_obj44
-		dc.w byte_E280-Map_obj44
-byte_E256:	dc.b 4
-		dc.b $E0, 5, 0,	4, $F8
-		dc.b $F0, 5, 0,	8, $F8
-		dc.b 0,	5, 0, 8, $F8
-		dc.b $10, 5, 0,	8, $F8
-byte_E26B:	dc.b 4
-		dc.b $E0, 5, 0,	8, $F8
-		dc.b $F0, 5, 0,	8, $F8
-		dc.b 0,	5, 0, 8, $F8
-		dc.b $10, 5, 0,	8, $F8
-byte_E280:	dc.b 4
-		dc.b $E0, 5, 0,	0, $F8
-		dc.b $F0, 5, 0,	0, $F8
-		dc.b 0,	5, 0, 0, $F8
-		dc.b $10, 5, 0,	0, $F8
-		align 2
+; --------------------------------------------------------------------------------
+; Sprite mappings - output from SonMapEd - Sonic 3 & Knuckles format
+; --------------------------------------------------------------------------------
+
+SME_Y9qdb:	
+		dc.w SME_Y9qdb_6-SME_Y9qdb, SME_Y9qdb_20-SME_Y9qdb	
+		dc.w SME_Y9qdb_3A-SME_Y9qdb	
+SME_Y9qdb_6:	dc.b 0, 4	
+		dc.b $E0, 5, 0, 4, $FF, $F8	
+		dc.b $F0, 5, 0, 8, $FF, $F8	
+		dc.b 0, 5, 0, 8, $FF, $F8	
+		dc.b $10, 5, 0, 8, $FF, $F8	
+SME_Y9qdb_20:	dc.b 0, 4	
+		dc.b $E0, 5, 0, 8, $FF, $F8	
+		dc.b $F0, 5, 0, 8, $FF, $F8	
+		dc.b 0, 5, 0, 8, $FF, $F8	
+		dc.b $10, 5, 0, 8, $FF, $F8	
+SME_Y9qdb_3A:	dc.b 0, 4	
+		dc.b $E0, 5, 0, 0, $FF, $F8	
+		dc.b $F0, 5, 0, 0, $FF, $F8	
+		dc.b 0, 5, 0, 0, $FF, $F8	
+		dc.b $10, 5, 0, 0, $FF, $F8	
+		even

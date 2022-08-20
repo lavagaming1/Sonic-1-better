@@ -1,40 +1,42 @@
-; ---------------------------------------------------------------------------
-; Sprite mappings - water surface (LZ)
-; ---------------------------------------------------------------------------
-		dc.w byte_11178-Map_obj1B, byte_11188-Map_obj1B
-		dc.w byte_11198-Map_obj1B, byte_111A8-Map_obj1B
-		dc.w byte_111C7-Map_obj1B, byte_111E6-Map_obj1B
-byte_11178:	dc.b 3
-		dc.b $FD, $D, 0, 0, $A0
-		dc.b $FD, $D, 0, 0, $E0
-		dc.b $FD, $D, 0, 0, $20
-byte_11188:	dc.b 3
-		dc.b $FD, $D, 0, 8, $A0
-		dc.b $FD, $D, 0, 8, $E0
-		dc.b $FD, $D, 0, 8, $20
-byte_11198:	dc.b 3
-		dc.b $FD, $D, 8, 0, $A0
-		dc.b $FD, $D, 8, 0, $E0
-		dc.b $FD, $D, 8, 0, $20
-byte_111A8:	dc.b 6
-		dc.b $FD, $D, 0, 0, $A0
-		dc.b $FD, $D, 0, 0, $C0
-		dc.b $FD, $D, 0, 0, $E0
-		dc.b $FD, $D, 0, 0, 0
-		dc.b $FD, $D, 0, 0, $20
-		dc.b $FD, $D, 0, 0, $40
-byte_111C7:	dc.b 6
-		dc.b $FD, $D, 0, 8, $A0
-		dc.b $FD, $D, 0, 8, $C0
-		dc.b $FD, $D, 0, 8, $E0
-		dc.b $FD, $D, 0, 8, 0
-		dc.b $FD, $D, 0, 8, $20
-		dc.b $FD, $D, 0, 8, $40
-byte_111E6:	dc.b 6
-		dc.b $FD, $D, 8, 0, $A0
-		dc.b $FD, $D, 8, 0, $C0
-		dc.b $FD, $D, 8, 0, $E0
-		dc.b $FD, $D, 8, 0, 0
-		dc.b $FD, $D, 8, 0, $20
-		dc.b $FD, $D, 8, 0, $40
-		align 2
+; --------------------------------------------------------------------------------
+; Sprite mappings - output from SonMapEd - Sonic 3 & Knuckles format
+; --------------------------------------------------------------------------------
+
+SME_l6Bkr:	
+		dc.w SME_l6Bkr_C-SME_l6Bkr, SME_l6Bkr_20-SME_l6Bkr	
+		dc.w SME_l6Bkr_34-SME_l6Bkr, SME_l6Bkr_48-SME_l6Bkr	
+		dc.w SME_l6Bkr_6E-SME_l6Bkr, SME_l6Bkr_94-SME_l6Bkr	
+SME_l6Bkr_C:	dc.b 0, 3	
+		dc.b $FD, $D, 0, 0, $FF, $A0	
+		dc.b $FD, $D, 0, 0, $FF, $E0	
+		dc.b $FD, $D, 0, 0, 0, $20	
+SME_l6Bkr_20:	dc.b 0, 3	
+		dc.b $FD, $D, 0, 8, $FF, $A0	
+		dc.b $FD, $D, 0, 8, $FF, $E0	
+		dc.b $FD, $D, 0, 8, 0, $20	
+SME_l6Bkr_34:	dc.b 0, 3	
+		dc.b $FD, $D, 8, 0, $FF, $A0	
+		dc.b $FD, $D, 8, 0, $FF, $E0	
+		dc.b $FD, $D, 8, 0, 0, $20	
+SME_l6Bkr_48:	dc.b 0, 6	
+		dc.b $FD, $D, 0, 0, $FF, $A0	
+		dc.b $FD, $D, 0, 0, $FF, $C0	
+		dc.b $FD, $D, 0, 0, $FF, $E0	
+		dc.b $FD, $D, 0, 0, 0, 0	
+		dc.b $FD, $D, 0, 0, 0, $20	
+		dc.b $FD, $D, 0, 0, 0, $40	
+SME_l6Bkr_6E:	dc.b 0, 6	
+		dc.b $FD, $D, 0, 8, $FF, $A0	
+		dc.b $FD, $D, 0, 8, $FF, $C0	
+		dc.b $FD, $D, 0, 8, $FF, $E0	
+		dc.b $FD, $D, 0, 8, 0, 0	
+		dc.b $FD, $D, 0, 8, 0, $20	
+		dc.b $FD, $D, 0, 8, 0, $40	
+SME_l6Bkr_94:	dc.b 0, 6	
+		dc.b $FD, $D, 8, 0, $FF, $A0	
+		dc.b $FD, $D, 8, 0, $FF, $C0	
+		dc.b $FD, $D, 8, 0, $FF, $E0	
+		dc.b $FD, $D, 8, 0, 0, 0	
+		dc.b $FD, $D, 8, 0, 0, $20	
+		dc.b $FD, $D, 8, 0, 0, $40	
+		even

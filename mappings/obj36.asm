@@ -1,33 +1,32 @@
-; ---------------------------------------------------------------------------
-; Sprite mappings - spikes
-; ---------------------------------------------------------------------------
-		dc.w byte_CFF4-Map_obj36
-		dc.w byte_D004-Map_obj36
-		dc.w byte_D014-Map_obj36
-		dc.w byte_D01A-Map_obj36
-		dc.w byte_D02A-Map_obj36
-		dc.w byte_D049-Map_obj36
-byte_CFF4:	dc.b 3			; 3 spikes
-		dc.b $F0, 3, 0,	4, $EC
-		dc.b $F0, 3, 0,	4, $FC
-		dc.b $F0, 3, 0,	4, $C
-byte_D004:	dc.b 3			; 3 spikes facing sideways
-		dc.b $EC, $C, 0, 0, $F0
-		dc.b $FC, $C, 0, 0, $F0
-		dc.b $C, $C, 0,	0, $F0
-byte_D014:	dc.b 1			; 1 spike
-		dc.b $F0, 3, 0,	4, $FC
-byte_D01A:	dc.b 3			; 3 spikes widely spaced
-		dc.b $F0, 3, 0,	4, $E4
-		dc.b $F0, 3, 0,	4, $FC
-		dc.b $F0, 3, 0,	4, $14
-byte_D02A:	dc.b 6			; 6 spikes
-		dc.b $F0, 3, 0,	4, $C0
-		dc.b $F0, 3, 0,	4, $D8
-		dc.b $F0, 3, 0,	4, $F0
-		dc.b $F0, 3, 0,	4, 8
-		dc.b $F0, 3, 0,	4, $20
-		dc.b $F0, 3, 0,	4, $38
-byte_D049:	dc.b 1			; 1 spike facing sideways
-		dc.b $FC, $C, 0, 0, $F0
-		align 2
+; --------------------------------------------------------------------------------
+; Sprite mappings - output from SonMapEd - Sonic 3 & Knuckles format
+; --------------------------------------------------------------------------------
+
+SME_1KTvw:	
+		dc.w SME_1KTvw_C-SME_1KTvw, SME_1KTvw_20-SME_1KTvw	
+		dc.w SME_1KTvw_34-SME_1KTvw, SME_1KTvw_3C-SME_1KTvw	
+		dc.w SME_1KTvw_50-SME_1KTvw, SME_1KTvw_76-SME_1KTvw	
+SME_1KTvw_C:	dc.b 0, 3	
+		dc.b $F0, 3, 0, 4, $FF, $EC	
+		dc.b $F0, 3, 0, 4, $FF, $FC	
+		dc.b $F0, 3, 0, 4, 0, $C	
+SME_1KTvw_20:	dc.b 0, 3	
+		dc.b $EC, $C, 0, 0, $FF, $F0	
+		dc.b $FC, $C, 0, 0, $FF, $F0	
+		dc.b $C, $C, 0, 0, $FF, $F0	
+SME_1KTvw_34:	dc.b 0, 1	
+		dc.b $F0, 3, 0, 4, $FF, $FC	
+SME_1KTvw_3C:	dc.b 0, 3	
+		dc.b $F0, 3, 0, 4, $FF, $E4	
+		dc.b $F0, 3, 0, 4, $FF, $FC	
+		dc.b $F0, 3, 0, 4, 0, $14	
+SME_1KTvw_50:	dc.b 0, 6	
+		dc.b $F0, 3, 0, 4, $FF, $C0	
+		dc.b $F0, 3, 0, 4, $FF, $D8	
+		dc.b $F0, 3, 0, 4, $FF, $F0	
+		dc.b $F0, 3, 0, 4, 0, 8	
+		dc.b $F0, 3, 0, 4, 0, $20	
+		dc.b $F0, 3, 0, 4, 0, $38	
+SME_1KTvw_76:	dc.b 0, 1	
+		dc.b $FC, $C, 0, 0, $FF, $F0	
+		even
