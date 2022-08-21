@@ -13768,11 +13768,11 @@ locret_B116:
 ; Collision data for large moving platforms (MZ)
 ; ---------------------------------------------------------------------------
 Obj2F_Data1:	binclude	misc/mz_pfm1.bin
-		align 2
+		even
 Obj2F_Data2:	binclude	misc/mz_pfm2.bin
-		align 2
+		even
 Obj2F_Data3:	binclude	misc/mz_pfm3.bin
-		align 2
+		even
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Object 35 - fireball that sits on the	floor (MZ)
@@ -19219,7 +19219,7 @@ Obj4D_MakeLava:				; XREF: Obj4D_Main
 
 loc_EF0A:
 		dbf	d1,Obj4D_Loop
-		rts	
+		rts
 ; ===========================================================================
 
 loc_EF10:				; XREF: Obj4D_Main
@@ -19447,7 +19447,7 @@ Obj4E_ChkDel:
 		bhi.s	Obj4E_ChkGone
 
 locret_F17E:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj4E_ChkGone:				; XREF: Obj4E_ChkDel
@@ -20183,9 +20183,9 @@ Obj51_Index:	dc.w Obj51_Main-Obj51_Index
 
 Obj51_Main:				; XREF: Obj51_Index
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj51,4(a0)
-		move.w	#$42B8,2(a0)
-		move.b	#4,1(a0)
+		move.l	#Map_obj51,mappings(a0)
+		move.w	#$42B8,art_tile(a0)
+		move.b	#4,render_flags(a0)
 		move.b	#$10,width_pixels(a0)
 		move.b	#4,priority(a0)
 		move.b	subtype(a0),mapping_frame(a0)
@@ -20202,7 +20202,7 @@ Obj51_Solid:				; XREF: Obj51_Index
 		bne.s	Obj51_Smash
 
 locret_FCFC:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj51_Smash:				; XREF: Obj51_Solid
@@ -20220,13 +20220,13 @@ Obj51_Smash:				; XREF: Obj51_Solid
 		bclr	#3,status(a0)
 		clr.b	routine_secondary(a0)
 		move.b	#1,mapping_frame(a0)
-		lea	(Obj51_Speeds).l,a4 ; load broken	fragment speed data
+		lea	Obj51_Speeds(pc),a4 ; load broken	fragment speed data
 		moveq	#3,d1		; set number of	fragments to 4
 		move.w	#$38,d2
 		bsr.w	SmashObject
 		bsr.w	SingleObjLoad
 		bne.s	Obj51_Display
-		_move.b	#$29,0(a1)	; load points object
+		move.b	#$29,ID(a1)	; load points object
 		move.w	x_pos(a0),x_pos(a1)
 		move.w	y_pos(a0),y_pos(a1)
 		move.w	(Chain_Bonus_counter).w,d2
@@ -20252,9 +20252,9 @@ Obj51_Display:				; XREF: Obj51_Index
 		bsr.w	ObjectMove
 		addi.w	#$38,y_vel(a0)
 		bsr.w	DisplaySprite
-		tst.b	1(a0)
+		tst.b	render_flags(a0)
 		bpl.w	DeleteObject
-		rts	
+		rts
 ; ===========================================================================
 Obj51_Speeds:	dc.w $FE00, $FE00	; x-speed, y-speed
 		dc.w $FF00, $FF00
@@ -23109,7 +23109,7 @@ loc_11DDC:
 
 Obj60_Animate:
 		lea	(Ani_obj60).l,a1
-		bsr.w	AnimateSprite
+		jsr	AnimateSprite
 		bra.w	Obj60_ChkDel
 ; ===========================================================================
 
@@ -23242,7 +23242,7 @@ Obj16_Main:				; XREF: Obj16_Index
 
 Obj16_Move:				; XREF: Obj16_Index
 		lea	(Ani_obj16).l,a1
-		bsr.w	AnimateSprite
+		jsr	AnimateSprite
 		moveq	#0,d0
 		move.b	mapping_frame(a0),d0	; move frame number to d0
 		move.b	Obj16_Data(pc,d0.w),collision_flags(a0) ; load collision response (based on	d0)

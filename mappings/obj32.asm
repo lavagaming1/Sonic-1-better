@@ -1,18 +1,20 @@
-; ---------------------------------------------------------------------------
-; Sprite mappings - switches (MZ, SYZ, LZ, SBZ)
-; ---------------------------------------------------------------------------
-		dc.w byte_BEAC-Map_obj32
-		dc.w byte_BEB7-Map_obj32
-		dc.w byte_BEC2-Map_obj32
-		dc.w byte_BEB7-Map_obj32
-byte_BEAC:	dc.b 2
-		dc.b $F5, 5, 0,	0, $F0
-		dc.b $F5, 5, 8,	0, 0
-byte_BEB7:	dc.b 2
-		dc.b $F5, 5, 0,	4, $F0
-		dc.b $F5, 5, 8,	4, 0
-byte_BEC2:	dc.b 2
-		dc.b $F5, 5, $FF, $FC, $F0
-		dc.b $F5, 5, 7,	$FC, 0
-		dc.b $F8, 5, 0,	0, $F8
-		align 2
+; --------------------------------------------------------------------------------
+; Sprite mappings - output from SonMapEd - Sonic 3 & Knuckles format
+; --------------------------------------------------------------------------------
+
+SME_qktvB:	
+		dc.w SME_qktvB_8-SME_qktvB, SME_qktvB_16-SME_qktvB	
+		dc.w SME_qktvB_24-SME_qktvB, SME_qktvB_32-SME_qktvB	
+SME_qktvB_8:	dc.b 0, 2	
+		dc.b $F5, 5, 0, 0, $FF, $F0	
+		dc.b $F5, 5, 8, 0, 0, 0	
+SME_qktvB_16:	dc.b 0, 2	
+		dc.b $F5, 5, 0, 4, $FF, $F0	
+		dc.b $F5, 5, 8, 4, 0, 0	
+SME_qktvB_24:	dc.b 0, 2	
+		dc.b $F5, 5, $FF, $FC, $FF, $F0	
+		dc.b $F5, 5, 7, $FC, 0, 0	
+SME_qktvB_32:	dc.b 0, 2	
+		dc.b $F5, 5, 0, 4, $FF, $F0	
+		dc.b $F5, 5, 8, 4, 0, 0	
+		even

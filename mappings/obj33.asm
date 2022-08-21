@@ -1,13 +1,14 @@
-; ---------------------------------------------------------------------------
-; Sprite mappings - pushable blocks (MZ, LZ)
-; ---------------------------------------------------------------------------
-		dc.w byte_C2EA-Map_obj33
-		dc.w byte_C2F0-Map_obj33
-byte_C2EA:	dc.b 1
-		dc.b $F0, $F, 0, 8, $F0	; single block
-byte_C2F0:	dc.b 4
-		dc.b $F0, $F, 0, 8, $C0	; row of 4 blocks
-		dc.b $F0, $F, 0, 8, $E0
-		dc.b $F0, $F, 0, 8, 0
-		dc.b $F0, $F, 0, 8, $20
-		align 2
+; --------------------------------------------------------------------------------
+; Sprite mappings - output from SonMapEd - Sonic 3 & Knuckles format
+; --------------------------------------------------------------------------------
+
+SME_Vw4H3:	
+		dc.w SME_Vw4H3_4-SME_Vw4H3, SME_Vw4H3_C-SME_Vw4H3	
+SME_Vw4H3_4:	dc.b 0, 1	
+		dc.b $F0, $F, 0, 8, $FF, $F0	
+SME_Vw4H3_C:	dc.b 0, 4	
+		dc.b $F0, $F, 0, 8, $FF, $C0	
+		dc.b $F0, $F, 0, 8, $FF, $E0	
+		dc.b $F0, $F, 0, 8, 0, 0	
+		dc.b $F0, $F, 0, 8, 0, $20	
+		even

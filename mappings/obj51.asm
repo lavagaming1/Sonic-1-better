@@ -1,14 +1,15 @@
-; ---------------------------------------------------------------------------
-; Sprite mappings - smashable green block (MZ)
-; ---------------------------------------------------------------------------
-		dc.w byte_FDD8-Map_obj51
-		dc.w byte_FDE3-Map_obj51
-byte_FDD8:	dc.b 2
-		dc.b $F0, $D, 0, 0, $F0
-		dc.b 0,	$D, 0, 0, $F0
-byte_FDE3:	dc.b 4
-		dc.b $F0, 5, $80, 0, $F0
-		dc.b 0,	5, $80,	0, $F0
-		dc.b $F0, 5, $80, 0, 0
-		dc.b 0,	5, $80,	0, 0
-		align 2
+; --------------------------------------------------------------------------------
+; Sprite mappings - output from SonMapEd - Sonic 3 & Knuckles format
+; --------------------------------------------------------------------------------
+
+SME_u4iGq:	
+		dc.w SME_u4iGq_4-SME_u4iGq, SME_u4iGq_12-SME_u4iGq	
+SME_u4iGq_4:	dc.b 0, 2	
+		dc.b $F0, $D, 0, 0, $FF, $F0	
+		dc.b 0, $D, 0, 0, $FF, $F0	
+SME_u4iGq_12:	dc.b 0, 4	
+		dc.b $F0, 5, $80, 0, $FF, $F0	
+		dc.b 0, 5, $80, 0, $FF, $F0	
+		dc.b $F0, 5, $80, 0, 0, 0	
+		dc.b 0, 5, $80, 0, 0, 0	
+		even
