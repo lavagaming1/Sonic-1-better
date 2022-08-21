@@ -18727,20 +18727,11 @@ Map_obj46:
 ; ---------------------------------------------------------------------------
 
 Obj12:					; XREF: Obj_Index
-		moveq	#0,d0
-		move.b	routine(a0),d0
-		move.w	Obj12_Index(pc,d0.w),d1
-		jmp	Obj12_Index(pc,d1.w)
-; ===========================================================================
-Obj12_Index:	dc.w Obj12_Main-Obj12_Index
-		dc.w Obj12_Animate-Obj12_Index
-; ===========================================================================
-
-Obj12_Main:				; XREF: Obj12_Index
+                tst.b   routine(a0)
+                bne.s   Obj12_Animate
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj12,4(a0)
-		move.w	#0,2(a0)
-		move.b	#4,1(a0)
+		move.l	#Map_obj12,mappings(a0)
+		move.b	#4,render_flags(a0)
 		move.b	#$10,width_pixels(a0)
 		move.b	#6,priority(a0)
 
@@ -18776,20 +18767,12 @@ Map_obj12:
 ; ---------------------------------------------------------------------------
 
 Obj47:					; XREF: Obj_Index
-		moveq	#0,d0
-		move.b	routine(a0),d0
-		move.w	Obj47_Index(pc,d0.w),d1
-		jmp	Obj47_Index(pc,d1.w)
-; ===========================================================================
-Obj47_Index:	dc.w Obj47_Main-Obj47_Index
-		dc.w Obj47_Hit-Obj47_Index
-; ===========================================================================
-
-Obj47_Main:				; XREF: Obj47_Index
+                tst.b   routine(a0)
+                bne.s   Obj47_Hit
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj47,4(a0)
-		move.w	#$380,2(a0)
-		move.b	#4,1(a0)
+		move.l	#Map_obj47,mappings(a0)
+		move.w	#$380,art_tile(a0)
+		move.b	#4,render_flags(a0)
 		move.b	#$10,width_pixels(a0)
 		move.b	#1,priority(a0)
 		move.b	#$D7,collision_flags(a0)
@@ -19749,7 +19732,7 @@ loc_F82C:
 
 loc_F836:
 		moveq	#0,d0
-		rts	
+		rts
 ; End of function Obj50_ChkWall
 
 ; ===========================================================================
@@ -19758,19 +19741,11 @@ loc_F836:
 ; ---------------------------------------------------------------------------
 
 Obj50:					; XREF: Obj_Index
-		moveq	#0,d0
-		move.b	routine(a0),d0
-		move.w	Obj50_Index(pc,d0.w),d1
-		jmp	Obj50_Index(pc,d1.w)
-; ===========================================================================
-Obj50_Index:	dc.w Obj50_Main-Obj50_Index
-		dc.w Obj50_Action-Obj50_Index
-; ===========================================================================
-
-Obj50_Main:				; XREF: Obj50_Index
-		move.l	#Map_obj50,4(a0)
-		move.w	#$247B,2(a0)
-		move.b	#4,1(a0)
+                tst.b   routine(a0)
+                bne.s   Obj50_Action
+		move.l	#Map_obj50,mappings(a0)
+		move.w	#$247B,art_tile(a0)
+		move.b	#4,render_flags(a0)
 		move.b	#4,priority(a0)
 		move.b	#$14,width_pixels(a0)
 		move.b	#$11,y_radius(a0)
@@ -19790,19 +19765,11 @@ locret_F89E:
 ; ===========================================================================
 
 Obj50_Action:				; XREF: Obj50_Index
-		moveq	#0,d0
-		move.b	routine_secondary(a0),d0
-		move.w	Obj50_Index2(pc,d0.w),d1
-		jsr	Obj50_Index2(pc,d1.w)
-		lea	(Ani_obj50).l,a1
-		bsr.w	AnimateSprite
-		bra.w	MarkObjGone
-; ===========================================================================
-Obj50_Index2:	dc.w Obj50_Move-Obj50_Index2
-		dc.w Obj50_FixToFloor-Obj50_Index2
-; ===========================================================================
-
-Obj50_Move:				; XREF: Obj50_Index2
+		lea	Ani_obj50(pc),a1
+		pea	AnimateSprite
+	        pea	MarkObjGone
+		tst.b   routine_secondary(a0)
+		bne.s   Obj50_FixToFloor
 		subq.w	#1,$30(a0)	; subtract 1 from pause	time
 		bpl.s	locret_F8E2	; if time remains, branch
 		addq.b	#2,routine_secondary(a0)
