@@ -16883,8 +16883,9 @@ Render_Sprites_NextLevel:
 
 
 		lea	$80(a5),a5	; load next priority level
-
 		cmpi.b  #1,ID(a5)
+         ;       lea     ($FFFFB000).w,a3
+	;	cmpa.w  a3,a5
 		blo.w   loc_1AD4A
 		;cmpa.l	#Object_RAM,a5
 		;blo.w	loc_1AD4A
