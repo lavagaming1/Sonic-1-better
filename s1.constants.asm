@@ -200,10 +200,11 @@ Horiz_Scroll_Buf:               ds.b   $400 ; = 		ramaddr( $FFFFCC00 )	; $3FF by
 
 Object_RAM:       ds.b   ObSize*$80 ;=			ramaddr( $FFFFD000 )	; The various objects in the game are loaded in this area. Each game mode uses different objects, so some slots are reused.
 Object_RAM_End
-SndDriverRam:     ds.b  $600
+SndDriverRam:     ds.b  $5C0
 SndDriverRamEnd
 Spritemask_flag: ds.w  1;=			ramaddr( $FFFFF5C0 )
 Sprites_drawn:   ds.w  1 ; =			ramaddr( $FFFFF5C2 )
+         ds.b  $3C
 Game_Mode: ds.b  1
            ds.b  1 ;=			ramaddr( $FFFFF600 )	; 1 byte ; see GameModesArray (master level trigger, Mstr_Lvl_Trigger)
 Ctrl_1_Logical =		ramaddr( $FFFFF602 )	; 2 bytes
