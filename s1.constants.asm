@@ -174,31 +174,38 @@ MusID_SpeedUp =		id(CmdPtr_SpeedUp)	; E2
 MusID_SlowDown =	id(CmdPtr_SlowDown)	; E3
 MusID_Stop =		id(CmdPtr_Stop)		; E4
 CmdID__End =		id(CmdPtr_End)		; E5
-
+ObSize = $40
 ; ---------------------------------------------------------------------------
 ; I run the main 68k RAM addresses through this function
 ; to let them work in both 16-bit and 32-bit addressing modes.
-ramaddr function x,-(-x)&$FFFFFFFF
+ramaddr function x,(-(x&$80000000)<<1)|x
 
 ; ---------------------------------------------------------------------------
 ; RAM variables
-RAM_Start =			ramaddr( $FFFF0000 )	; 4 bytes ; start of RAM
+ 	phase	ramaddr($FFFF0000)	; Pretend we're in the RAM
+RAM_Start: ; =			ramaddr( $FFFF0000 )	; 4 bytes ; start of RAM
 
-Chunk_Table =			ramaddr( $FFFF0000 )	; $A3FF bytes
-Level_Layout =			ramaddr( $FFFFA400 )	; $3FF bytes
-TempArray_LayerDef =		ramaddr( $FFFFA800 )	; $1FF bytes ; used by some layer deformation routines
-Decomp_Buffer =			ramaddr( $FFFFAA00 )	; $1FF bytes
-Sprite_Table_Input =		ramaddr( $FFFFAC00 )	; $3FF bytes ; in custom format before being converted and stored in Sprite_Table/Sprite_Table_2
-Block_Table =			ramaddr( $FFFFB000 )	; $17FF bytes
+Chunk_Table:	                ds.b    $A400                    	;	ramaddr( $FFFF0000 )	; $A3FF bytes
 
-Sonic_Art_Buffer =		ramaddr( $FFFFC800 )	; $2FF bytes ; Sonic's dynamic pattern reloading routine copies the relevant art over here, from where it is DMA'd to VRAM every V-int.
-Sonic_Stat_Record_Buf = 	ramaddr( $FFFFCB00 )	; $2FF bytes
+Level_Layout:                   ds.b    $400  ; =			ramaddr( $FFFFA400 )	; $3FF bytes
+TempArray_LayerDef:             ds.b    $200  ;=		ramaddr( $FFFFA800 )	; $1FF bytes ; used by some layer deformation routines
+Decomp_Buffer:                  ds.b    $200 ;=			ramaddr( $FFFFAA00 )	; $1FF bytes
+Sprite_Table_Input:              ds.b    $400  ;=		ramaddr( $FFFFAC00 )	; $3FF bytes ; in custom format before being converted and stored in Sprite_Table/Sprite_Table_2
+Block_Table:                     ds.b    $1800 ;=			ramaddr( $FFFFB000 )	; $17FF bytes
 
-Horiz_Scroll_Buf = 		ramaddr( $FFFFCC00 )	; $3FF bytes
-Object_RAM =			ramaddr( $FFFFD000 )	; The various objects in the game are loaded in this area. Each game mode uses different objects, so some slots are reused.
-Spritemask_flag =			ramaddr( $FFFFF5C0 )
-Sprites_drawn =			ramaddr( $FFFFF5C2 ) 
-Game_Mode =			ramaddr( $FFFFF600 )	; 1 byte ; see GameModesArray (master level trigger, Mstr_Lvl_Trigger)
+Sonic_Art_Buffer: ds.b    $300       ;=		ramaddr( $FFFFC800 )	; $2FF bytes ; Sonic's dynamic pattern reloading routine copies the relevant art over here, from where it is DMA'd to VRAM every V-int.
+Sonic_Stat_Record_Buf: ds.b $100 ;= 	ramaddr( $FFFFCB00 )	; $100 bytes
+
+Horiz_Scroll_Buf:               ds.b   $400 ; = 		ramaddr( $FFFFCC00 )	; $3FF bytes
+
+Object_RAM:       ds.b   ObSize*$80 ;=			ramaddr( $FFFFD000 )	; The various objects in the game are loaded in this area. Each game mode uses different objects, so some slots are reused.
+Object_RAM_End
+SndDriverRam:     ds.b  $600
+SndDriverRamEnd
+Spritemask_flag: ds.w  1;=			ramaddr( $FFFFF5C0 )
+Sprites_drawn:   ds.w  1 ; =			ramaddr( $FFFFF5C2 )
+Game_Mode: ds.b  1
+           ds.b  1 ;=			ramaddr( $FFFFF600 )	; 1 byte ; see GameModesArray (master level trigger, Mstr_Lvl_Trigger)
 Ctrl_1_Logical =		ramaddr( $FFFFF602 )	; 2 bytes
 Ctrl_1_Held_Logical =		ramaddr( $FFFFF602 )	; 1 byte
 Ctrl_1_Press_Logical =		ramaddr( $FFFFF603 )	; 1 byte
@@ -491,6 +498,8 @@ RAM_End =			ramaddr( $FFFFFFFF )
      if * > 0	; Don't declare more space than the RAM can contain!
 	fatal "The RAM variable declarations are too large by $\{*} bytes."
     endif
+    dephase
+    !org	0	; Reset the program counter
 ; ---------------------------------------------------------------------------
 ; VDP addressses
 VDP_data_port =			$C00000 ; (8=r/w, 16=r/w)

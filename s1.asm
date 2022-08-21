@@ -28,7 +28,7 @@ zeroOffsetOptimization = 0
 ; start of ROM
 
 StartOfRom:
-    if * <> 0
+      if * <> 0
 	fatal "StartOfRom was $\{*} but it should be 0"
     endif
 Vectors:	dc.l 0, EntryPoint, BusError, AddressError
@@ -1101,7 +1101,7 @@ SoundDriverLoad:			; XREF: GameClrRAM; TitleScreen
 
 
 PlaySound:
-		move.b	d0,($FFFFF000+QueueToPlay).w
+		move.b	d0,(SndDriverRam+QueueToPlay).w
 		rts		
 ; End of function PlaySound
 
@@ -1119,7 +1119,7 @@ PlaySound:
 
 
 PlaySound_Special:
-		move.b	d0,($FFFFF000+SFXSpecToPlay).w
+		move.b	d0,(SndDriverRam+SFXSpecToPlay).w
 		rts	
 ; End of function PlaySound_Special
 
@@ -1129,7 +1129,7 @@ PlaySound_Special:
 ; ---------------------------------------------------------------------------
 
 PlaySound_Unk:
-		move.b	d0,($FFFFF000+SFXUnknown).w
+		move.b	d0,(SndDriverRam+SFXUnknown).w
 		rts	
 
 ; ---------------------------------------------------------------------------
@@ -1150,7 +1150,7 @@ PauseGame:				; XREF: Level_MainLoop; et al
 
 loc_13BE:
 		move.w	#1,(Game_paused).w ; freeze time
-		move.b	#1,($FFFFF000+StopMusic).w ; pause music
+		move.b	#1,(SndDriverRam+StopMusic).w ; pause music
 
 loc_13CA:
 		move.b	#$10,(Vint_routine).w
@@ -1175,7 +1175,7 @@ Pause_ChkStart:				; XREF: PauseGame
 		beq.s	loc_13CA	; if not, branch
 
 loc_1404:				; XREF: PauseGame
-		move.b	#$80,($FFFFF000+StopMusic).w
+		move.b	#$80,(SndDriverRam+StopMusic).w
 
 Unpause:				; XREF: PauseGame
 		move.w	#0,(Game_paused).w ; unpause the game
@@ -1186,7 +1186,7 @@ Pause_DoNothing:			; XREF: PauseGame
 
 Pause_SlowMo:				; XREF: PauseGame
 		move.w	#1,(Game_paused).w
-		move.b	#$80,($FFFFF000+StopMusic).w
+		move.b	#$80,(SndDriverRam+StopMusic).w
 		rts	
 ; End of function PauseGame
 
@@ -16554,12 +16554,13 @@ Map_obj3C:
 ; ---------------------------------------------------------------------------
 
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
-
-
+FreezObRamPt1 = Object_RAM+ObSize*$1F
+FreezObRamPt2 = Object_RAM+ObSize*$5F
+RunObjects:
 ObjectsLoad:				; XREF: TitleScreen; et al
 
 		lea	(Object_RAM).w,a0 ; set address for object RAM
-		moveq	#$7F,d7
+		moveq   #(Object_RAM_End-Object_RAM)/ObSize-1,d7
 		cmpi.b	#6,(Object_RAM+routine).w
 		bcc.s	loc_D362
 
@@ -16573,26 +16574,26 @@ loc_D348:
                 jsr      (a1)
 
 loc_D358:
-		lea	$40(a0),a0	; next object
+		lea	ObSize(a0),a0	; next object
 		dbf	d7,loc_D348
 		rts
 ; ===========================================================================
 
 loc_D362:
-		moveq	#$1F,d7
+		moveq   #(FreezObRamPt1-Object_RAM)/ObSize-1,d7
 		bsr.s	loc_D348
-		moveq	#$5F,d7
+		moveq   #(FreezObRamPt2-Object_RAM)/ObSize-1,d7
 
 loc_D368:
 		moveq	#0,d0
 		move.b	(a0),d0
 		beq.s	loc_D378
-		tst.b	1(a0)
+		tst.b	render_flags(a0)
 		bpl.s	loc_D378
 		bsr.w	DisplaySprite
 
 loc_D378:
-		lea	$40(a0),a0
+		lea	ObSize(a0),a0
 
 loc_D37C:
 		dbf	d7,loc_D368
@@ -19906,7 +19907,7 @@ SolidObject2F:				; XREF: Obj2F_Solid
 		cmp.w	d3,d0
 		bhi.w	loc_FB92
 		move.w	d0,d5
-		btst	#0,1(a0)
+		btst	#0,render_flags(a0)
 		beq.s	loc_FA94
 		not.w	d5
 		add.w	d3,d5
