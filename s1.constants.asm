@@ -16,9 +16,9 @@ render_flags = $1
 art_tile = $2
 mappings = $4
 x_pos =			  8 ; and 9 ... some objects use $A and $B as well when extra precision is required (see ObjectMove) ... for screen-space objects this is called x_pixel instead
-x_sub =			 $A ; and $B
+;x_sub =			 $A ; and $B
 y_pos =			 $C ; and $D ... some objects use $E and $F as well when extra precision is required ... screen-space objects use y_pixel instead
-y_sub =			 $E ; and $F
+;y_sub =			 $E ; and $F
 priority =		$18 ; 0 = front
 width_pixels =		$19
 mapping_frame =		$1A

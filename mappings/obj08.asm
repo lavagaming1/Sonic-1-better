@@ -1,15 +1,16 @@
-; ---------------------------------------------------------------------------
-; Sprite mappings - water splash (LZ)
-; ---------------------------------------------------------------------------
-		dc.w byte_145D2-Map_obj08
-		dc.w byte_145DD-Map_obj08
-		dc.w byte_145E8-Map_obj08
-byte_145D2:	dc.b 2
-		dc.b $F2, 4, 0,	$6D, $F8
-		dc.b $FA, $C, 0, $6F, $F0
-byte_145DD:	dc.b 2
-		dc.b $E2, 0, 0,	$73, $F8
-		dc.b $EA, $E, 0, $74, $F0
-byte_145E8:	dc.b 1
-		dc.b $E2, $F, 0, $80, $F0
-		align 2
+; --------------------------------------------------------------------------------
+; Sprite mappings - output from SonMapEd - Sonic 3 & Knuckles format
+; --------------------------------------------------------------------------------
+
+SME_zxBOk:	
+		dc.w SME_zxBOk_6-SME_zxBOk, SME_zxBOk_14-SME_zxBOk	
+		dc.w SME_zxBOk_22-SME_zxBOk	
+SME_zxBOk_6:	dc.b 0, 2	
+		dc.b $F2, 4, 0, $6D, $FF, $F8	
+		dc.b $FA, $C, 0, $6F, $FF, $F0	
+SME_zxBOk_14:	dc.b 0, 2	
+		dc.b $E2, 0, 0, $73, $FF, $F8	
+		dc.b $EA, $E, 0, $74, $FF, $F0	
+SME_zxBOk_22:	dc.b 0, 1	
+		dc.b $E2, $F, 0, $80, $FF, $F0	
+		even

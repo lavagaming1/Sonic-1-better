@@ -3949,7 +3949,7 @@ loc_3946:
 		jsr	(FloorLog_Unk).l
 		bsr.w	ColIndexLoad
 		bsr.w	LZWaterEffects
-		
+
 		move.w	(Camera_X_pos).w,(Camera_X_pos_copy).w
 		move.w	(Camera_Y_pos).w,(Camera_Y_pos_copy).w
 
@@ -4099,7 +4099,7 @@ loc_3B14:
 		bne.w	Level		; if yes, branch
 		cmpi.b	#$C,(Game_Mode).w
 		beq.w	Level_MainLoop	; if screen mode is $0C	(level), branch
-		rts	
+		rts
 ; ===========================================================================
 
 Level_ChkDemo:				; XREF: Level_MainLoop
@@ -4110,7 +4110,7 @@ Level_ChkDemo:				; XREF: Level_MainLoop
 		cmpi.b	#8,(Game_Mode).w
 		beq.w	Level_MainLoop	; if screen mode is 08 (demo), branch
 		move.b	#0,(Game_Mode).w ; go to Sega screen
-		rts	
+		rts
 ; ===========================================================================
 
 Level_EndDemo:				; XREF: Level_ChkDemo
@@ -4141,7 +4141,7 @@ loc_3B98:
 loc_3BC8:
 		tst.w	(Demo_Time_left).w
 		bne.s	loc_3B98
-		rts	
+		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Subroutine to	do special water effects in Labyrinth Zone
@@ -4180,13 +4180,13 @@ loc_3C24:
 		move.b	d0,(Hint_counter_reserve+1).w
 
 locret_3C28:
-		rts	
+		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Labyrinth default water heights
 ; ---------------------------------------------------------------------------
 WaterHeight:	binclude	misc/lz_heigh.bin
-		align 2
+		even
 ; ===========================================================================
 
 ; ---------------------------------------------------------------------------
@@ -4211,7 +4211,7 @@ loc_3C56:
 		add.w	d1,(Water_Level_2).w
 
 locret_3C5A:
-		rts	
+		rts
 ; ===========================================================================
 DynWater_Index:	dc.w DynWater_LZ1-DynWater_Index
 		dc.w DynWater_LZ2-DynWater_Index
@@ -4477,7 +4477,7 @@ LZWind_MoveDown:
 		addq.w	#1,y_pos(a1)	; move Sonic down
 
 locret_3EF2:
-		rts	
+		rts
 ; ===========================================================================
 
 loc_3EF4:				; XREF: LZWindTunnels
@@ -4491,7 +4491,7 @@ loc_3F06:
 		clr.b	(WindTunnel_flag).w
 
 locret_3F0A:
-		rts	
+		rts
 ; End of function LZWindTunnels
 
 ; ===========================================================================
@@ -4499,8 +4499,7 @@ locret_3F0A:
 LZWind_Data:	dc.w $F80, $100, $1410,	$180, $460, $400, $710,	$480, $A20
 		dc.w $600, $1610, $6E0,	$C80, $600, $13D0, $680
 					; XREF: LZWindTunnels
-		align 2
-
+	        even
 ; ---------------------------------------------------------------------------
 ; Labyrinth Zone water slide subroutine
 ; ---------------------------------------------------------------------------
@@ -4535,13 +4534,13 @@ loc_3F6A:
 		clr.b	(Lock_Controls).w
 
 locret_3F7A:
-		rts	
+		rts
 ; ===========================================================================
 
 LZSlide_Move:				; XREF: LZWaterSlides
 		cmpi.w	#3,d1
 		bcc.s	loc_3F84
-		nop	
+		nop
 
 loc_3F84:
 		bclr	#0,status(a1)
@@ -4561,13 +4560,13 @@ loc_3F9A:
 		jsr	(PlaySound_Special).l ;	play water sound
 
 locret_3FBE:
-		rts	
+		rts
 ; End of function LZWaterSlides
 
 ; ===========================================================================
 byte_3FC0:	dc.b $A, $F5, $A, $F6, $F5, $F4, $B, 0,	2, 7, 3, $4C, $4B, 8, 4
 byte_3FCF:	dc.b 0			; XREF: LZWaterSlides
-		align 2
+		even
 
 ; ---------------------------------------------------------------------------
 ; Subroutine to	move Sonic in demo mode
@@ -4579,7 +4578,7 @@ byte_3FCF:	dc.b 0			; XREF: LZWaterSlides
 MoveSonicInDemo:			; XREF: Level_MainLoop; et al
 		tst.w	(Demo_mode_flag).w	; is demo mode on?
 		bne.s	MoveDemo_On	; if yes, branch
-		rts	
+		rts
 ; ===========================================================================
 
 ; This is an unused subroutine for recording a demo
@@ -4594,7 +4593,7 @@ MoveDemo_Record:
 		addq.b	#1,1(a1)
 		cmpi.b	#$FF,1(a1)
 		beq.s	loc_3FFA
-		rts	
+		rts
 ; ===========================================================================
 
 loc_3FFA:				; XREF: MoveDemo_Record
@@ -4602,7 +4601,7 @@ loc_3FFA:				; XREF: MoveDemo_Record
 		move.b	#0,3(a1)
 		addq.w	#2,(Demo_button_index).w
 		andi.w	#$3FF,(Demo_button_index).w
-		rts	
+		rts
 ; ===========================================================================
 
 MoveDemo_On:				; XREF: MoveSonicInDemo
@@ -5507,7 +5506,7 @@ Obj80_Main:				; XREF: Obj80_Index
 		move.b	#0,1(a0)
 		move.b	#$3C,width_pixels(a0)
 		move.w	#$120,x_pos(a0)
-		move.w	#$C0,x_sub(a0)
+		move.w	#$C0,y_pos(a0)
 		move.w	#0,(Ring_count).w ; clear rings
 
 Obj80_Display:				; XREF: Obj80_Index
@@ -5547,7 +5546,7 @@ Obj80_MiniSonLoop:
 		subi.w	#$A,x_pos(a1)
 
 loc_4EEA:
-		move.w	#$D0,x_sub(a1)
+		move.w	#$D0,y_pos(a1)
 		move.b	#6,mapping_frame(a1)
 		move.b	#6,routine(a1)
 		move.l	#Map_obj80,4(a1)
@@ -6384,7 +6383,7 @@ Obj8B_Index:	dc.w Obj8B_Main-Obj8B_Index
 Obj8B_Main:				; XREF: Obj8B_Index
 		addq.b	#2,routine(a0)
 		move.w	#$120,x_pos(a0)
-		move.w	#$F4,x_sub(a0)
+		move.w	#$F4,y_pos(a0)
 		move.l	#Map_obj8B,4(a0)
 		move.w	#$3E1,2(a0)
 		move.b	#0,1(a0)
@@ -6468,16 +6467,16 @@ Obj8C_Main:				; XREF: Obj8C_Index
 		sub.b	(Emerald_count).w,d1
 
 Obj8C_MakeEms:				; XREF: loc_5B42
-		move.b	#$8C,(a1)	; load emerald object
+		move.b	#$8C,ID(a1)	; load emerald object
 		addq.b	#2,routine(a1)
-		move.l	#Map_obj88,4(a1)
-		move.w	#$3C5,2(a1)
-		move.b	#0,1(a1)
+		move.l	#Map_obj88,mappings(a1)
+		move.w	#$3C5,art_tile(a1)
+		move.b	#0,render_flags(a1)
 		move.b	#1,priority(a1)
 		move.w	#$104,x_pos(a1)
 		move.w	#$120,$38(a1)
-		move.w	#$EC,x_sub(a1)
-		move.w	x_sub(a1),$3A(a1)
+		move.w	#$EC,y_pos(a1)
+		move.w	y_pos(a1),$3A(a1)
 		move.b	#$1C,$3C(a1)
 		lea	(Emerald_count+1).w,a3
 
@@ -6541,7 +6540,7 @@ loc_5B96:
 		add.w	$38(a0),d1
 		add.w	$3A(a0),d0
 		move.w	d1,x_pos(a0)
-		move.w	d0,x_sub(a0)
+		move.w	d0,y_pos(a0)
 
 locret_5BBA:
 		rts	
@@ -13055,7 +13054,7 @@ Obj0F_Index:	dc.w Obj0F_Main-Obj0F_Index
 Obj0F_Main:				; XREF: Obj0F_Index
 		addq.b	#2,routine(a0)
 		move.w	#$D0,x_pos(a0)
-		move.w	#$130,x_sub(a0)
+		move.w	#$130,y_pos(a0)
 		move.l	#Map_obj0F,4(a0)
 		move.w	#$200,2(a0)
 		cmpi.b	#2,mapping_frame(a0)	; is object "PRESS START"?
@@ -13065,7 +13064,7 @@ Obj0F_Main:				; XREF: Obj0F_Index
 		bne.s	locret_A6F8	; if not, branch
 		move.w	#$2510,2(a0)	; "TM" specific	code
 		move.w	#$170,x_pos(a0)
-		move.w	#$F8,x_sub(a0)
+		move.w	#$F8,y_pos(a0)
 
 locret_A6F8:				; XREF: Obj0F_Index
 		rts	
@@ -14937,7 +14936,7 @@ loc_C056:
 		asr.w	#3,d0
 		move.w	d0,x_vel(a0)
 		move.b	#1,$32(a0)
-		clr.w	y_sub(a0)
+		clr.w	y_pos+2(a0)
 
 loc_C09E:
 		bra.s	loc_C0E6
@@ -15071,7 +15070,7 @@ loc_C1AA:
 		asr.w	#3,d0
 		move.w	d0,x_vel(a0)
 		move.b	#1,$32(a0)
-		clr.w	y_sub(a0)
+		clr.w	y_pos+2(a0)
 
 locret_C1F0:
 		rts	
@@ -15357,7 +15356,7 @@ Obj39_Main:
 		move.w	#$1F0,x_pos(a0)	; set x-position for "OVER"
 
 loc_C4EC:
-		move.w	#$F0,x_sub(a0)
+		move.w	#$F0,y_pos(a0)
 		move.l	#Map_obj39,4(a0)
 		move.w	#$855E,2(a0)
 		move.b	#0,1(a0)
@@ -15676,7 +15675,7 @@ Obj7E_Loop:
 		_move.b	#$7E,0(a1)
 		move.w	(a2)+,x_pos(a1)	; load start x-position
 		move.w	(a2)+,$30(a1)	; load main x-position
-		move.w	(a2)+,x_sub(a1)	; load y-position
+		move.w	(a2)+,y_pos(a1)	; load y-position
 		move.b	(a2)+,routine(a1)
 		move.b	(a2)+,mapping_frame(a1)
 		move.l	#Map_obj7E,4(a1)
@@ -22473,7 +22472,7 @@ Obj5D_ChkDel:				; XREF: Obj5D_Animate
 		sub.w	d1,d0
 		cmpi.w	#$280,d0
 		bhi.w	DeleteObject
-		rts	
+		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - fans (SLZ)
@@ -22550,7 +22549,7 @@ loc_11702:
 		move.w	y_vel(a1),$38(a0)
 		move.w	#$30,d1
 		jsr	(SlopeObject).l
-		rts	
+		rts
 ; ===========================================================================
 
 Obj5E_Slope2:				; XREF: Obj5E_Index
@@ -22566,7 +22565,7 @@ loc_11730:
 		move.w	#$30,d1
 		move.w	x_pos(a0),d2
 		jsr	(SlopeObject2).l
-		rts	
+		rts
 ; ===========================================================================
 
 loc_1174A:				; XREF: Obj5E_Slope2
@@ -22600,7 +22599,7 @@ loc_11772:
 		bset	#0,1(a0)
 
 locret_11790:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj5E_Spikeball:			; XREF: Obj5E_Index
@@ -22672,9 +22671,9 @@ loc_1185C:
 		move.w	d1,y_pos(a0)
 		add.w	$30(a0),d2
 		move.w	d2,x_pos(a0)
-		clr.w	y_sub(a0)
-		clr.w	x_sub(a0)
-		rts	
+		clr.w	y_pos+2(a0)
+		clr.w	x_pos+2(a0)
+		rts
 ; ===========================================================================
 
 Obj5E_SpikeFall:			; XREF: Obj5E_Index
@@ -23823,8 +23822,8 @@ loc_125AE:
 		move.w	d0,x_vel(a0)
 		move.w	d3,y_vel(a0)
 		swap	d0
-		move.w	d0,x_sub(a0)
-		clr.w	y_sub(a0)
+		move.w	d0,y_pos(a0)
+		clr.w	y_pos+2(a0)
 		rts	
 ; ===========================================================================
 
@@ -23841,8 +23840,8 @@ loc_125D4:
 		move.w	d1,y_vel(a0)
 		move.w	d2,x_vel(a0)
 		swap	d1
-		move.w	d1,y_sub(a0)
-		clr.w	x_sub(a0)
+		move.w	d1,y_pos(a0)
+		clr.w	x_pos+2(a0)
 		rts	
 ; End of function Obj63_ChangeDir
 
@@ -25078,7 +25077,7 @@ Boundary_Bottom:
 
 Boundary_Sides:
 		move.w	d0,x_pos(a0)
-		move.w	#0,x_sub(a0)
+		move.w	#0,y_pos(a0)
 		move.w	#0,x_vel(a0)	; stop Sonic moving
 		move.w	#0,inertia(a0)
 		bra.s	loc_13336
@@ -26217,7 +26216,7 @@ Obj0A_ShowNumber:			; XREF: Obj0A_Wobble; Obj0A_Display
 		move.w	y_pos(a0),d0
 		sub.w	(Camera_Y_pos).w,d0
 		addi.w	#$80,d0
-		move.w	d0,x_sub(a0)
+		move.w	d0,y_pos(a0)
 		move.b	#$C,routine(a0)
 
 locret_13E1A:
@@ -32819,8 +32818,8 @@ loc_18E48:
 		move.w	d1,y_pos(a0)
 		add.w	$30(a0),d2
 		move.w	d2,x_pos(a0)
-		clr.w	y_sub(a0)
-		clr.w	x_sub(a0)
+		clr.w	y_pos+2(a0)
+		clr.w	y_pos(a0)
 		subq.w	#1,subtype(a0)
 		bne.s	loc_18E7A
 		move.w	#$20,subtype(a0)
@@ -36080,9 +36079,9 @@ loc_1B350:
 		move.w	4(a0),x_vel(a1)
 		move.w	6(a0),priority(a1)
 		move.w	x_pos(a0),collision_flags(a1)
-		move.w	x_sub(a0),subtype(a1)
+		move.w	x_pos+2(a0),subtype(a1)
 		move.w	y_pos(a0),$30(a1)
-		move.w	y_sub(a0),$38(a1)
+		move.w	y_pos+2(a0),$38(a1)
 		adda.w	#$20,a0
 		adda.w	#$48,a1
 		move.w	(a0),(a1)
@@ -36090,9 +36089,9 @@ loc_1B350:
 		move.w	4(a0),x_vel(a1)
 		move.w	6(a0),priority(a1)
 		move.w	x_pos(a0),collision_flags(a1)
-		move.w	x_sub(a0),subtype(a1)
+		move.w	x_pos+2(a0),subtype(a1)
 		move.w	y_pos(a0),$30(a1)
-		move.w	y_sub(a0),$38(a1)
+		move.w	y_pos+2(a0),$38(a1)
 		adda.w	#$20,a0
 		adda.w	#$48,a1
 		move.w	(a0),(a1)
@@ -36100,9 +36099,9 @@ loc_1B350:
 		move.w	4(a0),x_vel(a1)
 		move.w	6(a0),priority(a1)
 		move.w	x_pos(a0),collision_flags(a1)
-		move.w	x_sub(a0),subtype(a1)
+		move.w	x_pos+2(a0),subtype(a1)
 		move.w	y_pos(a0),$30(a1)
-		move.w	y_sub(a0),$38(a1)
+		move.w	y_pos+2(a0),$38(a1)
 		adda.w	#$20,a0
 		adda.w	#$48,a1
 		move.w	(a0),(a1)
@@ -36110,12 +36109,12 @@ loc_1B350:
 		move.w	4(a0),x_vel(a1)
 		move.w	6(a0),priority(a1)
 		move.w	x_pos(a0),collision_flags(a1)
-		move.w	x_sub(a0),subtype(a1)
+		move.w	x_pos+2(a0),subtype(a1)
 		move.w	y_pos(a0),$30(a1)
-		move.w	y_sub(a0),$38(a1)
+		move.w	y_pos+2(a0),$38(a1)
 		adda.w	#$20,a0
 		adda.w	#$48,a1
-		rts	
+		rts
 ; End of function SS_AniWallsRings
 
 ; ===========================================================================
@@ -37806,20 +37805,20 @@ loc_1C47C:				; XREF: AniArt_MZextra
 ; ===========================================================================
 
 loc_1C48A:				; XREF: AniArt_MZextra
-		move.l	x_sub(a1),d0
+		move.l	$A(a1),d0
 		move.b	9(a1),d0
 		ror.l	#8,d0
 		move.l	d0,(a6)
 		lea	x_vel(a1),a1
 		dbf	d1,loc_1C48A
-		rts	
+		rts
 ; ===========================================================================
 
 loc_1C4A0:				; XREF: AniArt_MZextra
-		move.l	x_sub(a1),(a6)
+		move.l	$A(a1),(a6)
 		lea	x_vel(a1),a1
 		dbf	d1,loc_1C4A0
-		rts	
+		rts
 ; ===========================================================================
 
 loc_1C4AE:				; XREF: AniArt_MZextra
@@ -37850,8 +37849,8 @@ loc_1C4D2:				; XREF: AniArt_MZextra
 ; ===========================================================================
 
 loc_1C4E8:				; XREF: AniArt_MZextra
-		move.w	y_sub(a1),(a6)
-		_move.w	0(a1),(a6)
+		move.w	y_pos+2(a1),(a6)
+		_move.w	ID(a1),(a6)
 		lea	x_vel(a1),a1
 		dbf	d1,loc_1C4E8
 		rts	
@@ -38715,7 +38714,7 @@ Debug_MakeItem:
 		bne.s	Debug_Exit
 		move.w	x_pos(a0),x_pos(a1)
 		move.w	y_pos(a0),y_pos(a1)
-		_move.b	4(a0),0(a1)	; create object
+		_move.b	4(a0),ID(a1)	; create object
 		move.b	1(a0),1(a1)
 		move.b	1(a0),status(a1)
 		andi.b	#$7F,status(a1)
@@ -38734,8 +38733,8 @@ Debug_Exit:
 		move.l	#Map_Sonic,(Object_RAM+4).w
 		move.w	#$780,(Object_RAM+2).w
 		move.b	d0,(Object_RAM+anim).w
-		move.w	d0,x_sub(a0)
-		move.w	d0,y_sub(a0)
+		move.w	d0,y_pos(a0)
+		move.w	d0,y_pos+2(a0)
 		move.w	($FFFFFEF0).w,(Camera_Min_Y_pos_now).w ; restore level boundaries
 		move.w	($FFFFFEF2).w,(Camera_Max_Y_pos).w
 		cmpi.b	#$10,(Game_Mode).w ; are you in	the special stage?

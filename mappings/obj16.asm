@@ -1,21 +1,23 @@
-; ---------------------------------------------------------------------------
-; Sprite mappings - harpoon (LZ)
-; ---------------------------------------------------------------------------
-		dc.w byte_11FA6-Map_obj16, byte_11FAC-Map_obj16
-		dc.w byte_11FB2-Map_obj16, byte_11FBD-Map_obj16
-		dc.w byte_11FC3-Map_obj16, byte_11FC9-Map_obj16
-byte_11FA6:	dc.b 1
-		dc.b $FC, 4, 0,	0, $F8
-byte_11FAC:	dc.b 1
-		dc.b $FC, $C, 0, 2, $F8
-byte_11FB2:	dc.b 2
-		dc.b $FC, 8, 0,	6, $F8
-		dc.b $FC, 8, 0,	3, $10
-byte_11FBD:	dc.b 1
-		dc.b $F8, 1, 0,	9, $FC
-byte_11FC3:	dc.b 1
-		dc.b $E8, 3, 0,	$B, $FC
-byte_11FC9:	dc.b 2
-		dc.b $D8, 2, 0,	$B, $FC
-		dc.b $F0, 2, 0,	$F, $FC
-		align 2
+; --------------------------------------------------------------------------------
+; Sprite mappings - output from SonMapEd - Sonic 3 & Knuckles format
+; --------------------------------------------------------------------------------
+
+SME_Abpz_:	
+		dc.w SME_Abpz__C-SME_Abpz_, SME_Abpz__14-SME_Abpz_	
+		dc.w SME_Abpz__1C-SME_Abpz_, SME_Abpz__2A-SME_Abpz_	
+		dc.w SME_Abpz__32-SME_Abpz_, SME_Abpz__3A-SME_Abpz_	
+SME_Abpz__C:	dc.b 0, 1	
+		dc.b $FC, 4, 0, 0, $FF, $F8	
+SME_Abpz__14:	dc.b 0, 1	
+		dc.b $FC, $C, 0, 2, $FF, $F8	
+SME_Abpz__1C:	dc.b 0, 2	
+		dc.b $FC, 8, 0, 6, $FF, $F8	
+		dc.b $FC, 8, 0, 3, 0, $10	
+SME_Abpz__2A:	dc.b 0, 1	
+		dc.b $F8, 1, 0, 9, $FF, $FC	
+SME_Abpz__32:	dc.b 0, 1	
+		dc.b $E8, 3, 0, $B, $FF, $FC	
+SME_Abpz__3A:	dc.b 0, 2	
+		dc.b $D8, 2, 0, $B, $FF, $FC	
+		dc.b $F0, 2, 0, $F, $FF, $FC	
+		even
