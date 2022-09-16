@@ -1,9 +1,9 @@
-; ---------------------------------------------------------------------------
-; Sprite mappings - disc that you run around (SBZ)
-; (It's just a small blob that moves around in a circle. The disc itself is
-; part of the level tiles.)
-; ---------------------------------------------------------------------------
-		dc.w byte_15688-Map_obj67
-byte_15688:	dc.b 1
-		dc.b $F8, 5, 0,	0, $F8
-		align 2
+; --------------------------------------------------------------------------------
+; Sprite mappings - output from SonMapEd - Sonic 3 & Knuckles format
+; --------------------------------------------------------------------------------
+
+SME_17I0g:	
+		dc.w SME_17I0g_2-SME_17I0g	
+SME_17I0g_2:	dc.b 0, 1	
+		dc.b $F8, 5, 0, 0, $FF, $F8	
+		even

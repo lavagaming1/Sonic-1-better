@@ -5932,7 +5932,7 @@ Obj87_Main:				; XREF: Obj87_Index
 		beq.s	Obj87_Main2	; if yes, branch
 		addi.b	#$10,routine_secondary(a0)	; else,	skip emerald sequence
 		move.w	#$D8,$30(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 Obj87_Main2:				; XREF: Obj87_Main
@@ -5953,7 +5953,7 @@ Obj87_MakeEmlds:			; XREF: Obj87_Index
 		move.b	#$88,(Object_RAM+$400).w ; load chaos	emeralds objects
 
 Obj87_Wait:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj87_LookUp:				; XREF: Obj87_Index
@@ -6130,10 +6130,10 @@ Obj89_Index:	dc.w Obj89_Main-Obj89_Index
 Obj89_Main:				; XREF: Obj89_Index
 		addq.b	#2,routine(a0)
 		move.w	#-$20,x_pos(a0)	; object starts	outside	the level boundary
-		move.w	#$D8,x_sub(a0)
-		move.l	#Map_obj89,4(a0)
-		move.w	#$5C5,2(a0)
-		move.b	#0,1(a0)
+		move.w	#$D8,y_pos(a0)
+		move.l	#Map_obj89,mappings(a0)
+		move.w	#$5C5,art_tile(a0)
+		move.b	#0,render_flags(a0)
 		move.b	#0,priority(a0)
 
 Obj89_Move:				; XREF: Obj89_Index
@@ -13376,7 +13376,7 @@ Obj2D_ChgDir:				; XREF: Obj2D_Index2
 		neg.w	x_vel(a0)		; change direction the Burrobot	is moving
 
 locret_AD42:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj2D_Move:				; XREF: Obj2D_Index2
@@ -13395,13 +13395,13 @@ loc_AD6A:
 		jsr	(ObjHitFloor2).l
 		cmpi.w	#$C,d1
 		bge.s	loc_AD84
-		rts	
+		rts
 ; ===========================================================================
 
 loc_AD78:				; XREF: Obj2D_Move
 		jsr	(ObjHitFloor).l
 		add.w	d1,y_pos(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_AD84:				; XREF: Obj2D_Move
@@ -13411,14 +13411,14 @@ loc_AD84:				; XREF: Obj2D_Move
 		move.w	#$3B,$30(a0)
 		move.w	#0,x_vel(a0)
 		move.b	#0,anim(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_ADA4:
 		addq.b	#2,routine_secondary(a0)
 		move.w	#-$400,y_vel(a0)
 		move.b	#2,anim(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 Obj2D_Jump:				; XREF: Obj2D_Index2
@@ -13437,7 +13437,7 @@ Obj2D_Jump:				; XREF: Obj2D_Index2
 		bsr.w	Obj2D_ChkSonic2
 
 locret_ADF0:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj2D_ChkSonic:				; XREF: Obj2D_Index2
@@ -13456,7 +13456,7 @@ Obj2D_ChkSonic:				; XREF: Obj2D_Index2
 		move.w	#-$400,y_vel(a0)
 
 locret_AE20:
-		rts	
+		rts
 
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
@@ -13473,7 +13473,7 @@ Obj2D_ChkSonic2:			; XREF: Obj2D_ChkSonic
 
 loc_AE40:
 		cmp.w	d2,d0
-		rts	
+		rts
 ; End of function Obj2D_ChkSonic2
 
 ; ===========================================================================
@@ -23553,7 +23553,7 @@ Obj62_StopFire:
 		bsr.w	ObjHitWallLeft
 		tst.w	d1
 		bmi.w	DeleteObject	; delete if the	fireball hits a	wall
-		rts	
+		rts
 ; ===========================================================================
 
 Obj62_StopFire2:
@@ -23561,7 +23561,7 @@ Obj62_StopFire2:
 		bsr.w	ObjHitWallRight
 		tst.w	d1
 		bmi.w	DeleteObject
-		rts	
+		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - gargoyle head (LZ)
@@ -25057,7 +25057,8 @@ loc_13336:
 		blt.s	Boundary_Bottom	; if yes, branch
 		rts
 ; ===========================================================================
-
+-
+         jmp KillSonic
 Boundary_Bottom:
 ; Add this to prevent the player from dying if the screen's scrolling down.
 		move.w	(Camera_Max_Y_pos).w,d0     ;;;;
@@ -25065,9 +25066,9 @@ Boundary_Bottom:
 		cmp.w	d0,d1			; screen still scrolling down?
 		blt.s	+			; if so, don't kill Sonic
 		cmpi.w	#$501,(Current_ZoneAndAct).w ; is level SBZ2 ?
-		bne.w	KillSonic	; if not, kill Sonic
+		bne.w	-	; if not, kill Sonic
 		cmpi.w	#$2000,(Object_RAM+x_pos).w
-		bcs.w	KillSonic
+		bcs.w	-
 		clr.b	(Last_star_pole_hit).w	; clear	lamppost counter
 		move.w	#1,(Level_Inactive_flag).w ; restart the level
 		move.w	#$103,(Current_ZoneAndAct).w ; set level	to SBZ3	(LZ4)
@@ -25628,7 +25629,7 @@ Sonic_HurtStop:				; XREF: Obj01_Hurt
 		move.w	(Camera_Max_Y_pos_now).w,d0
 		addi.w	#$E0,d0
 		cmp.w	y_pos(a0),d0
-		bcs.w	KillSonic
+		bcs.w	+
 		bsr.w	Sonic_DoLevelCollision
 		btst	#1,status(a0)
 		bne.s	locret_13860
@@ -25642,6 +25643,8 @@ Sonic_HurtStop:				; XREF: Obj01_Hurt
 
 locret_13860:
 		rts
++
+	jmp  KillSonic
 ; End of function Sonic_HurtStop
 
 ; ===========================================================================
@@ -29668,7 +29671,7 @@ Obj72:					; XREF: Obj_Index
 		sub.w	d1,d0
 		cmpi.w	#$280,d0
 		bhi.s	Obj72_Delete
-		rts	
+		rts
 ; ===========================================================================
 
 Obj72_Delete:
@@ -29732,7 +29735,7 @@ loc_1670E:
 		jsr	(PlaySound_Special).l ;	play Sonic rolling sound
 
 locret_1675C:
-		rts	
+		rts
 ; ===========================================================================
 
 loc_1675E:				; XREF: Obj72_Index
@@ -34098,7 +34101,7 @@ Obj83_MakeBlock:
 
 Obj83_ExitMake:
 		addq.b	#2,routine(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 Obj83_ChkBreak:				; XREF: Obj83_Index
@@ -34156,7 +34159,7 @@ loc_19C72:				; XREF: Obj83_Index
 ; ===========================================================================
 
 loc_19C80:				; XREF: Obj83_Index
-		tst.b	1(a0)
+		tst.b	render_flags(a0)
 		bpl.w	loc_1982C
 		jsr	(ObjectMoveAndFall).l
 		jmp	(DisplaySprite).l
@@ -34337,7 +34340,7 @@ loc_19E90:				; XREF: off_19E80
 
 loc_19EA2:
 		addq.l	#1,(RNG_seed).w
-		rts	
+		rts
 ; ===========================================================================
 
 loc_19EA8:				; XREF: off_19E80
@@ -34434,7 +34437,7 @@ loc_19FA6:
 		addq.b	#2,$34(a0)
 		move.w	#-1,$30(a0)
 		clr.w	$32(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_19FBC:
@@ -34442,7 +34445,7 @@ loc_19FBC:
 		move.w	#$25C0,x_pos(a0)
 		move.w	#$53C,y_pos(a0)
 		move.b	#$14,y_radius(a0)
-		rts	
+		rts
 ; ===========================================================================
 word_19FD6:	dc.w 0,	2, 2, 4, 4, 6, 6, 0
 ; ===========================================================================
@@ -34471,7 +34474,7 @@ loc_1A00A:
 		clr.w	$32(a0)
 
 locret_1A01E:
-		rts	
+		rts
 ; ===========================================================================
 
 loc_1A020:
@@ -34591,7 +34594,7 @@ loc_1A172:
 ; ===========================================================================
 
 locret_1A190:
-		rts	
+		rts
 ; ===========================================================================
 
 loc_1A192:				; XREF: off_19E80
@@ -35742,7 +35745,7 @@ HurtSonic:
 Hurt_Shield:
 		move.b	#0,(ShieldFlag).w ; remove shield
 		move.b	#4,routine(a0)
-		bsr.w	Sonic_ResetOnFloor
+		jsr	Sonic_ResetOnFloor
 		bset	#1,status(a0)
 		move.w	#-$400,y_vel(a0)	; make Sonic bounce away from the object
 		move.w	#-$200,x_vel(a0)
@@ -35791,7 +35794,7 @@ KillSonic:
 		bne.s	Kill_NoDeath	; if yes, branch
 		move.b	#0,(InvcFlag).w ; remove invincibility
 		move.b	#6,routine(a0)
-		bsr.w	Sonic_ResetOnFloor
+		jsr	Sonic_ResetOnFloor
 		bset	#1,status(a0)
 		move.w	#-$700,y_vel(a0)
 		move.w	#0,x_vel(a0)
