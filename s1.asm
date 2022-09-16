@@ -6866,7 +6866,7 @@ loc_628E:
 		bsr.w	ScrollVertical
 		bsr.w	DynScrResizeLoad
 		move.w	(Camera_X_pos).w,(Hscroll_Factor).w
-		move.w	(Camera_Y_pos).w,(Vscroll_Factor).w  
+		move.w	(Camera_Y_pos).w,(Vscroll_Factor).w
 
 		move.w	(Camera_BG_X_pos).w,(Hscroll_Factor_BG).w
 		move.w	(Camera_BG_Y_pos).w,(Vscroll_Factor_BG).w
@@ -16886,10 +16886,10 @@ Render_Sprites_NextLevel:
 		lea	$80(a5),a5	; load next priority level
 		cmpi.b  #1,ID(a5)
          ;       lea     ($FFFFB000).w,a3
-	;	cmpa.w  a3,a5
-		blo.w   loc_1AD4A
-		;cmpa.l	#Object_RAM,a5
-		;blo.w	loc_1AD4A
+	;	cmpa.w  #Object_RAM,a5
+	;	blo.w   loc_1AD4A
+	;	cmpa.l	#Block_Table,a5
+		blo.w	loc_1AD4A
 		move.w	d7,d6
 		bmi.s	loc_1AE18
 		moveq	#0,d0
@@ -22003,8 +22003,8 @@ Obj5B_Type01:				; XREF: Obj5B_TypeIndex
 		move.b	d1,(a1)+
 
 locret_11038:
-		rts	
-		rts	
+		rts
+		;rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - blocks that	form a staircase (SLZ)
@@ -22045,7 +22045,7 @@ Obj5C_Display:				; XREF: Obj5C_Index
 		andi.w	#$3F,d1
 		neg.w	d1
 		addi.w	#$100,d1
-		move.w	d1,x_sub(a0)
+		move.w	d1,y_pos(a0)
 		bra.w	DisplaySprite
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -40336,7 +40336,10 @@ ObjPos_End:	binclude	levels/objpos/ending.bin
 		even
 ObjPos_Null:	dc.b $FF, $FF, 0, 0, 0,	0
 ; ---------------------------------------------------------------------------
+
 	          align $8000
+
+
 
 ; SoundDriver:
 	include	"s1.sounddriver.asm"
