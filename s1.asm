@@ -12536,14 +12536,14 @@ Obj7C_Collect:				; XREF: Obj7C_ChkDel
 		clr.b	(ShieldFlag).w	; remove shield
 
 locret_9F76:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj7C_End:				; XREF: Obj7C_Collect
 		addq.b	#2,routine(a0)
 		move.w	#0,(Object_RAM).w ; remove Sonic	object
 		addq.l	#4,sp
-		rts	
+		rts
 ; End of function Obj7C_Collect
 
 ; ===========================================================================
@@ -22014,7 +22014,7 @@ Map_obj5B:
 
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-; Object 5C - metal girders in foreground (SLZ)
+; Object 5C - metal girders in foreground (SLZ)    pylon
 ; ---------------------------------------------------------------------------
 
 Obj5C:					; XREF: Obj_Index
