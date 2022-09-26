@@ -16315,39 +16315,34 @@ Map_obj36:
 ; ---------------------------------------------------------------------------
 
 Obj3B:					; XREF: Obj_Index
-		moveq	#0,d0
-		move.b	routine(a0),d0
-		move.w	Obj3B_Index(pc,d0.w),d1
-		jmp	Obj3B_Index(pc,d1.w)
+		lea     Obj3BInitCodeStart(pc),a1 ; set a1 addr
+		adda.w	$3E(a0),a1      ; add to amount
+		jmp	(a1)
 ; ===========================================================================
-Obj3B_Index:	dc.w Obj3B_Main-Obj3B_Index
-		dc.w Obj3B_Solid-Obj3B_Index
-; ===========================================================================
-
-Obj3B_Main:				; XREF: Obj3B_Index
-		addq.b	#2,routine(a0)
+Obj3BInitCodeStart:
+		move.w	#Obj3BInitCodeEnd-Obj3BInitCodeStart,$3E(a0)  ; go to next routine addressed in here (routine is now how many values in a routine and adds it to code start
 		move.l	#Map_obj3B,4(a0)
 		move.w	#$63D0,2(a0)
 		move.b	#4,1(a0)
 		move.b	#$13,width_pixels(a0)
 		move.b	#4,priority(a0)
+Obj3BInitCodeEnd:
 
 Obj3B_Solid:				; XREF: Obj3B_Index
-		move.w	#$1B,d1
-		move.w	#$10,d2
-		move.w	#$10,d3
+		moveq	#$1B,d1
+		moveq	#$10,d2
+		moveq	#$10,d3
 		move.w	x_pos(a0),d4
+		move.w  d4,d6
 		bsr.w	SolidObject
-		bsr.w	DisplaySprite
-		move.w	x_pos(a0),d0
-		andi.w	#$FF80,d0
+		andi.w	#$FF80,d6
 		move.w	(Camera_X_pos).w,d1
 		subi.w	#$80,d1
 		andi.w	#$FF80,d1
-		sub.w	d1,d0
-		cmpi.w	#$280,d0
+		sub.w	d1,d6
+		cmpi.w	#$280,d6
 		bhi.w	DeleteObject
-		rts
+		bra.w  	DisplaySprite
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Object 49 - waterfall	sound effect (GHZ)
