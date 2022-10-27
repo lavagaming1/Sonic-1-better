@@ -8950,17 +8950,17 @@ Obj11_MakeBdg:
 		move.w	d2,y_pos(a0)
 		move.w	d2,$3C(a0)
 		move.w	a0,d5
-		subi.w	#-$3000,d5
+		subi.w	#Object_RAM,d5
 		lsr.w	#6,d5
-		andi.w	#$7F,d5
+		andi.w	#(Object_RAM_End-Object_RAM)/ObSize-1,d5
 		move.b	d5,(a2)+
 		addq.b	#1,subtype(a0)
 
 loc_73B8:				; XREF: ROM:00007398j
 		move.w	a1,d5
-		subi.w	#-$3000,d5
+		subi.w	#Object_RAM,d5
 		lsr.w	#6,d5
-		andi.w	#$7F,d5
+		andi.w	#(Object_RAM_End-Object_RAM)/ObSize-1,d5
 		move.b	d5,(a2)+
 		move.b	#$A,routine(a1)
 		_move.b	d4,0(a1)	; load bridge object (d4 = $11)
@@ -9056,7 +9056,7 @@ loc_74AE:
 		moveq	#0,d0
 		move.b	$3D(a1),d0
 		lsl.w	#6,d0
-		addi.l	#$FFD000,d0
+		addi.l	#Object_RAM,d0
 		movea.l	d0,a2
 		bclr	#3,status(a2)
 		clr.b	routine_secondary(a2)
@@ -9217,7 +9217,7 @@ Obj11_MoveSonic:			; XREF: Obj11_WalkOff
 		move.b	$3F(a0),d0
 		move.b	$29(a0,d0.w),d0
 		lsl.w	#6,d0
-		addi.l	#$FFD000,d0
+		addi.l	#Object_RAM,d0
 		movea.l	d0,a2
 		lea	(Object_RAM).w,a1
 		move.w	y_pos(a2),d0
@@ -9257,7 +9257,7 @@ loc_765C:
 		moveq	#0,d0
 		move.b	(a2)+,d0
 		lsl.w	#6,d0
-		addi.l	#$FFD000,d0
+		addi.l	#Object_RAM,d0
 		movea.l	d0,a1
 		moveq	#0,d0
 		move.b	(a3)+,d0
@@ -9287,7 +9287,7 @@ loc_76A4:
 		moveq	#0,d0
 		move.b	(a2)+,d0
 		lsl.w	#6,d0
-		addi.l	#$FFD000,d0
+		addi.l	#Object_RAM,d0
 		movea.l	d0,a1
 		moveq	#0,d0
 		move.b	-(a3),d0
@@ -9338,7 +9338,7 @@ Obj11_DelLoop:
 		moveq	#0,d0
 		move.b	(a2)+,d0
 		lsl.w	#6,d0
-		addi.l	#$FFD000,d0
+		addi.l	#Object_RAM,d0
 		movea.l	d0,a1
 		cmp.w	a0,d0
 		beq.s	loc_791E
@@ -9354,12 +9354,12 @@ Obj11_Delete:
 
 Obj11_Delete2:				; XREF: Obj11_Index
 		bsr.w	DeleteObject
-		rts	
+		rts
 ; ===========================================================================
 
 Obj11_Display2:				; XREF: Obj11_Index
 		bsr.w	DisplaySprite
-		rts	
+		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - GHZ	bridge
@@ -9435,17 +9435,19 @@ Obj15_MakeChain:
 		bsr.w	SingleObjLoad
 		bne.s	loc_7A92
 		addq.b	#1,subtype(a0)
+		subi.w	#Object_RAM,d5
+
 		move.w	a1,d5
-		subi.w	#-$3000,d5
-		lsr.w	#6,d5
-		andi.w	#$7F,d5
+                lsr.w   #6,d5
+
+		andi.w	#(Object_RAM_End-Object_RAM)/ObSize-1,d5
 		move.b	d5,(a2)+
 		move.b	#$A,routine(a1)
-		_move.b	d4,0(a1)	; load swinging	object
-		move.l	4(a0),4(a1)
-		move.w	2(a0),2(a1)
-		bclr	#6,2(a1)
-		move.b	#4,1(a1)
+		_move.b	d4,ID(a1)	; load swinging	object
+		move.l	mappings(a0),mappings(a1)
+		move.w	art_tile(a0),art_tile(a1)
+		bclr	#6,art_tile(a1) ; this actually does something to the pallete
+		move.b	#4,render_flags(a1)
 		move.b	#4,priority(a1)
 		move.b	#8,width_pixels(a1)
 		move.b	#1,mapping_frame(a1)
@@ -9454,24 +9456,27 @@ Obj15_MakeChain:
 		bcc.s	loc_7A8E
 		move.b	#2,mapping_frame(a1)
 		move.b	#3,priority(a1)
-		bset	#6,2(a1)
+		bset	#6,art_tile(a1)
 
 loc_7A8E:
 		dbf	d1,Obj15_MakeChain ; repeat d1 times (chain length)
 
 loc_7A92:
 		move.w	a0,d5
-		subi.w	#-$3000,d5
-		lsr.w	#6,d5
-		andi.w	#$7F,d5
+		subi.w	#Object_RAM,d5
+
+		move.w	a1,d5
+                lsr.w   #6,d5
+
+		andi.w	#(Object_RAM_End-Object_RAM)/ObSize-1,d5
 		move.b	d5,(a2)+
 		move.w	#$4080,angle(a0)
 		move.w	#-$200,$3E(a0)
 		move.w	(sp)+,d1
 		btst	#4,d1		; is object type $8X ?
 		beq.s	loc_7AD4	; if not, branch
-		move.l	#Map_obj48,4(a0) ; use GHZ ball	mappings
-		move.w	#$43AA,2(a0)
+		move.l	#Map_obj48,mappings(a0) ; use GHZ ball	mappings
+		move.w	#$43AA,art_tile(a0)
 		move.b	#1,mapping_frame(a0)
 		move.b	#2,priority(a0)
 		move.b	#$81,collision_flags(a0)	; make object hurt when	touched
@@ -9550,7 +9555,7 @@ MvSonic2:
 		sub.w	d2,x_pos(a1)
 
 locret_7B62:
-		rts	
+		rts
 ; End of function MvSonicOnPtfm2
 
 
@@ -9614,8 +9619,8 @@ Obj15_Move2:				; XREF: Obj15_Move; Obj48_Display
 loc_7BCE:
 		moveq	#0,d4
 		move.b	(a2)+,d4
-		lsl.w	#6,d4
-		addi.l	#$FFD000,d4
+		lsl.w   #$6,d4
+		addi.l	#Object_RAM,d4
 		movea.l	d4,a1
 		moveq	#0,d4
 		move.b	$3C(a1),d4
@@ -9629,7 +9634,7 @@ loc_7BCE:
 		move.w	d4,y_pos(a1)
 		move.w	d5,x_pos(a1)
 		dbf	d6,loc_7BCE
-		rts	
+		rts
 ; End of function Obj15_Move2
 
 ; ===========================================================================
@@ -9643,7 +9648,7 @@ Obj15_ChkDel:				; XREF: Obj15_Action; Obj15_Action2
 		sub.w	d1,d0
 		cmpi.w	#$280,d0
 		bhi.w	Obj15_DelAll
-		rts	
+		rts
 ; ===========================================================================
 
 Obj15_DelAll:				; XREF: Obj15_ChkDel
@@ -9654,17 +9659,18 @@ Obj15_DelAll:				; XREF: Obj15_ChkDel
 Obj15_DelLoop:
 		moveq	#0,d0
 		move.b	(a2)+,d0
-		lsl.w	#6,d0
-		addi.l	#$FFD000,d0
+		;lsl.w	#6,d0
+		muls.w  #ObSize,d0
+		addi.l	#Object_RAM,d0
 		movea.l	d0,a1
 		bsr.w	DeleteObject2
 		dbf	d2,Obj15_DelLoop ; repeat for length of	chain
-		rts	
+		rts
 ; ===========================================================================
 
 Obj15_Delete:				; XREF: Obj15_Index
 		bsr.w	DeleteObject
-		rts	
+		rts
 ; ===========================================================================
 
 Obj15_Display:				; XREF: Obj15_Index
@@ -9737,9 +9743,9 @@ Obj17_MakeHelix:
 
 		addq.b	#1,subtype(a0)
 		move.w	a1,d5
-		subi.w	#$D000,d5
+		subi.w	#Object_RAM,d5
 		lsr.w	#6,d5
-		andi.w	#$7F,d5
+		andi.w	#(Object_RAM_End-Object_RAM)/ObSize-1,d5
 		move.b	d5,(a2)+
 		move.b	#8,routine(a1)
 		move.b	d4,ID(a1)
@@ -9800,7 +9806,7 @@ Obj17_DelLoop:
 		moveq	#0,d0
 		move.b	(a2)+,d0
 		lsl.w	#6,d0
-		addi.l	#$FFD000,d0
+		addi.l	#Object_RAM,d0
 		movea.l	d0,a1
 		bsr.w	DeleteObject2	; delete object
 		dbf	d2,Obj17_DelLoop ; repeat d2 times (helix length)
@@ -20044,7 +20050,7 @@ sub_FC2C:				; XREF: SolidObject
 		moveq	#0,d0
 		move.b	$3D(a1),d0
 		lsl.w	#6,d0
-		addi.l	#$FFD000,d0
+		addi.l	#Object_RAM,d0
 		movea.l	d0,a2
 		bclr	#3,status(a2)
 		clr.b	routine_secondary(a2)
@@ -21141,9 +21147,9 @@ Obj57_MakeChain:
 		bne.s	loc_10894
 		addq.b	#1,$29(a0)
 		move.w	a1,d5
-		subi.w	#-$3000,d5
+		subi.w	#Object_RAM,d5
 		lsr.w	#6,d5
-		andi.w	#$7F,d5
+		andi.w	#(Object_RAM_End-Object_RAM)/ObSize-1,d5
 		move.b	d5,(a2)+
 		move.b	#4,routine(a1)
 		_move.b	0(a0),0(a1)
@@ -21166,9 +21172,9 @@ loc_10890:
 
 loc_10894:
 		move.w	a0,d5
-		subi.w	#-$3000,d5
+		subi.w	#Object_RAM,d5
 		lsr.w	#6,d5
-		andi.w	#$7F,d5
+		andi.w	#(Object_RAM_End-Object_RAM)/ObSize-1,d5
 		move.b	d5,(a2)+
 		cmpi.b	#1,(Current_Zone).w ; check if level is LZ
 		bne.s	Obj57_Move
@@ -21195,7 +21201,7 @@ Obj57_MoveLoop:
 		moveq	#0,d4
 		move.b	(a2)+,d4
 		lsl.w	#6,d4
-		addi.l	#$FFD000,d4
+		addi.l	#Object_RAM,d4
 		movea.l	d4,a1
 		moveq	#0,d4
 		move.b	$3C(a1),d4
@@ -21233,7 +21239,7 @@ Obj57_DelLoop:
 		moveq	#0,d0
 		move.b	(a2)+,d0
 		lsl.w	#6,d0
-		addi.l	#$FFD000,d0
+		addi.l	#Object_RAM,d0
 		movea.l	d0,a1
 		bsr.w	DeleteObject2
 		dbf	d2,Obj57_DelLoop ; delete all pieces of	chain
@@ -22956,10 +22962,10 @@ Obj60_MakeOrbs:
 		bne.s	loc_11D90
 		addq.b	#1,(a3)
 		move.w	a1,d5
-		subi.w	#-$3000,d5
+		subi.w	#Object_RAM,d5
 		lsr.w	#6,d5
-		andi.w	#$7F,d5
-		move.b	d5,(a2)+                          
+		andi.w	#(Object_RAM_End-Object_RAM)/ObSize-1,d5
+		move.b	d5,(a2)+
 		_move.b	0(a0),0(a1)	; load spiked orb object
 		move.b	#6,routine(a1)
 		move.l	4(a0),4(a1)
@@ -23053,7 +23059,7 @@ loc_11E40:
 		moveq	#0,d0
 		move.b	(a2)+,d0
 		lsl.w	#6,d0
-		addi.l	#$FFD000,d0
+		addi.l	#Object_RAM,d0
 		movea.l	d0,a1
 		bsr.w	DeleteObject2
 		dbf	d2,loc_11E40
@@ -30955,7 +30961,9 @@ Obj3D_Display:				; XREF: Obj3D_FaceDisp; Obj3D_FlameDisp
 ; ---------------------------------------------------------------------------
 ; Object 48 - ball on a	chain that Eggman swings (GHZ)
 ; ---------------------------------------------------------------------------
-
+;method in this object
+; say an object is at slot FD100
+; what sonic 1 does here is subtract the slot from FD000 that will result in the number being $100  devide $100 by 40 that will result in the number 4 mulyply again to get the slot by storing 4 in a varable
 Obj48:					; XREF: Obj_Index
 		moveq	#0,d0
 		move.b	routine(a0),d0
@@ -30996,9 +31004,10 @@ Obj48_MakeLinks:
 
 loc_17B60:				; XREF: Obj48_Main
 		move.w	a1,d5
-		subi.w	#$D000,d5
+		subi.w	#Object_RAM,d5
+		;divu.w  #ObSize,d5
 		lsr.w	#6,d5
-		andi.w	#$7F,d5
+		andi.w	#(Object_RAM_End-Object_RAM)/ObSize-1,d5 ; limit slots
 		move.b	d5,(a2)+
 		move.b	#4,1(a1)
 		move.b	#8,width_pixels(a1)
@@ -31013,7 +31022,7 @@ Obj48_MakeBall:
 		move.b	#1,mapping_frame(a1)
 		move.b	#5,priority(a1)
 		move.b	#$81,collision_flags(a1)	; make object hurt Sonic
-		rts	
+		rts
 ; ===========================================================================
 
 Obj48_PosData:	dc.b 0,	$10, $20, $30, $40, $60	; y-position data for links and	giant ball
@@ -31029,8 +31038,8 @@ Obj48_Base:				; XREF: Obj48_Index
 loc_17BC6:
 		moveq	#0,d4
 		move.b	(a2)+,d4
-		lsl.w	#6,d4
-		addi.l	#$FFD000,d4
+		lsl.w   #$6,d4
+		addi.l	#Object_RAM,d4
 		movea.l	d4,a1
 		move.b	(a3)+,d0
 		cmp.b	$3C(a1),d0
@@ -31085,7 +31094,7 @@ loc_17C3C:
 		move.b	#0,routine(a0)
 
 locret_17C66:
-		rts	
+		rts
 ; End of function sub_17C2A
 
 ; ===========================================================================
