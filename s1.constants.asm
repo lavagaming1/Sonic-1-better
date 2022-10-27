@@ -326,23 +326,29 @@ Sonic_LastLoadedDPLC: ds.b 1; =		ramaddr( $FFFFF766 )	; mapping frame number whe
                      ds.b 1 ; unused
 Primary_Angle: ds.w 1 ;=			ramaddr( $FFFFF768 )
 Secondary_Angle: ds.w 1 ; =		ramaddr( $FFFFF76A )
-Collision_addr =                ramaddr( $FFFFF796 )
-S1SS_PalFrame  =                 ramaddr( $FFFFF79A )
-Unk_F79C =                       ramaddr( $FFFFF79C )
-Unk_F7A0 =                       ramaddr( $FFFFF7A0 )
-MZ_ObjY_posSave =            ramaddr( $FFFFF7A4 )
-Sonic_Pos_Record_Index =     ramaddr( $FFFFF7A8 )
-BossdefeatedFlag =           ramaddr( $FFFFFF7A )
-Loop_TunnelRam =               ramaddr( $FFFFF7AC )
-AnimTilesFrame =               ramaddr( $FFFFF7B0 )
-AnimTilesFrame2 =              ramaddr( $FFFFF7B2 )
-AnimTiles_Counter =            ramaddr( $FFFFF7B1 )
-AnimTilesCounter4 =           ramaddr( $FFFFF7B3 )
-AnimTilesCounter2 =             ramaddr( $FFFFF7B4 )
-AnimTilesCounter3 =          ramaddr( $FFFFF7B5 )
-BigRingGraphics =		ramaddr( $FFFFF7BE )
-RotatingPlatformsTable =     	ramaddr( $FFFFF7C1 ) ;BigRingGraphics+$3
-
+                    ds.b $2A
+Collision_addr: ds.l 1 ;               ramaddr( $FFFFF796 )
+S1SS_PalFrame: ds.w 1  ;=                 ramaddr( $FFFFF79A )
+Unk_F79C: ds.w 1
+          ds.w 1  ;=                       ramaddr( $FFFFF79C )
+Unk_F7A0: ds.w 1 ;=                       ramaddr( $FFFFF7A0 )
+          ds.w 1
+MZ_ObjY_posSave: ds.l 1 ;            ramaddr( $FFFFF7A4 )
+Sonic_Pos_Record_Index: ds.w 1 ; =     ramaddr( $FFFFF7A8 )
+BossdefeatedFlag: ds.w 1  ;=           ramaddr( $FFFFFF7A )
+Loop_TunnelRam: ds.w 1 ;               ramaddr( $FFFFF7AC ) ; format that handles loops in s1
+                ds.w 1
+AnimTilesFrame: ds.b 1 ;=               ramaddr( $FFFFF7B0 )
+AnimTiles_Counter: ds.b 1 ;=            ramaddr( $FFFFF7B1 )
+AnimTilesFrame2: ds.b 1 ;             ramaddr( $FFFFF7B2 )
+AnimTilesCounter4: ds.b 1 ;=           ramaddr( $FFFFF7B3 )
+AnimTilesCounter2: ds.b 1;=             ramaddr( $FFFFF7B4 )
+AnimTilesCounter3: ds.b 1 ;=          ramaddr( $FFFFF7B5 )
+                   ds.b $8
+BigRingGraphics: ds.w 1
+                 ds.b 1 ;=		ramaddr( $FFFFF7BE )
+RotatingPlatformsTable ds.b 1 ;=     	ramaddr( $FFFFF7C1 ) ;BigRingGraphics+$3
+                       ds.l 1 
 Obj_placement_routine =		ramaddr( $FFFFF76C )
 
 Camera_X_pos_last =		ramaddr( $FFFFF76E )

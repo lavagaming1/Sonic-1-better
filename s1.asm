@@ -8963,13 +8963,13 @@ loc_73B8:				; XREF: ROM:00007398j
 		andi.w	#(Object_RAM_End-Object_RAM)/ObSize-1,d5
 		move.b	d5,(a2)+
 		move.b	#$A,routine(a1)
-		_move.b	d4,0(a1)	; load bridge object (d4 = $11)
+		_move.b	d4,ID(a1)	; load bridge object (d4 = $11)
 		move.w	d2,y_pos(a1)
 		move.w	d2,$3C(a1)
 		move.w	d3,x_pos(a1)
-		move.l	#Map_obj11,4(a1)
-		move.w	#$438E,2(a1)
-		move.b	#4,1(a1)
+		move.l	#Map_obj11,mappings(a1)
+		move.w	#$438E,art_tile(a1)
+		move.b	#4,render_flags(a1)
 		move.b	#3,priority(a1)
 		move.b	#8,width_pixels(a1)
 		addi.w	#$10,d3
@@ -9085,7 +9085,7 @@ loc_7512:
 		bset	#3,status(a0)
 
 locret_751E:
-		rts	
+		rts
 ; End of function PlatformObject
 
 ; ---------------------------------------------------------------------------
@@ -9174,7 +9174,7 @@ loc_75B6:
 		bsr.w	Obj11_MoveSonic
 
 locret_75BE:
-		rts	
+		rts
 ; End of function Obj11_WalkOff
 
 ; ---------------------------------------------------------------------------
@@ -9205,7 +9205,7 @@ loc_75E0:
 		bclr	#3,status(a0)
 
 locret_75F2:
-		rts	
+		rts
 ; End of function ExitPlatform
 
 
@@ -9226,7 +9226,7 @@ Obj11_MoveSonic:			; XREF: Obj11_WalkOff
 		move.b	y_radius(a1),d1
 		sub.w	d1,d0
 		move.w	d0,y_pos(a1)	; change Sonic's position on y-axis
-		rts	
+		rts
 ; End of function Obj11_MoveSonic
 
 
@@ -9251,7 +9251,7 @@ Obj11_Bend:				; XREF: Obj11_Action; Obj11_WalkOff
 		andi.w	#$F,d3
 		lsl.w	#4,d3
 		lea	(a4,d3.w),a3
-		lea	$29(a0),a2
+		lea	subtype+1(a0),a2
 
 loc_765C:
 		moveq	#0,d0
@@ -9300,7 +9300,7 @@ loc_76A4:
 		dbf	d2,loc_76A4
 
 locret_76CA:
-		rts	
+		rts
 ; End of function Obj11_Bend
 
 ; ===========================================================================
@@ -9324,7 +9324,7 @@ Obj11_ChkDel:				; XREF: Obj11_Display; Obj11_Action2
 		sub.w	d1,d0
 		cmpi.w	#$280,d0
 		bhi.w	Obj11_DelAll
-		rts	
+		rts
 ; ===========================================================================
 
 Obj11_DelAll:				; XREF: Obj11_ChkDel
@@ -9349,7 +9349,7 @@ loc_791E:
 
 Obj11_Delete:
 		bsr.w	DeleteObject
-		rts	
+		rts
 ; ===========================================================================
 
 Obj11_Delete2:				; XREF: Obj11_Index
@@ -9435,11 +9435,9 @@ Obj15_MakeChain:
 		bsr.w	SingleObjLoad
 		bne.s	loc_7A92
 		addq.b	#1,subtype(a0)
-		subi.w	#Object_RAM,d5
-
 		move.w	a1,d5
+		subi.w	#Object_RAM,d5
                 lsr.w   #6,d5
-
 		andi.w	#(Object_RAM_End-Object_RAM)/ObSize-1,d5
 		move.b	d5,(a2)+
 		move.b	#$A,routine(a1)
@@ -9463,9 +9461,9 @@ loc_7A8E:
 
 loc_7A92:
 		move.w	a0,d5
+
 		subi.w	#Object_RAM,d5
 
-		move.w	a1,d5
                 lsr.w   #6,d5
 
 		andi.w	#(Object_RAM_End-Object_RAM)/ObSize-1,d5
@@ -9659,8 +9657,7 @@ Obj15_DelAll:				; XREF: Obj15_ChkDel
 Obj15_DelLoop:
 		moveq	#0,d0
 		move.b	(a2)+,d0
-		;lsl.w	#6,d0
-		muls.w  #ObSize,d0
+		lsl.w	#6,d0
 		addi.l	#Object_RAM,d0
 		movea.l	d0,a1
 		bsr.w	DeleteObject2
@@ -9853,24 +9850,24 @@ Obj18_Index:	dc.w Obj18_Main-Obj18_Index
 
 Obj18_Main:				; XREF: Obj18_Index
 		addq.b	#2,routine(a0)
-		move.w	#$4000,2(a0)
-		move.l	#Map_obj18,4(a0)
+		move.w	#$4000,art_tile(a0)
+		move.l	#Map_obj18,mappings(a0)
 		move.b	#$20,width_pixels(a0)
 		cmpi.b	#4,(Current_Zone).w ; check if level is SYZ
 		bne.s	Obj18_NotSYZ
-		move.l	#Map_obj18a,4(a0) ; SYZ	specific code
+		move.l	#Map_obj18a,mappings(a0) ; SYZ	specific code
 		move.b	#$20,width_pixels(a0)
 
 Obj18_NotSYZ:
 		cmpi.b	#3,(Current_Zone).w ; check if level is SLZ
 		bne.s	Obj18_NotSLZ
-		move.l	#Map_obj18b,4(a0) ; SLZ	specific code
+		move.l	#Map_obj18b,mappings(a0) ; SLZ	specific code
 		move.b	#$20,width_pixels(a0)
-		move.w	#$4000,2(a0)
+		move.w	#$4000,art_tile(a0)
 		move.b	#3,subtype(a0)
 
 Obj18_NotSLZ:
-		move.b	#4,1(a0)
+		move.b	#4,render_flags(a0)
 		move.b	#4,priority(a0)
 		move.w	y_pos(a0),$2C(a0)
 		move.w	y_pos(a0),$34(a0)
@@ -9937,7 +9934,7 @@ Obj18_Nudge:				; XREF: Obj18_Action; Obj18_Action2
 		swap	d0
 		add.w	$2C(a0),d0
 		move.w	d0,y_pos(a0)
-		rts	
+		rts
 ; End of function Obj18_Nudge
 
 ; ---------------------------------------------------------------------------
@@ -10033,7 +10030,7 @@ Obj18_Type03:
 		move.w	#30,$3A(a0)	; set time delay to 0.5	seconds
 
 Obj18_03_NoMove:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj18_03_Wait:
@@ -10041,7 +10038,7 @@ Obj18_03_Wait:
 		bne.s	Obj18_03_NoMove	; if time is > 0, branch
 		move.w	#32,$3A(a0)
 		addq.b	#1,subtype(a0)	; change to type 04 (falling)
-		rts	
+		rts
 ; ===========================================================================
 
 Obj18_Type04:
@@ -10076,7 +10073,7 @@ loc_8048:
 		move.b	#6,routine(a0)
 
 locret_8074:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj18_Type07:
@@ -10091,14 +10088,14 @@ Obj18_Type07:
 		move.w	#60,$3A(a0)	; set time delay to 1 second
 
 Obj18_07_NoMove:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj18_07_Wait:
 		subq.w	#1,$3A(a0)	; subtract 1 from time delay
 		bne.s	Obj18_07_NoMove	; if time is > 0, branch
 		addq.b	#1,subtype(a0)	; change to type 08
-		rts	
+		rts
 ; ===========================================================================
 
 Obj18_Type08:
@@ -10110,7 +10107,7 @@ Obj18_Type08:
 		clr.b	subtype(a0)		; change to type 00 (stop moving)
 
 Obj18_08_NoStop:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj18_Type0A:
@@ -10124,7 +10121,7 @@ Obj18_Type0A:
 
 Obj18_ChgMotion:
 		move.b	(Oscillating_Data+$18).w,angle(a0) ;	update platform-movement variable
-		rts	
+		rts
 ; ===========================================================================
 
 Obj18_ChkDel:				; XREF: Obj18_Action; Obj18_Action2
@@ -10136,7 +10133,7 @@ Obj18_ChkDel:				; XREF: Obj18_Action; Obj18_Action2
 		sub.w	d1,d0
 		cmpi.w	#$280,d0
 		bhi.s	Obj18_Delete
-		rts	
+		rts
 ; ===========================================================================
 
 Obj18_Delete:				; XREF: Obj18_Index
@@ -10166,13 +10163,7 @@ Map_obj18a:
 Map_obj18b:
 		include	"mappings/obj18slz.asm"
 
-; ===========================================================================
-; ---------------------------------------------------------------------------
-; Object 19 - blank
-; ---------------------------------------------------------------------------
 
-Obj19:					; XREF: Obj_Index
-		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - swinging ball on a chain from GHZ boss
@@ -16592,13 +16583,13 @@ loc_D37C:
 ; ---------------------------------------------------------------------------
 Obj_Index:
         dc.l DeleteObject
-	dc.l Obj01, ObjectMoveAndFall,	ObjectMoveAndFall, ObjectMoveAndFall
-	dc.l ObjectMoveAndFall, ObjectMoveAndFall, ObjectMoveAndFall, Obj08
+	dc.l Obj01, DeleteObject,DeleteObject, DeleteObject
+	dc.l DeleteObject, DeleteObject, DeleteObject, Obj08
 	dc.l Obj09, Obj0A, Obj0B, Obj0C
 	dc.l Obj0D, Obj0E, Obj0F, Obj10
 	dc.l Obj11, Obj12, Obj13, Obj14
 	dc.l Obj15, Obj16, Obj17, Obj18
-	dc.l Obj19, Obj1A, Obj1B, Obj1C
+	dc.l DeleteObject, Obj1A, Obj1B, Obj1C
 	dc.l Obj1D, Obj1E, Obj1F, Obj20
 	dc.l Obj21, Obj22, Obj23, Obj24
 	dc.l Obj25, Obj26, Obj27, Obj28
@@ -16611,7 +16602,7 @@ Obj_Index:
 	dc.l Obj41, Obj42, Obj43, Obj44
 	dc.l Obj45, Obj46, Obj47, Obj48
 	dc.l Obj49, Obj4A, Obj4B, Obj4C
-	dc.l Obj4D, Obj4E, Obj4F, Obj50
+	dc.l Obj4D, Obj4E, DeleteObject, Obj50
 	dc.l Obj51, Obj52, Obj53, Obj54
 	dc.l Obj55, Obj56, Obj57, Obj58
 	dc.l Obj59, Obj5A, Obj5B, Obj5C
@@ -19633,21 +19624,14 @@ Ani_obj40:
 byte_F788:	dc.b $F, 2, $FF, 0
 byte_F78C:	dc.b 7,	0, 1, 0, 2, $FF
 byte_F792:	dc.b 1,	3, 6, 3, 6, 4, 6, 4, 6,	4, 6, 5, $FC, 0
-		align 2
-
+		even
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - Moto Bug enemy (GHZ)
 ; ---------------------------------------------------------------------------
 Map_obj40:
 		include	"mappings/obj40.asm"
 
-; ===========================================================================
-; ---------------------------------------------------------------------------
-; Object 4F - blank
-; ---------------------------------------------------------------------------
 
-Obj4F:					; XREF: Obj_Index
-		rts	
 
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
@@ -22996,7 +22980,7 @@ Obj60_Move:
 		neg.w	x_vel(a0)		; move orbinaut	to the right
 
 locret_11DBC:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj60_ChkSonic:				; XREF: Obj60_Index
@@ -23278,7 +23262,7 @@ Obj61_TypeIndex:dc.w Obj61_Type00-Obj61_TypeIndex, Obj61_Type01-Obj61_TypeIndex
 ; ===========================================================================
 
 Obj61_Type00:				; XREF: Obj61_TypeIndex
-		rts	
+		rts
 ; ===========================================================================
 
 Obj61_Type01:				; XREF: Obj61_TypeIndex
@@ -23289,7 +23273,7 @@ Obj61_Type01:				; XREF: Obj61_TypeIndex
 		move.w	#30,$36(a0)	; wait for « second
 
 locret_120D4:
-		rts	
+		rts
 ; ===========================================================================
 
 loc_120D6:
@@ -23297,7 +23281,7 @@ loc_120D6:
 		bne.s	locret_120D4	; if time remains, branch
 		addq.b	#1,subtype(a0)	; add 1	to type
 		clr.b	$38(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 Obj61_Type02:				; XREF: Obj61_TypeIndex
@@ -23312,7 +23296,7 @@ Obj61_Type02:				; XREF: Obj61_TypeIndex
 		clr.b	subtype(a0)		; set type to 00 (non-moving type)
 
 locret_12106:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj61_Type04:				; XREF: Obj61_TypeIndex
@@ -23326,7 +23310,7 @@ Obj61_Type04:				; XREF: Obj61_TypeIndex
 		clr.b	subtype(a0)		; set type to 00 (non-moving type)
 
 locret_12126:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj61_Type05:				; XREF: Obj61_TypeIndex
@@ -23336,7 +23320,7 @@ Obj61_Type05:				; XREF: Obj61_TypeIndex
 		clr.b	$38(a0)
 
 locret_12138:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj61_Type07:				; XREF: Obj61_TypeIndex
@@ -23356,7 +23340,7 @@ loc_1214E:
 		sub.w	d1,y_pos(a0)
 
 locret_12160:
-		rts	
+		rts
 ; ===========================================================================
 
 loc_12162:				; XREF: Obj61_Type07
@@ -23373,7 +23357,7 @@ loc_1216A:
 		add.w	d1,y_pos(a0)
 
 locret_1217E:
-		rts	
+		rts
 ; ===========================================================================
 
 loc_12180:				; XREF: Obj61_Action
@@ -23402,7 +23386,7 @@ loc_121A6:
 		move.w	d0,y_pos(a0)
 
 locret_121C0:
-		rts	
+		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - blocks (LZ)
@@ -23459,7 +23443,7 @@ Obj62_MakeFire:				; XREF: Obj62_Index
 		move.b	status(a0),status(a1)
 
 Obj62_NoFire:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj62_FireBall:				; XREF: Obj62_Index
@@ -23646,7 +23630,7 @@ loc_124AA:
 		dbf	d1,Obj63_Loop
 
 		addq.l	#4,sp
-		rts	
+		rts
 ; ===========================================================================
 
 loc_124B2:				; XREF: Obj63_Index
@@ -23727,7 +23711,7 @@ loc_12552:
 
 loc_1256A:
 		bsr.w	ObjectMove
-		rts	
+		rts
 ; End of function sub_12502
 
 
@@ -23767,9 +23751,9 @@ loc_125AE:
 		move.w	d0,x_vel(a0)
 		move.w	d3,y_vel(a0)
 		swap	d0
-		move.w	d0,y_pos(a0)
+		move.w	d0,y_pos+2(a0)
 		clr.w	y_pos+2(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_125C2:				; XREF: Obj63_ChangeDir
@@ -23785,9 +23769,9 @@ loc_125D4:
 		move.w	d1,y_vel(a0)
 		move.w	d2,x_vel(a0)
 		swap	d1
-		move.w	d1,y_pos(a0)
+		move.w	d1,y_pos+2(a0)
 		clr.w	x_pos+2(a0)
-		rts	
+		rts
 ; End of function Obj63_ChangeDir
 
 ; ===========================================================================
@@ -24030,7 +24014,7 @@ Obj64_ChkDel:				; XREF: Obj64_BblMaker
 		move.w	(Water_Level_1).w,d0
 		cmp.w	y_pos(a0),d0
 		bcs.w	DisplaySprite
-		rts	
+		rts
 ; ===========================================================================
 ; bubble production sequence
 
@@ -24060,12 +24044,12 @@ Obj64_ChkSonic:				; XREF: Obj64_Wobble
 		cmp.w	d0,d1
 		bcs.s	loc_12998
 		moveq	#1,d0
-		rts	
+		rts
 ; ===========================================================================
 
 loc_12998:
 		moveq	#0,d0
-		rts	
+		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Animation script - bubbles (LZ)
@@ -24092,7 +24076,7 @@ byte_129C6:	dc.b $F, $13, $14, $15,	$FF
 Map_obj64:
 		include	"mappings/obj64.asm"
 ;=====================================================================================
-    
+
 ;=====================================================================================
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -26579,16 +26563,16 @@ Obj08_Index:	dc.w Obj08_Main-Obj08_Index
 
 Obj08_Main:				; XREF: Obj08_Index
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj08,4(a0)
-		ori.b	#4,1(a0)
+		move.l	#Map_obj08,mappings(a0)
+		ori.b	#4,render_flags(a0)
 		move.b	#1,priority(a0)
 		move.b	#$10,width_pixels(a0)
-		move.w	#$4259,2(a0)
+		move.w	#$4259,art_tile(a0)
 		move.w	(Object_RAM+x_pos).w,x_pos(a0) ; copy x-position from Sonic
 
 Obj08_Display:				; XREF: Obj08_Index
 		move.w	(Water_Level_1).w,y_pos(a0) ; copy y-position from water height
-		lea	(Ani_obj08).l,a1
+		lea	Ani_obj08(pc),a1
 		jsr	(AnimateSprite).l
 		jmp	(DisplaySprite).l
 ; ===========================================================================
@@ -26613,7 +26597,7 @@ byte_1437E:	dc.b 0,	4, 4, 0, 4, 0, 0, 5, 5,	0, 5, 0, 0, 6, 6, 0, 6
 		dc.b 0,	0, 7, 7, 0, 7, 0, 0, $FF
 byte_14398:	dc.b 0,	4, 0, 0, 4, 0, 0, 5, 0,	0, 5, 0, 0, 6, 0, 0, 6
 		dc.b 0,	0, 7, 0, 0, 7, 0, 0, $FF
-		align 2
+		even
 
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - shield and invincibility stars
@@ -26627,7 +26611,7 @@ Map_obj38:
 Ani_obj4A:
 		dc.w byte_14458-Ani_obj4A
 byte_14458:	dc.b 5,	0, 1, 0, 1, 0, 7, 1, 7,	2, 7, 3, 7, 4, 7, 5, 7, 6, 7, $FC
-		align 2
+		even
 
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - special stage entry	from beta
@@ -26641,7 +26625,7 @@ Map_obj4A:
 Ani_obj08:
 		dc.w byte_145C6-Ani_obj08
 byte_145C6:	dc.b 4,	0, 1, 2, $FC, 0
-		align 2
+		even
 
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - water splash (LZ)
@@ -26662,7 +26646,7 @@ Sonic_AnglePos:				; XREF: Obj01_MdNormal; Obj01_MdRoll
 		moveq	#0,d0
 		move.b	d0,(Primary_Angle).w
 		move.b	d0,(Secondary_Angle).w
-		rts	
+		rts
 ; ===========================================================================
 
 loc_14602:
@@ -26737,7 +26721,7 @@ loc_14630:
 		add.w	d1,y_pos(a0)
 
 locret_146BE:
-		rts	
+		rts
 ; ===========================================================================
 
 loc_146C0:
@@ -26746,7 +26730,7 @@ loc_146C0:
 
 loc_146C6:
 		add.w	d1,y_pos(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_146CC:
@@ -26755,11 +26739,11 @@ loc_146CC:
 		bset	#1,status(a0)
 		bclr	#5,status(a0)
 		move.b	#1,next_anim(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 locret_146E6:
-		rts	
+		rts
 ; End of function Sonic_AnglePos
 
 ; ===========================================================================
@@ -26774,11 +26758,11 @@ locret_146E6:
 		asl.l	#8,d0
 		sub.l	d0,d3
 		move.l	d3,y_pos(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 locret_1470A:
-		rts	
+		rts
 ; ===========================================================================
 		move.l	y_pos(a0),d3
 		move.w	y_vel(a0),d0
@@ -26788,8 +26772,8 @@ locret_1470A:
 		asl.l	#8,d0
 		sub.l	d0,d3
 		move.l	d3,y_pos(a0)
-		rts	
-		rts	
+		rts
+		rts
 ; ===========================================================================
 		move.l	x_pos(a0),d2
 		move.l	y_pos(a0),d3
@@ -26803,7 +26787,7 @@ locret_1470A:
 		sub.l	d0,d3
 		move.l	d2,x_pos(a0)
 		move.l	d3,y_pos(a0)
-		rts	
+		rts
 
 ; ---------------------------------------------------------------------------
 ; Subroutine to	change Sonic's angle as he walks along the floor
@@ -26823,7 +26807,7 @@ loc_1475E:
 		btst	#0,d2
 		bne.s	loc_1476A
 		move.b	d2,angle(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_1476A:
@@ -26831,7 +26815,7 @@ loc_1476A:
 		addi.b	#$20,d2
 		andi.b	#$C0,d2
 		move.b	d2,angle(a0)
-		rts	
+		rts
 ; End of function Sonic_Angle
 
 ; ---------------------------------------------------------------------------
@@ -26882,7 +26866,7 @@ Sonic_WalkVertR:			; XREF: Sonic_AnglePos
 		add.w	d1,x_pos(a0)
 
 locret_147F0:
-		rts	
+		rts
 ; ===========================================================================
 
 loc_147F2:
@@ -26891,7 +26875,7 @@ loc_147F2:
 
 loc_147F8:
 		add.w	d1,x_pos(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_147FE:
@@ -26900,7 +26884,7 @@ loc_147FE:
 		bset	#1,status(a0)
 		bclr	#5,status(a0)
 		move.b	#1,next_anim(a0)
-		rts	
+		rts
 ; End of function Sonic_WalkVertR
 
 ; ---------------------------------------------------------------------------
@@ -26952,7 +26936,7 @@ Sonic_WalkCeiling:			; XREF: Sonic_AnglePos
 		sub.w	d1,y_pos(a0)
 
 locret_14892:
-		rts	
+		rts
 ; ===========================================================================
 
 loc_14894:
@@ -26961,7 +26945,7 @@ loc_14894:
 
 loc_1489A:
 		sub.w	d1,y_pos(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_148A0:
@@ -26970,7 +26954,7 @@ loc_148A0:
 		bset	#1,status(a0)
 		bclr	#5,status(a0)
 		move.b	#1,next_anim(a0)
-		rts	
+		rts
 ; End of function Sonic_WalkCeiling
 
 ; ---------------------------------------------------------------------------
@@ -27022,7 +27006,7 @@ Sonic_WalkVertL:			; XREF: Sonic_AnglePos
 		sub.w	d1,x_pos(a0)
 
 locret_14934:
-		rts	
+		rts
 ; ===========================================================================
 
 loc_14936:
@@ -27031,7 +27015,7 @@ loc_14936:
 
 loc_1493C:
 		sub.w	d1,x_pos(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_14942:
@@ -27040,7 +27024,7 @@ loc_14942:
 		bset	#1,status(a0)
 		bclr	#5,status(a0)
 		move.b	#1,next_anim(a0)
-		rts	
+		rts
 ; End of function Sonic_WalkVertL
 
 ; ---------------------------------------------------------------------------
@@ -27077,7 +27061,7 @@ Floor_ChkTile:				; XREF: FindFloor; et al
 
 loc_14996:
 		movea.l	d1,a1
-		rts	
+		rts
 ; ===========================================================================
 
 loc_1499A:
@@ -27101,7 +27085,7 @@ loc_149B2:
 		andi.w	#$1E,d0
 		add.w	d0,d1
 		movea.l	d1,a1
-		rts	
+		rts
 ; End of function Floor_ChkTile
 
 
@@ -27122,7 +27106,7 @@ loc_149DE:
 		bsr.w	FindFloor2
 		sub.w	a3,d2
 		addi.w	#$10,d1
-		rts	
+		rts
 ; ===========================================================================
 
 loc_149EC:
@@ -27168,7 +27152,7 @@ loc_14A3E:
 		add.w	d1,d0
 		move.w	#$F,d1
 		sub.w	d0,d1
-		rts	
+		rts
 ; ===========================================================================
 
 loc_14A5A:
@@ -27182,7 +27166,7 @@ loc_14A66:
 		bsr.w	FindFloor2
 		add.w	a3,d2
 		subi.w	#$10,d1
-		rts	
+		rts
 ; End of function FindFloor
 
 
@@ -27203,7 +27187,7 @@ loc_14A86:
 		move.w	d2,d0
 		andi.w	#$F,d0
 		sub.w	d0,d1
-		rts	
+		rts
 ; ===========================================================================
 
 loc_14A94:
@@ -27247,7 +27231,7 @@ loc_14AE6:
 		add.w	d1,d0
 		move.w	#$F,d1
 		sub.w	d0,d1
-		rts	
+		rts
 ; ===========================================================================
 
 loc_14AFC:
@@ -27256,7 +27240,7 @@ loc_14AFC:
 		add.w	d1,d0
 		bpl.w	loc_14A86
 		not.w	d1
-		rts	
+		rts
 ; End of function FindFloor2
 
 
@@ -27277,7 +27261,7 @@ loc_14B1E:
 		bsr.w	FindWall2
 		sub.w	a3,d3
 		addi.w	#$10,d1
-		rts	
+		rts
 ; ===========================================================================
 
 loc_14B2C:
@@ -27323,7 +27307,7 @@ loc_14B7E:
 		add.w	d1,d0
 		move.w	#$F,d1
 		sub.w	d0,d1
-		rts	
+		rts
 ; ===========================================================================
 
 loc_14B9A:
@@ -27337,7 +27321,7 @@ loc_14BA6:
 		bsr.w	FindWall2
 		add.w	a3,d3
 		subi.w	#$10,d1
-		rts	
+		rts
 ; End of function FindWall
 
 
@@ -28372,7 +28356,7 @@ Obj68_Action:				; XREF: Obj68_Index
 		sub.w	d1,d0
 		cmpi.w	#$280,d0
 		bhi.s	Obj68_Delete
-		rts	
+		rts
 ; ===========================================================================
 
 Obj68_Delete:
@@ -28401,7 +28385,7 @@ Obj68_MoveSonic:			; XREF: Obj68_Action
 		add.w	d0,x_pos(a1)
 
 locret_1572E:
-		rts	
+		rts
 
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -28542,7 +28526,7 @@ byte_158B8:	dc.b 1,	0, 1, 2, 3, 4, $43, $42, $41, $40, $61,	$62, $63
 		dc.b $64, $23, $22, $21, 0, $FE, 1
 byte_158CC:	dc.b 1,	0, 1, 2, 3, 4, $43, $42, $41, $40, $61,	$62, $63
 		dc.b $64, $23, $22, $21, 0, $FE, 1
-		align 2
+		even
 
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - trapdoor (SBZ)
@@ -29321,6 +29305,7 @@ Obj6F_Act1or2:
 
 Obj6F_Delete:
 		jmp	(DeleteObject).l
+
 ; ===========================================================================
 Obj6F_Index:	dc.w Obj6F_Main-Obj6F_Index
 		dc.w loc_163D8-Obj6F_Index
@@ -29330,10 +29315,10 @@ Obj6F_Main:				; XREF: Obj6F_Index
 		move.b	subtype(a0),d0
 		bmi.w	loc_16380
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj69a,4(a0)
-		move.w	#$4DF,2(a0)
+		move.l	#MapSpinningPtfm,mappings(a0)
+		move.w	#$4DF,art_tile(a0)
 		move.b	#$10,width_pixels(a0)
-		ori.b	#4,1(a0)
+		ori.b	#4,render_flags(a0)
 		move.b	#4,priority(a0)
 		moveq	#0,d0
 		move.b	subtype(a0),d0
@@ -29420,7 +29405,7 @@ loc_163D0:
 		dbf	d1,Obj6F_Loop
 
 		addq.l	#4,sp
-		rts	
+		rts
 ; ===========================================================================
 
 loc_163D8:				; XREF: Obj6F_Index
@@ -29447,7 +29432,7 @@ loc_16404:
 		clr.b	routine_secondary(a0)
 
 loc_16420:
-		bra.w	*+4
+		;bra.w	*+4
 
 loc_16424:
 		move.w	x_pos(a0),d0
@@ -29497,7 +29482,7 @@ Ani_obj6F:
 byte_1648E:	dc.b 0,	0, 1, 2, 3, 4, $43, $42, $41, $40, $61,	$62, $63
 		dc.b $64, $23, $22, $21, 0, $FF, 0
 byte_164A2:	dc.b $F, 0, $FF
-		align 2
+		even ;align 2
 
 off_164A6:	dc.w word_164B2-off_164A6, word_164C6-off_164A6, word_164DA-off_164A6
 		dc.w word_164EE-off_164A6, word_16502-off_164A6, word_16516-off_164A6
@@ -29507,6 +29492,9 @@ word_164DA:	dc.w $10, $1080, $1014,	$270, $10EF, $202, $10EF, $240,	$1014, $2AE
 word_164EE:	dc.w $10, $F80,	$F14, $570, $FEF, $502,	$FEF, $540, $F14, $5AE
 word_16502:	dc.w $10, $1B80, $1B14,	$670, $1BEF, $602, $1BEF, $640,	$1B14, $6AE
 word_16516:	dc.w $10, $1C80, $1C14,	$5E0, $1CEF, $572, $1CEF, $5B0,	$1C14, $61E
+MapSpinningPtfm:
+	include "mappings/SBZSpinningPlatforms.asm"
+	even
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Object 70 - large girder block (SBZ)
