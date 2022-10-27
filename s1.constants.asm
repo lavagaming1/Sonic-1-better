@@ -277,38 +277,40 @@ Plc_Buffer_Reg1A:		ds.w	1
 Camera_RAM: ;			ramaddr( $FFFFF700 )
 Camera_X_pos: ;			ramaddr( $FFFFF700 )
             ds.l 1
-Camera_Y_pos =			ramaddr( $FFFFF704 )
-Camera_BG_X_pos =		ramaddr( $FFFFF708 )	; only used sometimes as the layer deformation makes it sort of redundant
-Camera_BG_Y_pos =		ramaddr( $FFFFF70C )
-Camera_BG2_X_pos =		ramaddr( $FFFFF710 )	; used in GHZ
-Camera_BG2_Y_pos =		ramaddr( $FFFFF714 )	; used in GHZ
-Camera_BG3_X_pos =		ramaddr( $FFFFF718 )	; only used in SS, later used for levels in REV01 and REVXB
-Camera_BG3_Y_pos =		ramaddr( $FFFFF71C )	; later used for levels in REV01 and REVXB
-Camera_X_pos_copy =		ramaddr( $FFFFF720 )	; unused (only initialised at beginning of level)
-Camera_Y_pos_copy =		ramaddr( $FFFFF724 )	; unused (only initialised at beginning of level)
-Camera_Max_Y_pos =		ramaddr( $FFFFF726 )
-Camera_Min_X_pos =		ramaddr( $FFFFF728 )
-Camera_Max_X_pos =		ramaddr( $FFFFF72A )
-Camera_Min_Y_pos_now =		ramaddr( $FFFFF72C )
-Camera_Max_Y_pos_now =		ramaddr( $FFFFF72E )
-Camera_Min_X_pos_now =		ramaddr( $FFFFF730 )	; unused
-Camera_Max_X_pos_now =		ramaddr( $FFFFF732 )	; unused
-Screen_Y_wrap_value =           ramaddr( $FFFFF734 )
-				; $FFFFF734-$FFFFF739	; unused
-Camera_X_pos_diff =		ramaddr( $FFFFF73A )	; was "Camera_Unk"
-Camera_Y_pos_diff =		ramaddr( $FFFFF73C )	; was "Camera_Unk2"
-Camera_Y_pos_bias =		ramaddr( $FFFFF73E )	; was "Camera_Unk3"
-unk_F740 =			ramaddr( $FFFFF740 )
-unk_F741 =			ramaddr( $FFFFF741 )
-Dynamic_Resize_Routine =	ramaddr( $FFFFF742 )
-Scroll_lock =			ramaddr( $FFFFF744 )	; set to 1 to stop all scrolling
-unk_F746 =			ramaddr( $FFFFF746 )
-unk_F748 =			ramaddr( $FFFFF748 )
-Horiz_block_crossed_flag =	ramaddr( $FFFFF74A )
-Verti_block_crossed_flag =	ramaddr( $FFFFF74B )
-Horiz_block_crossed_flag_BG =	ramaddr( $FFFFF74C )
-Verti_block_crossed_flag_BG =	ramaddr( $FFFFF74D )
-Horiz_block_crossed_flag_BG2 =	ramaddr( $FFFFF74E )
+Camera_Y_pos: ds.l 1 ;=			ramaddr( $FFFFF704 )
+Camera_BG_X_pos: ds.l 1  ;=		ramaddr( $FFFFF708 )	; only used sometimes as the layer deformation makes it sort of redundant
+Camera_BG_Y_pos: ds.l 1  ;=		ramaddr( $FFFFF70C )
+Camera_BG2_X_pos: ds.l 1 ; =		ramaddr( $FFFFF710 )	; used in GHZ
+Camera_BG2_Y_pos: ds.l 1 ; =		ramaddr( $FFFFF714 )	; used in GHZ
+Camera_BG3_X_pos: ds.l 1 ; =		ramaddr( $FFFFF718 )	; only used in SS, later used for levels in REV01 and REVXB
+Camera_BG3_Y_pos: ds.l 1; =		ramaddr( $FFFFF71C )	; later used for levels in REV01 and REVXB
+Camera_X_pos_copy: ds.l 1  ; =		ramaddr( $FFFFF720 )	; unused (only initialised at beginning of level)
+Camera_Y_pos_copy: ds.w 1; =		ramaddr( $FFFFF724 )	; unused (only initialised at beginning of level)
+Camera_Max_Y_pos:  ds.w 1; =		ramaddr( $FFFFF726 )
+Camera_Min_X_pos:  ds.w 1; =		ramaddr( $FFFFF728 )
+Camera_Max_X_pos:  ds.w 1 ; =		ramaddr( $FFFFF72A )
+Camera_Min_Y_pos_now: ds.w 1; =		ramaddr( $FFFFF72C )
+Camera_Max_Y_pos_now: ds.w 1 ; =		ramaddr( $FFFFF72E )
+Camera_Min_X_pos_now: ds.w 1; =		ramaddr( $FFFFF730 )	; unused
+Camera_Max_X_pos_now: ds.w 1; =		ramaddr( $FFFFF732 )	; unused
+Screen_Y_wrap_value: ds.w 1; =           ramaddr( $FFFFF734 )
+		ds.w 1 		; $FFFFF734-$FFFFF739	; unused
+		ds.w 1 ; unused camera ram only for camera stuff
+Camera_X_pos_diff: ds.w 1 ;=		ramaddr( $FFFFF73A )	; was "Camera_Unk"
+Camera_Y_pos_diff: ds.w 1 ;=		ramaddr( $FFFFF73C )	; was "Camera_Unk2"
+Camera_Y_pos_bias: ds.w 1 ;=		ramaddr( $FFFFF73E )	; was "Camera_Unk3"
+unk_F740: ds.b 1  ;=			ramaddr( $FFFFF740 )
+unk_F741: ds.b 1  ; =			ramaddr( $FFFFF741 )
+Dynamic_Resize_Routine: ds.b 1 ;=	ramaddr( $FFFFF742 )
+                ds.b 1 
+Scroll_lock: ds.w 1 ;=			ramaddr( $FFFFF744 )	; set to 1 to stop all scrolling
+unk_F746: ds.w 1 ;=			ramaddr( $FFFFF746 )
+unk_F748: ds.w 1 ;=			ramaddr( $FFFFF748 )
+Horiz_block_crossed_flag: ds.b 1; =	ramaddr( $FFFFF74A )
+Verti_block_crossed_flag: ds.b 1; =	ramaddr( $FFFFF74B )
+Horiz_block_crossed_flag_BG: ds.b 1; =	ramaddr( $FFFFF74C )
+Verti_block_crossed_flag_BG: ds.b 1 ; =	ramaddr( $FFFFF74D )
+Horiz_block_crossed_flag_BG2: ds.b 1 ; =	ramaddr( $FFFFF74E )
 
 Scroll_flags =			ramaddr( $FFFFF754 )	; bitfield ; bit 0 = redraw top row, bit 1 = redraw bottom row, bit 2 = redraw left-most column, bit 3 = redraw right-most column
 Scroll_flags_BG =		ramaddr( $FFFFF756 )
@@ -512,7 +514,7 @@ RAM_End =			ramaddr( $FFFFFFFF )
     dephase
 
     phase	Object_RAM
-                  ds.b ObSize ; used by team sonic presents then its cleared out by title screen code  
+                  ds.b ObSize ; used by team sonic presents then its cleared out by title screen code
 TitleScreenSonic: ds.b ObSize
 TitleScreenPRESS_START: ds.b ObSize
 TitleScreenTM: ds.b ObSize
@@ -523,7 +525,7 @@ TitleScreenPRESS_START2: ds.b ObSize ; seems to load the press start object twic
                  ds.b ObSize
                  ds.b ObSize
                  ds.b ObSize
-TitleScreenObjRamEnd:                 
+TitleScreenObjRamEnd:
     dephase
     !org	0	; Reset the program counter
 ; ---------------------------------------------------------------------------
