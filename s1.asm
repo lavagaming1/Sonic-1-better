@@ -18791,7 +18791,7 @@ Ani_obj47:
 		dc.w byte_EAF8-Ani_obj47
 byte_EAF4:	dc.b $F, 0, $FF, 0
 byte_EAF8:	dc.b 3,	1, 2, 1, 2, $FD, 0, 0
-		align 2
+		even
 
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - pinball bumper (SYZ)
@@ -36081,45 +36081,45 @@ loc_1B350:
 		add.w	d0,d0
 		lea	(a0,d0.w),a0
 		move.w	(a0),(a1)
-		move.w	2(a0),x_pos(a1)
-		move.w	4(a0),x_vel(a1)
-		move.w	6(a0),priority(a1)
-		move.w	x_pos(a0),collision_flags(a1)
-		move.w	x_pos+2(a0),subtype(a1)
-		move.w	y_pos(a0),$30(a1)
-		move.w	y_pos+2(a0),$38(a1)
-		adda.w	#$20,a0
-		adda.w	#$48,a1
+		move.w	2(a0),8(a1)
+		move.w	4(a0),$10(a1)
+		move.w	6(a0),$18(a1)
+		move.w	8(a0),$20(a1)
+		move.w	$A(a0),$28(a1)
+		move.w	$C(a0),$30(a1)
+		move.w	$E(a0),$38(a1)
+		lea	$20(a0),a0
+		lea	$48(a1),a1
 		move.w	(a0),(a1)
-		move.w	2(a0),x_pos(a1)
-		move.w	4(a0),x_vel(a1)
-		move.w	6(a0),priority(a1)
-		move.w	x_pos(a0),collision_flags(a1)
-		move.w	x_pos+2(a0),subtype(a1)
-		move.w	y_pos(a0),$30(a1)
-		move.w	y_pos+2(a0),$38(a1)
-		adda.w	#$20,a0
-		adda.w	#$48,a1
+		move.w	2(a0),8(a1)
+		move.w	4(a0),$10(a1)
+		move.w	6(a0),$18(a1)
+		move.w	8(a0),$20(a1)
+		move.w	$A(a0),$28(a1)
+		move.w	$C(a0),$30(a1)
+		move.w	$E(a0),$38(a1)
+			lea	$20(a0),a0
+		lea	$48(a1),a1
 		move.w	(a0),(a1)
-		move.w	2(a0),x_pos(a1)
-		move.w	4(a0),x_vel(a1)
-		move.w	6(a0),priority(a1)
-		move.w	x_pos(a0),collision_flags(a1)
-		move.w	x_pos+2(a0),subtype(a1)
-		move.w	y_pos(a0),$30(a1)
-		move.w	y_pos+2(a0),$38(a1)
-		adda.w	#$20,a0
-		adda.w	#$48,a1
+		move.w	2(a0),8(a1)
+		move.w	4(a0),$10(a1)
+		move.w	6(a0),$18(a1)
+		move.w	8(a0),$20(a1)
+		move.w	$A(a0),$28(a1)
+		move.w	$C(a0),$30(a1)
+		move.w	$E(a0),$38(a1)
+			lea	$20(a0),a0
+		lea	$48(a1),a1
 		move.w	(a0),(a1)
-		move.w	2(a0),x_pos(a1)
-		move.w	4(a0),x_vel(a1)
-		move.w	6(a0),priority(a1)
-		move.w	x_pos(a0),collision_flags(a1)
-		move.w	x_pos+2(a0),subtype(a1)
-		move.w	y_pos(a0),$30(a1)
-		move.w	y_pos+2(a0),$38(a1)
-		adda.w	#$20,a0
-		adda.w	#$48,a1
+		move.w	2(a0),8(a1)
+		move.w	4(a0),$10(a1)
+		move.w	6(a0),$18(a1)
+		move.w	8(a0),$20(a1)
+		move.w	$A(a0),$28(a1)
+		move.w	$C(a0),$30(a1)
+		move.w	$E(a0),$38(a1)
+			lea	$20(a0),a0
+		lea	$48(a1),a1
 		rts
 ; End of function SS_AniWallsRings
 
@@ -36319,7 +36319,7 @@ SS_AniGlassBlock:			; XREF: SS_AniIndex
 		clr.l	4(a0)
 
 locret_1B640:
-		rts	
+		rts
 ; ===========================================================================
 SS_AniGlassData:dc.b $4B, $4C, $4D, $4E, $4B, $4C, $4D,	$4E, 0,	0
 ; ---------------------------------------------------------------------------
@@ -36370,7 +36370,7 @@ SS_ChkEmldNum:
 		bcs.s	SS_LoadData
 		lea	(Emerald_count+1).w,a3 ; check which emeralds	you have
 
-SS_ChkEmldLoop:	
+SS_ChkEmldLoop:
 		cmp.b	(a3,d1.w),d0
 		bne.s	SS_ChkEmldRepeat
 		bra.s	SS_Load
@@ -36508,7 +36508,7 @@ SS_MapIndex:
 		dc.w $6142
 		dc.l Map_SSWalls
 		dc.w $6142
-		dc.l Map_obj47
+		dc.l SS_Bumpers
 		dc.w $23B
 		dc.l Map_SS_R
 		dc.w $570
@@ -36534,9 +36534,9 @@ SS_MapIndex:
 		dc.w $45F0
 		dc.l Map_SS_R
 		dc.w $2F0
-		dc.l Map_obj47+$1000000	; add frame no.	* $1000000
+		dc.l SS_Bumpers+$1000000	; add frame no.	* $1000000
 		dc.w $23B
-		dc.l Map_obj47+$2000000
+		dc.l SS_Bumpers+$2000000
 		dc.w $23B
 		dc.l Map_SS_R
 		dc.w $797
@@ -36550,7 +36550,7 @@ SS_MapIndex:
 		dc.w $7A0
 		dc.l Map_SS_R
 		dc.w $7A9
-		dc.l Map_obj25
+		dc.l Map_Ring_internal
 		dc.w $27B2
 		dc.l Map_SS_Chaos3
 		dc.w $770
@@ -36566,13 +36566,13 @@ SS_MapIndex:
 		dc.w $770
 		dc.l Map_SS_R
 		dc.w $4F0
-		dc.l Map_obj25+$4000000
+		dc.l (($04<<$18)|Map_Ring_internal)
 		dc.w $27B2
-		dc.l Map_obj25+$5000000
+		dc.l (($05<<$18)|Map_Ring_internal)
 		dc.w $27B2
-		dc.l Map_obj25+$6000000
+		dc.l (($06<<$18)|Map_Ring_internal)
 		dc.w $27B2
-		dc.l Map_obj25+$7000000
+		dc.l (($07<<$18)|Map_Ring_internal)
 		dc.w $27B2
 		dc.l Map_SS_Glass
 		dc.w $23F0
@@ -36634,7 +36634,54 @@ byte_1B978:	dc.b 1
 		dc.b $F8, 5, 0,	8, $F8
 byte_1B97E:	dc.b 1
 		dc.b $F8, 5, 0,	$C, $F8
-		align 2
+		even
+Map_Ring_internal:
+		dc.w .front-Map_Ring_internal
+		dc.w .angle1-Map_Ring_internal
+		dc.w .edge-Map_Ring_internal
+		dc.w .angle2-Map_Ring_internal
+		dc.w .sparkle1-Map_Ring_internal
+		dc.w .sparkle2-Map_Ring_internal
+		dc.w .sparkle3-Map_Ring_internal
+		dc.w .sparkle4-Map_Ring_internal
+.front:		dc.b 1
+		dc.b $F8, 5, 0,	0, $F8	; ring front
+.angle1:	dc.b 1
+		dc.b $F8, 5, 0,	4, $F8	; ring angle
+.edge:		dc.b 1
+		dc.b $F8, 1, 0,	8, $FC	; ring perpendicular
+.angle2:	dc.b 1
+		dc.b $F8, 5, 8,	4, $F8	; ring angle
+.sparkle1:	dc.b 1
+		dc.b $F8, 5, 0,	$A, $F8	; sparkle
+.sparkle2:	dc.b 1
+		dc.b $F8, 5, $18, $A, $F8 ; sparkle
+.sparkle3:	dc.b 1
+		dc.b $F8, 5, 8,	$A, $F8	;sparkle
+.sparkle4:	dc.b 1
+		dc.b $F8, 5, $10, $A, $F8 ; sparkle
+		even
+SS_Bumpers:
+                dc.w    SS_Obj47_P01-SS_Bumpers
+                dc.w    SS_Obj47_P02-SS_Bumpers
+                dc.w    SS_Obj47_P03-SS_Bumpers
+
+                dc.w    SS_Obj47_P01-SS_Bumpers
+                dc.w    SS_Obj47_P02-SS_Bumpers
+                dc.w    SS_Obj47_P03-SS_Bumpers
+SS_Obj47_P01:
+                dc.b    $02
+                dc.b    $F0, $07, $00, $00, $F0, $F0, $07, $08, $00, $00
+                dc.b    $00
+SS_Obj47_P02:
+                dc.b    $02
+                dc.b    $F4, $06, $00, $08, $F4, $F4, $02, $08, $08, $04
+                dc.b    $00
+SS_Obj47_P03:
+                dc.b    $02
+                dc.b    $F0, $07, $00, $0E, $F0, $F0, $07, $08, $0E, $00
+                dc.b    $00
+                even
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Object 09 - Sonic (special stage)
