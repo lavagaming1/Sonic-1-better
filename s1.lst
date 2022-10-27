@@ -1,4 +1,4 @@
- AS V1.42 Beta [Bld 89] - source file s1.asm - page 1 - 10/27/2022 18:31:59
+ AS V1.42 Beta [Bld 89] - source file s1.asm - page 1 - 10/27/2022 19:04:58
 
 
        1/       0 :                     ; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -380,440 +380,477 @@
 (1)  184/FFFFFFFFFFFF0000 :                      	phase	ramaddr($FFFF0000)	; Pretend we're in the RAM
 (1)  185/FFFFFFFFFFFF0000 :                     RAM_Start: ; =			ramaddr( $FFFF0000 )	; 4 bytes ; start of RAM
 (1)  186/FFFFFFFFFFFF0000 :                     
-(1)  187/FFFFFFFFFFFF0000 : (MACRO)             Chunk_Table:	                ds.b    $A400                    	;	ramaddr( $FFFF0000 )	; $A3FF bytes
-(1)  187/FFFFFFFFFFFF0000 :                                     !ds.b $A400
-(1)  188/FFFFFFFFFFFFA400 :                     
-(1)  189/FFFFFFFFFFFFA400 : (MACRO)             Level_Layout:                   ds.b    $400  ; =			ramaddr( $FFFFA400 )	; $3FF bytes
-(1)  189/FFFFFFFFFFFFA400 :                                     !ds.b $400
-(1)  190/FFFFFFFFFFFFA800 : (MACRO)             TempArray_LayerDef:             ds.b    $200  ;=		ramaddr( $FFFFA800 )	; $1FF bytes ; used by some layer deformation routines
-(1)  190/FFFFFFFFFFFFA800 :                                     !ds.b $200
-(1)  191/FFFFFFFFFFFFAA00 : (MACRO)             Decomp_Buffer:                  ds.b    $200 ;=			ramaddr( $FFFFAA00 )	; $1FF bytes
-(1)  191/FFFFFFFFFFFFAA00 :                                     !ds.b $200
-(1)  192/FFFFFFFFFFFFAC00 : (MACRO)             Sprite_Table_Input:              ds.b    $400  ;=		ramaddr( $FFFFAC00 )	; $3FF bytes ; in custom format before being converted and stored in Sprite_Table/Sprite_Table_2
-(1)  192/FFFFFFFFFFFFAC00 :                                     !ds.b $400
-(1)  193/FFFFFFFFFFFFB000 : (MACRO)             Block_Table:                     ds.b    $1800 ;=			ramaddr( $FFFFB000 )	; $17FF bytes
-(1)  193/FFFFFFFFFFFFB000 :                                     !ds.b $1800
-(1)  194/FFFFFFFFFFFFC800 :                     
-(1)  195/FFFFFFFFFFFFC800 : (MACRO)             Sonic_Art_Buffer: ds.b    $300       ;=		ramaddr( $FFFFC800 )	; $2FF bytes ; Sonic's dynamic pattern reloading routine copies the relevant art over here, from where it is DMA'd to VRAM every V-int.
-(1)  195/FFFFFFFFFFFFC800 :                                     !ds.b $300
-(1)  196/FFFFFFFFFFFFCB00 : (MACRO)             Sonic_Stat_Record_Buf: ds.b $100 ;= 	ramaddr( $FFFFCB00 )	; $100 bytes
-(1)  196/FFFFFFFFFFFFCB00 :                                     !ds.b $100
-(1)  197/FFFFFFFFFFFFCC00 :                     
-(1)  198/FFFFFFFFFFFFCC00 : (MACRO)             Horiz_Scroll_Buf:               ds.b   $400 ; = 		ramaddr( $FFFFCC00 )	; $3FF bytes
-(1)  198/FFFFFFFFFFFFCC00 :                                     !ds.b $400
-(1)  199/FFFFFFFFFFFFD000 :                     
-(1)  200/FFFFFFFFFFFFD000 : (MACRO)             Object_RAM:       ds.b   ObSize*$80 ;=			ramaddr( $FFFFD000 )	; The various objects in the game are loaded in this area. Each game mode uses different objects, so some slots are reused.
-(1)  200/FFFFFFFFFFFFD000 :                                     !ds.b OBSIZE*$80
-(1)  201/FFFFFFFFFFFFF000 :                     Object_RAM_End
-(1)  202/FFFFFFFFFFFFF000 : (MACRO)             SndDriverRam:     ds.b  $5C0
-(1)  202/FFFFFFFFFFFFF000 :                                     !ds.b $5C0
-(1)  203/FFFFFFFFFFFFF5C0 :                     SndDriverRamEnd
-(1)  204/FFFFFFFFFFFFF5C0 : (MACRO)             Spritemask_flag: ds.w  1;=			ramaddr( $FFFFF5C0 )
-(1)  204/FFFFFFFFFFFFF5C0 :                                     !ds.w 1
-(1)  205/FFFFFFFFFFFFF5C2 : (MACRO)             Sprites_drawn:   ds.w  1 ; =			ramaddr( $FFFFF5C2 )
-(1)  205/FFFFFFFFFFFFF5C2 :                                     !ds.w 1
-(1)  206/FFFFFFFFFFFFF5C4 : (MACRO)                      ds.b  $3C
-(1)  206/FFFFFFFFFFFFF5C4 :                                     !ds.b $3C
-(1)  207/FFFFFFFFFFFFF600 : (MACRO)             Game_Mode: ds.b  1
-(1)  207/FFFFFFFFFFFFF600 :                                     !ds.b 1
-(1)  208/FFFFFFFFFFFFF601 : (MACRO)                        ds.b  1 ;=			ramaddr( $FFFFF600 )	; 1 byte ; see GameModesArray (master level trigger, Mstr_Lvl_Trigger)
-(1)  208/FFFFFFFFFFFFF601 :                                     !ds.b 1
-(1)  209/FFFFFFFFFFFFF602 :                     Ctrl_1_Logical:  ;		ramaddr( $FFFFF602 )	; 2 bytes
-(1)  210/FFFFFFFFFFFFF602 : (MACRO)             Ctrl_1_Held_Logical: ds.b 1  ;		ramaddr( $FFFFF602 )	; 1 byte
-(1)  210/FFFFFFFFFFFFF602 :                                     !ds.b 1
-(1)  211/FFFFFFFFFFFFF603 : (MACRO)             Ctrl_1_Press_Logical: ds.b 1	;	ramaddr( $FFFFF603 )	; 1 byte
-(1)  211/FFFFFFFFFFFFF603 :                                     !ds.b 1
-(1)  212/FFFFFFFFFFFFF604 :                     Ctrl_1:	 ;		ramaddr( $FFFFF604 )	; 2 bytes
-(1)  213/FFFFFFFFFFFFF604 : (MACRO)             Ctrl_1_Held: ds.b 1		;	ramaddr( $FFFFF604 )	; 1 bytw
-(1)  213/FFFFFFFFFFFFF604 :                                     !ds.b 1
-(1)  214/FFFFFFFFFFFFF605 : (MACRO)             Ctrl_1_Press: ds.b 1 	;		ramaddr( $FFFFF605 )	; 1 byte
-(1)  214/FFFFFFFFFFFFF605 :                                     !ds.b 1
-(1)  215/FFFFFFFFFFFFF606 : (MACRO)                               ds.b $6
-(1)  215/FFFFFFFFFFFFF606 :                                     !ds.b $6
-(1)  216/FFFFFFFFFFFFF60C : (MACRO)             VDP_Reg1_val: ds.w 1  ; =			ramaddr( $FFFFF60C )	; normal value of VDP register #1 when display is disabled
-(1)  216/FFFFFFFFFFFFF60C :                                     !ds.w 1
-(1)  217/FFFFFFFFFFFFF60E : (MACRO)                           ds.b $6
-(1)  217/FFFFFFFFFFFFF60E :                                     !ds.b $6
-(1)  218/FFFFFFFFFFFFF614 : (MACRO)             Demo_Time_left: ds.w 1 ;		ramaddr( $FFFFF614 )	; 2 bytes
-(1)  218/FFFFFFFFFFFFF614 :                                     !ds.w 1
-(1)  219/FFFFFFFFFFFFF616 :                     
-(1)  220/FFFFFFFFFFFFF616 : (MACRO)             Vscroll_Factor: ds.w 1	;	ramaddr( $FFFFF616 )	; 2 bytes
-(1)  220/FFFFFFFFFFFFF616 :                                     !ds.w 1
-(1)  221/FFFFFFFFFFFFF618 : (MACRO)             Vscroll_Factor_BG: ds.w 1 ;		ramaddr( $FFFFF618 )	; 2 bytes
-(1)  221/FFFFFFFFFFFFF618 :                                     !ds.w 1
-(1)  222/FFFFFFFFFFFFF61A : (MACRO)             Hscroll_Factor: ds.l 1 ;		ramaddr( $FFFFF61A )	; 4 bytes (written as a word once)
-(1)  222/FFFFFFFFFFFFF61A :                                     !ds.l 1
-(1)  223/FFFFFFFFFFFFF61E : (MACRO)             Hscroll_Factor_BG: ds.w 1 ;		ramaddr( $FFFFF61C )	; 2 bytes
-(1)  223/FFFFFFFFFFFFF61E :                                     !ds.w 1
-(1)  224/FFFFFFFFFFFFF620 : (MACRO)             Vscroll_Factor_BG2: ds.w 1 		;ramaddr( $FFFFF61E )	; 2 bytes
-(1)  224/FFFFFFFFFFFFF620 :                                     !ds.w 1
-(1)  225/FFFFFFFFFFFFF622 : (MACRO)             Hscroll_Factor_BG2: ds.w 1 		;ramaddr( $FFFFF620 )	; 2 bytes
-(1)  225/FFFFFFFFFFFFF622 :                                     !ds.w 1
-(1)  226/FFFFFFFFFFFFF624 :                     
-(1)  227/FFFFFFFFFFFFF624 : (MACRO)             Hint_counter_reserve: ds.w 1 ; =		ramaddr( $FFFFF624 )	; Must contain a VDP command word, preferably a write to register $0A. Executed every V-INT.
-(1)  227/FFFFFFFFFFFFF624 :                                     !ds.w 1
-(1)  228/FFFFFFFFFFFFF626 : (MACRO)             Palette_fade_start: ds.b 1	;	ramaddr( $FFFFF626 )	; Offset from the start of the palette to tell what range of the palette will be affected in the palette fading routines
-(1)  228/FFFFFFFFFFFFF626 :                                     !ds.b 1
-(1)  229/FFFFFFFFFFFFF627 : (MACRO)             Palette_fade_length: ds.b 1 	;	ramaddr( $FFFFF627 )	; Number of entries to change in the palette fading routines
-(1)  229/FFFFFFFFFFFFF627 :                                     !ds.b 1
-(1)  230/FFFFFFFFFFFFF628 :                     
-(1)  231/FFFFFFFFFFFFF628 : (MACRO)             VIntSubE_RunCount: ds.w 1 	;	ramaddr( $FFFFF628 )
-(1)  231/FFFFFFFFFFFFF628 :                                     !ds.w 1
-(1)  232/FFFFFFFFFFFFF62A :                     
-(1)  233/FFFFFFFFFFFFF62A : (MACRO)             Vint_routine: ds.w 1 ; =			ramaddr( $FFFFF62A )	; routine counter for V-int
-(1)  233/FFFFFFFFFFFFF62A :                                     !ds.w 1
-(1)  234/FFFFFFFFFFFFF62C : (MACRO)             Sprite_count: ds.w 1	;		ramaddr( $FFFFF62C )
-(1)  234/FFFFFFFFFFFFF62C :                                     !ds.w 1
-(1)  235/FFFFFFFFFFFFF62E : (MACRO)                           ds.l 1 ; unused prob
-(1)  235/FFFFFFFFFFFFF62E :                                     !ds.l 1
-(1)  236/FFFFFFFFFFFFF632 : (MACRO)             PalCycle_Frame: ds.w 1 ;		ramaddr( $FFFFF632 )	; ColorID loaded in PalCycle
-(1)  236/FFFFFFFFFFFFF632 :                                     !ds.w 1
-(1)  237/FFFFFFFFFFFFF634 : (MACRO)             PalCycle_Timer: ds.w 1	;	ramaddr( $FFFFF634 )	; number of frames until next PalCycle call
-(1)  237/FFFFFFFFFFFFF634 :                                     !ds.w 1
-(1)  238/FFFFFFFFFFFFF636 : (MACRO)             RNG_seed: ds.l 1  ;=			ramaddr( $FFFFF636 )	; used for random number generation
-(1)  238/FFFFFFFFFFFFF636 :                                     !ds.l 1
-(1)  239/FFFFFFFFFFFFF63A :                     
-(1)  240/FFFFFFFFFFFFF63A : (MACRO)             Game_paused: ds.w 1	;		ramaddr( $FFFFF63A )
-(1)  240/FFFFFFFFFFFFF63A :                                     !ds.w 1
-(1)  241/FFFFFFFFFFFFF63C : (MACRO)                          ds.l 1
-(1)  241/FFFFFFFFFFFFF63C :                                     !ds.l 1
-(1)  242/FFFFFFFFFFFFF640 : (MACRO)             DMA_data_thunk: ds.l 1	;	ramaddr( $FFFFF640 )	; Used as a RAM holder for the final DMA command word. Data will NOT be preserved across V-INTs, so consider this space reserved.
-(1)  242/FFFFFFFFFFFFF640 :                                     !ds.l 1
-(1)  243/FFFFFFFFFFFFF644 : (MACRO)             Hint_flag: ds.w 1 	;		ramaddr( $FFFFF644 )	; unless this is 1, H-int won't run
-(1)  243/FFFFFFFFFFFFF644 :                                     !ds.w 1
-(1)  244/FFFFFFFFFFFFF646 : (MACRO)             Water_Level_1:  ds.w 1 ; =			ramaddr( $FFFFF646 )
-(1)  244/FFFFFFFFFFFFF646 :                                     !ds.w 1
-(1)  245/FFFFFFFFFFFFF648 : (MACRO)             Water_Level_2:  ds.w 1 ; =			ramaddr( $FFFFF648 )
-(1)  245/FFFFFFFFFFFFF648 :                                     !ds.w 1
-(1)  246/FFFFFFFFFFFFF64A : (MACRO)             Water_Level_3:  ds.w 1 ; =			ramaddr( $FFFFF64A )
-(1)  246/FFFFFFFFFFFFF64A :                                     !ds.w 1
-(1)  247/FFFFFFFFFFFFF64C : (MACRO)             Water_on: ds.b 1 ; =			ramaddr( $FFFFF64C )
-(1)  247/FFFFFFFFFFFFF64C :                                     !ds.b 1
-(1)  248/FFFFFFFFFFFFF64D : (MACRO)             Water_routine: ds.b 1 ; =			ramaddr( $FFFFF64D )
-(1)  248/FFFFFFFFFFFFF64D :                                     !ds.b 1
-(1)  249/FFFFFFFFFFFFF64E : (MACRO)             Water_fullscreen_flag: ds.b 1  ; =		ramaddr( $FFFFF64E )	; was "Water_move"
-(1)  249/FFFFFFFFFFFFF64E :                                     !ds.b 1
-(1)  250/FFFFFFFFFFFFF64F :                     
-(1)  251/FFFFFFFFFFFFF64F : (MACRO)             Do_Updates_in_H_int: ds.b 1 ; =		ramaddr( $FFFFF64F )
-(1)  251/FFFFFFFFFFFFF64F :                                     !ds.b 1
-(1)  252/FFFFFFFFFFFFF650 : (MACRO)             PalCycle_Frame_LZ: ds.w 1  ; =		ramaddr( $FFFFF650 )
-(1)  252/FFFFFFFFFFFFF650 :                                     !ds.w 1
-(1)  253/FFFFFFFFFFFFF652 : (MACRO)                                ds.l 3
-(1)  253/FFFFFFFFFFFFF652 :                                     !ds.l 3
-(1)  254/FFFFFFFFFFFFF65E : (MACRO)                                ds.w 1
-(1)  254/FFFFFFFFFFFFF65E :                                     !ds.w 1
-(1)  255/FFFFFFFFFFFFF660 : (MACRO)             Unk_F660: ds.w 1 ; =                      ramaddr( $FFFFF660 )
-(1)  255/FFFFFFFFFFFFF660 :                                     !ds.w 1
-(1)  256/FFFFFFFFFFFFF662 : (MACRO)             Unk_F662: ds.w 1 ; =                      ramaddr( $FFFFF662 )
-(1)  256/FFFFFFFFFFFFF662 :                                     !ds.w 1
-(1)  257/FFFFFFFFFFFFF664 : (MACRO)                        ds.b $1C
-(1)  257/FFFFFFFFFFFFF664 :                                     !ds.b $1C
-(1)  258/FFFFFFFFFFFFF680 : (MACRO)             Plc_Buffer: ds.b $60  ; =			ramaddr( $FFFFF680 )
-(1)  258/FFFFFFFFFFFFF680 :                                     !ds.b $60
-(1)  259/FFFFFFFFFFFFF6E0 :                     				; these seem to store nemesis decompression state so PLC processing can be spread out across frames
-(1)  260/FFFFFFFFFFFFF6E0 : (MACRO)             Plc_Buffer_Reg0:		ds.l	1
-(1)  260/FFFFFFFFFFFFF6E0 :                                     !ds.l 1
-(1)  261/FFFFFFFFFFFFF6E4 : (MACRO)             Plc_Buffer_Reg4:		ds.l	1
-(1)  261/FFFFFFFFFFFFF6E4 :                                     !ds.l 1
-(1)  262/FFFFFFFFFFFFF6E8 : (MACRO)             Plc_Buffer_Reg8:		ds.l	1
-(1)  262/FFFFFFFFFFFFF6E8 :                                     !ds.l 1
-(1)  263/FFFFFFFFFFFFF6EC : (MACRO)             Plc_Buffer_RegC:		ds.l	1
-(1)  263/FFFFFFFFFFFFF6EC :                                     !ds.l 1
-(1)  264/FFFFFFFFFFFFF6F0 : (MACRO)             Plc_Buffer_Reg10:		ds.l	1
-(1)  264/FFFFFFFFFFFFF6F0 :                                     !ds.l 1
-(1)  265/FFFFFFFFFFFFF6F4 : (MACRO)             Plc_Buffer_Reg14:		ds.l	1
-(1)  265/FFFFFFFFFFFFF6F4 :                                     !ds.l 1
-(1)  266/FFFFFFFFFFFFF6F8 : (MACRO)             Plc_Buffer_Reg18:		ds.w	1	; amount of current entry remaining to decompress
-(1)  266/FFFFFFFFFFFFF6F8 :                                     !ds.w 1
-(1)  267/FFFFFFFFFFFFF6FA : (MACRO)             Plc_Buffer_Reg1A:		ds.w	1
-(1)  267/FFFFFFFFFFFFF6FA :                                     !ds.w 1
-(1)  268/FFFFFFFFFFFFF6FC : (MACRO)                                             ds.b	4	; seems unused
-(1)  268/FFFFFFFFFFFFF6FC :                                     !ds.b 4
-(1)  269/FFFFFFFFFFFFF700 :                     
-(1)  270/FFFFFFFFFFFFF700 :                     				; $FFFFF6FC-$FFFFF6FF	; unused
-(1)  271/FFFFFFFFFFFFF700 :                     Camera_RAM: ;			ramaddr( $FFFFF700 )
-(1)  272/FFFFFFFFFFFFF700 :                     Camera_X_pos: ;			ramaddr( $FFFFF700 )
-(1)  273/FFFFFFFFFFFFF700 : (MACRO)                         ds.l 1 
-(1)  273/FFFFFFFFFFFFF700 :                                     !ds.l 1
-(1)  274/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Y_pos =			ramaddr( $FFFFF704 )
-(1)  275/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_BG_X_pos =		ramaddr( $FFFFF708 )	; only used sometimes as the layer deformation makes it sort of redundant
-(1)  276/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_BG_Y_pos =		ramaddr( $FFFFF70C )
-(1)  277/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_BG2_X_pos =		ramaddr( $FFFFF710 )	; used in GHZ
-(1)  278/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_BG2_Y_pos =		ramaddr( $FFFFF714 )	; used in GHZ
-(1)  279/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_BG3_X_pos =		ramaddr( $FFFFF718 )	; only used in SS, later used for levels in REV01 and REVXB
-(1)  280/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_BG3_Y_pos =		ramaddr( $FFFFF71C )	; later used for levels in REV01 and REVXB
-(1)  281/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_X_pos_copy =		ramaddr( $FFFFF720 )	; unused (only initialised at beginning of level)
-(1)  282/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Y_pos_copy =		ramaddr( $FFFFF724 )	; unused (only initialised at beginning of level)
-(1)  283/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Max_Y_pos =		ramaddr( $FFFFF726 )
-(1)  284/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Min_X_pos =		ramaddr( $FFFFF728 )
-(1)  285/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Max_X_pos =		ramaddr( $FFFFF72A )
-(1)  286/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Min_Y_pos_now =		ramaddr( $FFFFF72C )
-(1)  287/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Max_Y_pos_now =		ramaddr( $FFFFF72E )
-(1)  288/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Min_X_pos_now =		ramaddr( $FFFFF730 )	; unused
-(1)  289/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Max_X_pos_now =		ramaddr( $FFFFF732 )	; unused
-(1)  290/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Screen_Y_wrap_value =           ramaddr( $FFFFF734 ) 
-(1)  291/FFFFFFFFFFFFF704 :                     				; $FFFFF734-$FFFFF739	; unused
-(1)  292/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_X_pos_diff =		ramaddr( $FFFFF73A )	; was "Camera_Unk"
-(1)  293/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Y_pos_diff =		ramaddr( $FFFFF73C )	; was "Camera_Unk2"
-(1)  294/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Y_pos_bias =		ramaddr( $FFFFF73E )	; was "Camera_Unk3"
-(1)  295/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      unk_F740 =			ramaddr( $FFFFF740 )
-(1)  296/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      unk_F741 =			ramaddr( $FFFFF741 )
-(1)  297/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Dynamic_Resize_Routine =	ramaddr( $FFFFF742 )
-(1)  298/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Scroll_lock =			ramaddr( $FFFFF744 )	; set to 1 to stop all scrolling
-(1)  299/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      unk_F746 =			ramaddr( $FFFFF746 )
-(1)  300/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      unk_F748 =			ramaddr( $FFFFF748 )
-(1)  301/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Horiz_block_crossed_flag =	ramaddr( $FFFFF74A )
-(1)  302/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Verti_block_crossed_flag =	ramaddr( $FFFFF74B )
-(1)  303/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Horiz_block_crossed_flag_BG =	ramaddr( $FFFFF74C )
-(1)  304/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Verti_block_crossed_flag_BG =	ramaddr( $FFFFF74D )
-(1)  305/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Horiz_block_crossed_flag_BG2 =	ramaddr( $FFFFF74E )
-(1)  306/FFFFFFFFFFFFF704 :                     
-(1)  307/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Scroll_flags =			ramaddr( $FFFFF754 )	; bitfield ; bit 0 = redraw top row, bit 1 = redraw bottom row, bit 2 = redraw left-most column, bit 3 = redraw right-most column
-(1)  308/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Scroll_flags_BG =		ramaddr( $FFFFF756 )
-(1)  309/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Scroll_flags_BG2 =		ramaddr( $FFFFF758 )
-(1)  310/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Scroll_flags_BG3 =		ramaddr( $FFFFF75A )
-(1)  311/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Max_Y_Pos_Changing =	ramaddr( $FFFFF75C )
+(1)  187/FFFFFFFFFFFF0000 : (MACRO)             Chunk_Table:	                ds.b    $8000                    	;	ramaddr( $FFFF0000 )	; $A3FF bytes
+(1)  187/FFFFFFFFFFFF0000 :                                     !ds.b $8000
+(1)  188/FFFFFFFFFFFF8000 : (MACRO)                                             ds.b    $1000
+(1)  188/FFFFFFFFFFFF8000 :                                     !ds.b $1000
+(1)  189/FFFFFFFFFFFF9000 : (MACRO)                                             ds.b    $400
+(1)  189/FFFFFFFFFFFF9000 :                                     !ds.b $400
+(1)  190/FFFFFFFFFFFF9400 : (MACRO)             EndingFlowerArtBuffer:          ds.b    $1000
+(1)  190/FFFFFFFFFFFF9400 :                                     !ds.b $1000
+(1)  191/FFFFFFFFFFFFA400 :                     
+(1)  192/FFFFFFFFFFFFA400 : (MACRO)             Level_Layout:                   ds.b    $400  ; =			ramaddr( $FFFFA400 )	; $3FF bytes
+(1)  192/FFFFFFFFFFFFA400 :                                     !ds.b $400
+(1)  193/FFFFFFFFFFFFA800 : (MACRO)             TempArray_LayerDef:             ds.b    $200  ;=		ramaddr( $FFFFA800 )	; $1FF bytes ; used by some layer deformation routines
+(1)  193/FFFFFFFFFFFFA800 :                                     !ds.b $200
+(1)  194/FFFFFFFFFFFFAA00 : (MACRO)             Decomp_Buffer:                  ds.b    $200 ;=			ramaddr( $FFFFAA00 )	; $1FF bytes
+(1)  194/FFFFFFFFFFFFAA00 :                                     !ds.b $200
+(1)  195/FFFFFFFFFFFFAC00 : (MACRO)             Sprite_Table_Input:              ds.b    $400  ;=		ramaddr( $FFFFAC00 )	; $3FF bytes ; in custom format before being converted and stored in Sprite_Table/Sprite_Table_2
+(1)  195/FFFFFFFFFFFFAC00 :                                     !ds.b $400
+(1)  196/FFFFFFFFFFFFB000 : (MACRO)             Block_Table:                     ds.b    $1800 ;=			ramaddr( $FFFFB000 )	; $17FF bytes
+(1)  196/FFFFFFFFFFFFB000 :                                     !ds.b $1800
+(1)  197/FFFFFFFFFFFFC800 :                     
+(1)  198/FFFFFFFFFFFFC800 : (MACRO)             Sonic_Art_Buffer: ds.b    $300       ;=		ramaddr( $FFFFC800 )	; $2FF bytes ; Sonic's dynamic pattern reloading routine copies the relevant art over here, from where it is DMA'd to VRAM every V-int.
+(1)  198/FFFFFFFFFFFFC800 :                                     !ds.b $300
+(1)  199/FFFFFFFFFFFFCB00 : (MACRO)             Sonic_Stat_Record_Buf: ds.b $100 ;= 	ramaddr( $FFFFCB00 )	; $100 bytes
+(1)  199/FFFFFFFFFFFFCB00 :                                     !ds.b $100
+(1)  200/FFFFFFFFFFFFCC00 :                     
+(1)  201/FFFFFFFFFFFFCC00 : (MACRO)             Horiz_Scroll_Buf:               ds.b   $400 ; = 		ramaddr( $FFFFCC00 )	; $3FF bytes
+(1)  201/FFFFFFFFFFFFCC00 :                                     !ds.b $400
+(1)  202/FFFFFFFFFFFFD000 :                     
+(1)  203/FFFFFFFFFFFFD000 :                     Object_RAM:
+(1)  204/FFFFFFFFFFFFD000 : (MACRO)             Player_1: ds.b   ObSize
+(1)  204/FFFFFFFFFFFFD000 :                                     !ds.b OBSIZE
+(1)  205/FFFFFFFFFFFFD040 : (MACRO)             HudObRam: ds.b   ObSize
+(1)  205/FFFFFFFFFFFFD040 :                                     !ds.b OBSIZE
+(1)  206/FFFFFFFFFFFFD080 : (MACRO)                           ds.b   ObSize*$7E ;=			ramaddr( $FFFFD000 )	; The various objects in the game are loaded in this area. Each game mode uses different objects, so some slots are reused.
+(1)  206/FFFFFFFFFFFFD080 :                                     !ds.b OBSIZE*$7E
+(1)  207/FFFFFFFFFFFFF000 :                     Object_RAM_End
+(1)  208/FFFFFFFFFFFFF000 : (MACRO)             SndDriverRam:     ds.b  $5C0
+(1)  208/FFFFFFFFFFFFF000 :                                     !ds.b $5C0
+(1)  209/FFFFFFFFFFFFF5C0 :                     SndDriverRamEnd
+(1)  210/FFFFFFFFFFFFF5C0 : (MACRO)             Spritemask_flag: ds.w  1;=			ramaddr( $FFFFF5C0 )
+(1)  210/FFFFFFFFFFFFF5C0 :                                     !ds.w 1
+(1)  211/FFFFFFFFFFFFF5C2 : (MACRO)             Sprites_drawn:   ds.w  1 ; =			ramaddr( $FFFFF5C2 )
+(1)  211/FFFFFFFFFFFFF5C2 :                                     !ds.w 1
+(1)  212/FFFFFFFFFFFFF5C4 : (MACRO)                      ds.b  $3C
+(1)  212/FFFFFFFFFFFFF5C4 :                                     !ds.b $3C
+(1)  213/FFFFFFFFFFFFF600 : (MACRO)             Game_Mode: ds.b  1
+(1)  213/FFFFFFFFFFFFF600 :                                     !ds.b 1
+(1)  214/FFFFFFFFFFFFF601 : (MACRO)                        ds.b  1 ;=			ramaddr( $FFFFF600 )	; 1 byte ; see GameModesArray (master level trigger, Mstr_Lvl_Trigger)
+(1)  214/FFFFFFFFFFFFF601 :                                     !ds.b 1
+(1)  215/FFFFFFFFFFFFF602 :                     Ctrl_1_Logical:  ;		ramaddr( $FFFFF602 )	; 2 bytes
+(1)  216/FFFFFFFFFFFFF602 : (MACRO)             Ctrl_1_Held_Logical: ds.b 1  ;		ramaddr( $FFFFF602 )	; 1 byte
+(1)  216/FFFFFFFFFFFFF602 :                                     !ds.b 1
+(1)  217/FFFFFFFFFFFFF603 : (MACRO)             Ctrl_1_Press_Logical: ds.b 1	;	ramaddr( $FFFFF603 )	; 1 byte
+(1)  217/FFFFFFFFFFFFF603 :                                     !ds.b 1
+(1)  218/FFFFFFFFFFFFF604 :                     Ctrl_1:	 ;		ramaddr( $FFFFF604 )	; 2 bytes
+(1)  219/FFFFFFFFFFFFF604 : (MACRO)             Ctrl_1_Held: ds.b 1		;	ramaddr( $FFFFF604 )	; 1 bytw
+(1)  219/FFFFFFFFFFFFF604 :                                     !ds.b 1
+(1)  220/FFFFFFFFFFFFF605 : (MACRO)             Ctrl_1_Press: ds.b 1 	;		ramaddr( $FFFFF605 )	; 1 byte
+(1)  220/FFFFFFFFFFFFF605 :                                     !ds.b 1
+(1)  221/FFFFFFFFFFFFF606 : (MACRO)                               ds.b $6
+(1)  221/FFFFFFFFFFFFF606 :                                     !ds.b $6
+(1)  222/FFFFFFFFFFFFF60C : (MACRO)             VDP_Reg1_val: ds.w 1  ; =			ramaddr( $FFFFF60C )	; normal value of VDP register #1 when display is disabled
+(1)  222/FFFFFFFFFFFFF60C :                                     !ds.w 1
+(1)  223/FFFFFFFFFFFFF60E : (MACRO)                           ds.b $6
+(1)  223/FFFFFFFFFFFFF60E :                                     !ds.b $6
+(1)  224/FFFFFFFFFFFFF614 : (MACRO)             Demo_Time_left: ds.w 1 ;		ramaddr( $FFFFF614 )	; 2 bytes
+(1)  224/FFFFFFFFFFFFF614 :                                     !ds.w 1
+(1)  225/FFFFFFFFFFFFF616 :                     
+(1)  226/FFFFFFFFFFFFF616 : (MACRO)             Vscroll_Factor: ds.w 1	;	ramaddr( $FFFFF616 )	; 2 bytes
+(1)  226/FFFFFFFFFFFFF616 :                                     !ds.w 1
+(1)  227/FFFFFFFFFFFFF618 : (MACRO)             Vscroll_Factor_BG: ds.w 1 ;		ramaddr( $FFFFF618 )	; 2 bytes
+(1)  227/FFFFFFFFFFFFF618 :                                     !ds.w 1
+(1)  228/FFFFFFFFFFFFF61A : (MACRO)             Hscroll_Factor: ds.l 1 ;		ramaddr( $FFFFF61A )	; 4 bytes (written as a word once)
+(1)  228/FFFFFFFFFFFFF61A :                                     !ds.l 1
+(1)  229/FFFFFFFFFFFFF61E : (MACRO)             Hscroll_Factor_BG: ds.w 1 ;		ramaddr( $FFFFF61C )	; 2 bytes
+(1)  229/FFFFFFFFFFFFF61E :                                     !ds.w 1
+(1)  230/FFFFFFFFFFFFF620 : (MACRO)             Vscroll_Factor_BG2: ds.w 1 		;ramaddr( $FFFFF61E )	; 2 bytes
+(1)  230/FFFFFFFFFFFFF620 :                                     !ds.w 1
+(1)  231/FFFFFFFFFFFFF622 : (MACRO)             Hscroll_Factor_BG2: ds.w 1 		;ramaddr( $FFFFF620 )	; 2 bytes
+(1)  231/FFFFFFFFFFFFF622 :                                     !ds.w 1
+(1)  232/FFFFFFFFFFFFF624 :                     
+(1)  233/FFFFFFFFFFFFF624 : (MACRO)             Hint_counter_reserve: ds.w 1 ; =		ramaddr( $FFFFF624 )	; Must contain a VDP command word, preferably a write to register $0A. Executed every V-INT.
+(1)  233/FFFFFFFFFFFFF624 :                                     !ds.w 1
+(1)  234/FFFFFFFFFFFFF626 : (MACRO)             Palette_fade_start: ds.b 1	;	ramaddr( $FFFFF626 )	; Offset from the start of the palette to tell what range of the palette will be affected in the palette fading routines
+(1)  234/FFFFFFFFFFFFF626 :                                     !ds.b 1
+(1)  235/FFFFFFFFFFFFF627 : (MACRO)             Palette_fade_length: ds.b 1 	;	ramaddr( $FFFFF627 )	; Number of entries to change in the palette fading routines
+(1)  235/FFFFFFFFFFFFF627 :                                     !ds.b 1
+(1)  236/FFFFFFFFFFFFF628 :                     
+(1)  237/FFFFFFFFFFFFF628 : (MACRO)             VIntSubE_RunCount: ds.w 1 	;	ramaddr( $FFFFF628 )
+(1)  237/FFFFFFFFFFFFF628 :                                     !ds.w 1
+(1)  238/FFFFFFFFFFFFF62A :                     
+(1)  239/FFFFFFFFFFFFF62A : (MACRO)             Vint_routine: ds.w 1 ; =			ramaddr( $FFFFF62A )	; routine counter for V-int
+(1)  239/FFFFFFFFFFFFF62A :                                     !ds.w 1
+(1)  240/FFFFFFFFFFFFF62C : (MACRO)             Sprite_count: ds.w 1	;		ramaddr( $FFFFF62C )
+(1)  240/FFFFFFFFFFFFF62C :                                     !ds.w 1
+(1)  241/FFFFFFFFFFFFF62E : (MACRO)                           ds.l 1 ; unused prob
+(1)  241/FFFFFFFFFFFFF62E :                                     !ds.l 1
+(1)  242/FFFFFFFFFFFFF632 : (MACRO)             PalCycle_Frame: ds.w 1 ;		ramaddr( $FFFFF632 )	; ColorID loaded in PalCycle
+(1)  242/FFFFFFFFFFFFF632 :                                     !ds.w 1
+(1)  243/FFFFFFFFFFFFF634 : (MACRO)             PalCycle_Timer: ds.w 1	;	ramaddr( $FFFFF634 )	; number of frames until next PalCycle call
+(1)  243/FFFFFFFFFFFFF634 :                                     !ds.w 1
+(1)  244/FFFFFFFFFFFFF636 : (MACRO)             RNG_seed: ds.l 1  ;=			ramaddr( $FFFFF636 )	; used for random number generation
+(1)  244/FFFFFFFFFFFFF636 :                                     !ds.l 1
+(1)  245/FFFFFFFFFFFFF63A :                     
+(1)  246/FFFFFFFFFFFFF63A : (MACRO)             Game_paused: ds.w 1	;		ramaddr( $FFFFF63A )
+(1)  246/FFFFFFFFFFFFF63A :                                     !ds.w 1
+(1)  247/FFFFFFFFFFFFF63C : (MACRO)                          ds.l 1
+(1)  247/FFFFFFFFFFFFF63C :                                     !ds.l 1
+(1)  248/FFFFFFFFFFFFF640 : (MACRO)             DMA_data_thunk: ds.l 1	;	ramaddr( $FFFFF640 )	; Used as a RAM holder for the final DMA command word. Data will NOT be preserved across V-INTs, so consider this space reserved.
+(1)  248/FFFFFFFFFFFFF640 :                                     !ds.l 1
+(1)  249/FFFFFFFFFFFFF644 : (MACRO)             Hint_flag: ds.w 1 	;		ramaddr( $FFFFF644 )	; unless this is 1, H-int won't run
+(1)  249/FFFFFFFFFFFFF644 :                                     !ds.w 1
+(1)  250/FFFFFFFFFFFFF646 : (MACRO)             Water_Level_1:  ds.w 1 ; =			ramaddr( $FFFFF646 )
+(1)  250/FFFFFFFFFFFFF646 :                                     !ds.w 1
+(1)  251/FFFFFFFFFFFFF648 : (MACRO)             Water_Level_2:  ds.w 1 ; =			ramaddr( $FFFFF648 )
+(1)  251/FFFFFFFFFFFFF648 :                                     !ds.w 1
+(1)  252/FFFFFFFFFFFFF64A : (MACRO)             Water_Level_3:  ds.w 1 ; =			ramaddr( $FFFFF64A )
+(1)  252/FFFFFFFFFFFFF64A :                                     !ds.w 1
+(1)  253/FFFFFFFFFFFFF64C : (MACRO)             Water_on: ds.b 1 ; =			ramaddr( $FFFFF64C )
+(1)  253/FFFFFFFFFFFFF64C :                                     !ds.b 1
+(1)  254/FFFFFFFFFFFFF64D : (MACRO)             Water_routine: ds.b 1 ; =			ramaddr( $FFFFF64D )
+(1)  254/FFFFFFFFFFFFF64D :                                     !ds.b 1
+(1)  255/FFFFFFFFFFFFF64E : (MACRO)             Water_fullscreen_flag: ds.b 1  ; =		ramaddr( $FFFFF64E )	; was "Water_move"
+(1)  255/FFFFFFFFFFFFF64E :                                     !ds.b 1
+(1)  256/FFFFFFFFFFFFF64F :                     
+(1)  257/FFFFFFFFFFFFF64F : (MACRO)             Do_Updates_in_H_int: ds.b 1 ; =		ramaddr( $FFFFF64F )
+(1)  257/FFFFFFFFFFFFF64F :                                     !ds.b 1
+(1)  258/FFFFFFFFFFFFF650 : (MACRO)             PalCycle_Frame_LZ: ds.w 1  ; =		ramaddr( $FFFFF650 )
+(1)  258/FFFFFFFFFFFFF650 :                                     !ds.w 1
+(1)  259/FFFFFFFFFFFFF652 : (MACRO)                                ds.l 3
+(1)  259/FFFFFFFFFFFFF652 :                                     !ds.l 3
+(1)  260/FFFFFFFFFFFFF65E : (MACRO)                                ds.w 1
+(1)  260/FFFFFFFFFFFFF65E :                                     !ds.w 1
+(1)  261/FFFFFFFFFFFFF660 : (MACRO)             Unk_F660: ds.w 1 ; =                      ramaddr( $FFFFF660 )
+(1)  261/FFFFFFFFFFFFF660 :                                     !ds.w 1
+(1)  262/FFFFFFFFFFFFF662 : (MACRO)             Unk_F662: ds.w 1 ; =                      ramaddr( $FFFFF662 )
+(1)  262/FFFFFFFFFFFFF662 :                                     !ds.w 1
+(1)  263/FFFFFFFFFFFFF664 : (MACRO)                        ds.b $1C
+(1)  263/FFFFFFFFFFFFF664 :                                     !ds.b $1C
+(1)  264/FFFFFFFFFFFFF680 : (MACRO)             Plc_Buffer: ds.b $60  ; =			ramaddr( $FFFFF680 )
+(1)  264/FFFFFFFFFFFFF680 :                                     !ds.b $60
+(1)  265/FFFFFFFFFFFFF6E0 :                     				; these seem to store nemesis decompression state so PLC processing can be spread out across frames
+(1)  266/FFFFFFFFFFFFF6E0 : (MACRO)             Plc_Buffer_Reg0:		ds.l	1
+(1)  266/FFFFFFFFFFFFF6E0 :                                     !ds.l 1
+(1)  267/FFFFFFFFFFFFF6E4 : (MACRO)             Plc_Buffer_Reg4:		ds.l	1
+(1)  267/FFFFFFFFFFFFF6E4 :                                     !ds.l 1
+(1)  268/FFFFFFFFFFFFF6E8 : (MACRO)             Plc_Buffer_Reg8:		ds.l	1
+(1)  268/FFFFFFFFFFFFF6E8 :                                     !ds.l 1
+(1)  269/FFFFFFFFFFFFF6EC : (MACRO)             Plc_Buffer_RegC:		ds.l	1
+(1)  269/FFFFFFFFFFFFF6EC :                                     !ds.l 1
+(1)  270/FFFFFFFFFFFFF6F0 : (MACRO)             Plc_Buffer_Reg10:		ds.l	1
+(1)  270/FFFFFFFFFFFFF6F0 :                                     !ds.l 1
+(1)  271/FFFFFFFFFFFFF6F4 : (MACRO)             Plc_Buffer_Reg14:		ds.l	1
+(1)  271/FFFFFFFFFFFFF6F4 :                                     !ds.l 1
+(1)  272/FFFFFFFFFFFFF6F8 : (MACRO)             Plc_Buffer_Reg18:		ds.w	1	; amount of current entry remaining to decompress
+(1)  272/FFFFFFFFFFFFF6F8 :                                     !ds.w 1
+(1)  273/FFFFFFFFFFFFF6FA : (MACRO)             Plc_Buffer_Reg1A:		ds.w	1
+(1)  273/FFFFFFFFFFFFF6FA :                                     !ds.w 1
+(1)  274/FFFFFFFFFFFFF6FC : (MACRO)                                             ds.b	4	; seems unused
+(1)  274/FFFFFFFFFFFFF6FC :                                     !ds.b 4
+(1)  275/FFFFFFFFFFFFF700 :                     
+(1)  276/FFFFFFFFFFFFF700 :                     				; $FFFFF6FC-$FFFFF6FF	; unused
+(1)  277/FFFFFFFFFFFFF700 :                     Camera_RAM: ;			ramaddr( $FFFFF700 )
+(1)  278/FFFFFFFFFFFFF700 :                     Camera_X_pos: ;			ramaddr( $FFFFF700 )
+(1)  279/FFFFFFFFFFFFF700 : (MACRO)                         ds.l 1
+(1)  279/FFFFFFFFFFFFF700 :                                     !ds.l 1
+(1)  280/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Y_pos =			ramaddr( $FFFFF704 )
+(1)  281/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_BG_X_pos =		ramaddr( $FFFFF708 )	; only used sometimes as the layer deformation makes it sort of redundant
+(1)  282/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_BG_Y_pos =		ramaddr( $FFFFF70C )
+(1)  283/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_BG2_X_pos =		ramaddr( $FFFFF710 )	; used in GHZ
+(1)  284/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_BG2_Y_pos =		ramaddr( $FFFFF714 )	; used in GHZ
+(1)  285/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_BG3_X_pos =		ramaddr( $FFFFF718 )	; only used in SS, later used for levels in REV01 and REVXB
+(1)  286/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_BG3_Y_pos =		ramaddr( $FFFFF71C )	; later used for levels in REV01 and REVXB
+(1)  287/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_X_pos_copy =		ramaddr( $FFFFF720 )	; unused (only initialised at beginning of level)
+(1)  288/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Y_pos_copy =		ramaddr( $FFFFF724 )	; unused (only initialised at beginning of level)
+(1)  289/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Max_Y_pos =		ramaddr( $FFFFF726 )
+(1)  290/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Min_X_pos =		ramaddr( $FFFFF728 )
+(1)  291/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Max_X_pos =		ramaddr( $FFFFF72A )
+(1)  292/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Min_Y_pos_now =		ramaddr( $FFFFF72C )
+(1)  293/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Max_Y_pos_now =		ramaddr( $FFFFF72E )
+(1)  294/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Min_X_pos_now =		ramaddr( $FFFFF730 )	; unused
+(1)  295/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Max_X_pos_now =		ramaddr( $FFFFF732 )	; unused
+(1)  296/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Screen_Y_wrap_value =           ramaddr( $FFFFF734 )
+(1)  297/FFFFFFFFFFFFF704 :                     				; $FFFFF734-$FFFFF739	; unused
+(1)  298/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_X_pos_diff =		ramaddr( $FFFFF73A )	; was "Camera_Unk"
+(1)  299/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Y_pos_diff =		ramaddr( $FFFFF73C )	; was "Camera_Unk2"
+(1)  300/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Y_pos_bias =		ramaddr( $FFFFF73E )	; was "Camera_Unk3"
+(1)  301/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      unk_F740 =			ramaddr( $FFFFF740 )
+(1)  302/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      unk_F741 =			ramaddr( $FFFFF741 )
+(1)  303/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Dynamic_Resize_Routine =	ramaddr( $FFFFF742 )
+(1)  304/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Scroll_lock =			ramaddr( $FFFFF744 )	; set to 1 to stop all scrolling
+(1)  305/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      unk_F746 =			ramaddr( $FFFFF746 )
+(1)  306/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      unk_F748 =			ramaddr( $FFFFF748 )
+(1)  307/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Horiz_block_crossed_flag =	ramaddr( $FFFFF74A )
+(1)  308/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Verti_block_crossed_flag =	ramaddr( $FFFFF74B )
+(1)  309/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Horiz_block_crossed_flag_BG =	ramaddr( $FFFFF74C )
+(1)  310/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Verti_block_crossed_flag_BG =	ramaddr( $FFFFF74D )
+(1)  311/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Horiz_block_crossed_flag_BG2 =	ramaddr( $FFFFF74E )
 (1)  312/FFFFFFFFFFFFF704 :                     
-(1)  313/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Sonic_top_speed =		ramaddr( $FFFFF760 )
-(1)  314/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Sonic_acceleration =		ramaddr( $FFFFF762 )
-(1)  315/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Sonic_deceleration =		ramaddr( $FFFFF764 )
-(1)  316/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Sonic_LastLoadedDPLC =		ramaddr( $FFFFF766 )	; mapping frame number when Sonic last had his tiles requested to be transferred from ROM to VRAM. can be set to a dummy value like -1 to force a refresh DMA.
-(1)  317/FFFFFFFFFFFFF704 :                     
-(1)  318/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Primary_Angle =			ramaddr( $FFFFF768 )
-(1)  319/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Secondary_Angle =		ramaddr( $FFFFF76A )
-(1)  320/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Collision_addr =                ramaddr( $FFFFF796 )
-(1)  321/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      S1SS_PalFrame  =                 ramaddr( $FFFFF79A )
-(1)  322/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Unk_F79C =                       ramaddr( $FFFFF79C )
-(1)  323/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Unk_F7A0 =                       ramaddr( $FFFFF7A0 )
-(1)  324/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      MZ_ObjY_posSave =            ramaddr( $FFFFF7A4 )
-(1)  325/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Sonic_Pos_Record_Index =     ramaddr( $FFFFF7A8 )
-(1)  326/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      BossdefeatedFlag =           ramaddr( $FFFFFF7A )
-(1)  327/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Loop_TunnelRam =               ramaddr( $FFFFF7AC )
-(1)  328/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      AnimTilesFrame =               ramaddr( $FFFFF7B0 )
-(1)  329/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      AnimTilesFrame2 =              ramaddr( $FFFFF7B2 )
-(1)  330/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      AnimTiles_Counter =            ramaddr( $FFFFF7B1 )
-(1)  331/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      AnimTilesCounter4 =           ramaddr( $FFFFF7B3 ) 
-(1)  332/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      AnimTilesCounter2 =             ramaddr( $FFFFF7B4 )
-(1)  333/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      AnimTilesCounter3 =          ramaddr( $FFFFF7B5 )
-(1)  334/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      BigRingGraphics =		ramaddr( $FFFFF7BE )
-(1)  335/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      RotatingPlatformsTable =     	ramaddr( $FFFFF7C1 ) ;BigRingGraphics+$3 
-(1)  336/FFFFFFFFFFFFF704 :                     
-(1)  337/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Obj_placement_routine =		ramaddr( $FFFFF76C )
-(1)  338/FFFFFFFFFFFFF704 :                     
-(1)  339/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_X_pos_last =		ramaddr( $FFFFF76E )
-(1)  340/FFFFFFFFFFFFF704 :                     
-(1)  341/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Obj_load_addr_right =		ramaddr( $FFFFF770 )	; contains the address of the next object to load when moving right
-(1)  342/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Obj_load_addr_left =		ramaddr( $FFFFF774 )	; contains the address of the next object to load when moving left
-(1)  343/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Obj_load_addr_3 =		ramaddr( $FFFFF778 )	; likely a leftover from Ghouls'n'Ghosts
-(1)  344/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Obj_load_addr_4 =		ramaddr( $FFFFF77C )	; likely a leftover from Ghouls'n'Ghosts
-(1)  345/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      SS_Rotate =	        	ramaddr( $FFFFF780 )
-(1)  346/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      SS_Rotate_sec =                 ramaddr( $FFFFF782 )
-(1)  347/FFFFFFFFFFFFF704 :                     
-(1)  348/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Demo_button_index =                 ramaddr( $FFFFF790 )
-(1)  349/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Demo_press_counter =                 ramaddr( $FFFFF792 )
-(1)  350/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      PalChangeSpeed =                 ramaddr( $FFFFF794 )
-(1)  351/FFFFFFFFFFFFF704 :                     
-(1)  352/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Current_Boss_ID =		ramaddr( $FFFFF7AA )
+(1)  313/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Scroll_flags =			ramaddr( $FFFFF754 )	; bitfield ; bit 0 = redraw top row, bit 1 = redraw bottom row, bit 2 = redraw left-most column, bit 3 = redraw right-most column
+(1)  314/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Scroll_flags_BG =		ramaddr( $FFFFF756 )
+(1)  315/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Scroll_flags_BG2 =		ramaddr( $FFFFF758 )
+(1)  316/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Scroll_flags_BG3 =		ramaddr( $FFFFF75A )
+(1)  317/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_Max_Y_Pos_Changing =	ramaddr( $FFFFF75C )
+(1)  318/FFFFFFFFFFFFF704 :                     
+(1)  319/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Sonic_top_speed =		ramaddr( $FFFFF760 )
+(1)  320/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Sonic_acceleration =		ramaddr( $FFFFF762 )
+(1)  321/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Sonic_deceleration =		ramaddr( $FFFFF764 )
+(1)  322/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Sonic_LastLoadedDPLC =		ramaddr( $FFFFF766 )	; mapping frame number when Sonic last had his tiles requested to be transferred from ROM to VRAM. can be set to a dummy value like -1 to force a refresh DMA.
+(1)  323/FFFFFFFFFFFFF704 :                     
+(1)  324/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Primary_Angle =			ramaddr( $FFFFF768 )
+(1)  325/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Secondary_Angle =		ramaddr( $FFFFF76A )
+(1)  326/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Collision_addr =                ramaddr( $FFFFF796 )
+(1)  327/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      S1SS_PalFrame  =                 ramaddr( $FFFFF79A )
+(1)  328/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Unk_F79C =                       ramaddr( $FFFFF79C )
+(1)  329/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Unk_F7A0 =                       ramaddr( $FFFFF7A0 )
+(1)  330/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      MZ_ObjY_posSave =            ramaddr( $FFFFF7A4 )
+(1)  331/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Sonic_Pos_Record_Index =     ramaddr( $FFFFF7A8 )
+(1)  332/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      BossdefeatedFlag =           ramaddr( $FFFFFF7A )
+(1)  333/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Loop_TunnelRam =               ramaddr( $FFFFF7AC )
+(1)  334/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      AnimTilesFrame =               ramaddr( $FFFFF7B0 )
+(1)  335/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      AnimTilesFrame2 =              ramaddr( $FFFFF7B2 )
+(1)  336/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      AnimTiles_Counter =            ramaddr( $FFFFF7B1 )
+(1)  337/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      AnimTilesCounter4 =           ramaddr( $FFFFF7B3 )
+(1)  338/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      AnimTilesCounter2 =             ramaddr( $FFFFF7B4 )
+(1)  339/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      AnimTilesCounter3 =          ramaddr( $FFFFF7B5 )
+(1)  340/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      BigRingGraphics =		ramaddr( $FFFFF7BE )
+(1)  341/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      RotatingPlatformsTable =     	ramaddr( $FFFFF7C1 ) ;BigRingGraphics+$3
+(1)  342/FFFFFFFFFFFFF704 :                     
+(1)  343/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Obj_placement_routine =		ramaddr( $FFFFF76C )
+(1)  344/FFFFFFFFFFFFF704 :                     
+(1)  345/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_X_pos_last =		ramaddr( $FFFFF76E )
+(1)  346/FFFFFFFFFFFFF704 :                     
+(1)  347/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Obj_load_addr_right =		ramaddr( $FFFFF770 )	; contains the address of the next object to load when moving right
+(1)  348/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Obj_load_addr_left =		ramaddr( $FFFFF774 )	; contains the address of the next object to load when moving left
+(1)  349/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Obj_load_addr_3 =		ramaddr( $FFFFF778 )	; likely a leftover from Ghouls'n'Ghosts
+(1)  350/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Obj_load_addr_4 =		ramaddr( $FFFFF77C )	; likely a leftover from Ghouls'n'Ghosts
+(1)  351/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      SS_Rotate =	        	ramaddr( $FFFFF780 )
+(1)  352/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      SS_Rotate_sec =                 ramaddr( $FFFFF782 )
 (1)  353/FFFFFFFFFFFFF704 :                     
-(1)  354/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Pal_unk = 			ramaddr( $FFFFF7C0 )
-(1)  355/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      WindTunnel_flag =		ramaddr( $FFFFF7C7 )
-(1)  356/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Freeze_flag =			ramaddr( $FFFFF7C8 )
-(1)  357/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      WindTunnel_holding_flag =	ramaddr( $FFFFF7C9 )
-(1)  358/FFFFFFFFFFFFF704 :                     
-(1)  359/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Lock_Controls =			ramaddr( $FFFFF7CA )
-(1)  360/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      SBZ_Unk =			ramaddr( $FFFFF7CB )
-(1)  361/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Control_Locked =		ramaddr( $FFFFF7CC )
-(1)  362/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Bonuses_flag =			ramaddr( $FFFFF7CD )
-(1)  363/FFFFFFFFFFFFF704 :                     
-(1)  364/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Chain_Bonus_counter =		ramaddr( $FFFFF7D0 )	; counts up when you destroy things that give points, resets when you touch the ground
-(1)  365/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Bonus_Countdown_1 =		ramaddr( $FFFFF7D2 )	; level or special stage results time bonus
-(1)  366/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Bonus_Countdown_2 =		ramaddr( $FFFFF7D4 )	; level or special stage results ring bonus
-(1)  367/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Update_Bonus_score =		ramaddr( $FFFFF7D6 )
-(1)  368/FFFFFFFFFFFFF704 :                     
-(1)  369/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      End_SonicUnk =			ramaddr( $FFFFF7D7 )
-(1)  370/FFFFFFFFFFFFF704 :                     
-(1)  371/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_X_pos_coarse =		ramaddr( $FFFFF7DA )	; (Camera_X_pos - 128) / 256
-(1)  372/FFFFFFFFFFFFF704 :                     
-(1)  373/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      ButtonVine_Trigger =		ramaddr( $FFFFF7E0 )	; 16 bytes flag array, #subtype byte set when button/vine of respective subtype activated
-(1)  374/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      ButtonVineSec =                 ButtonVine_Trigger+$5
-(1)  375/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Anim_Counters =			ramaddr( $FFFFF7F0 )	; $10 bytes ; was: Level_Unk
+(1)  354/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Demo_button_index =                 ramaddr( $FFFFF790 )
+(1)  355/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Demo_press_counter =                 ramaddr( $FFFFF792 )
+(1)  356/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      PalChangeSpeed =                 ramaddr( $FFFFF794 )
+(1)  357/FFFFFFFFFFFFF704 :                     
+(1)  358/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Current_Boss_ID =		ramaddr( $FFFFF7AA )
+(1)  359/FFFFFFFFFFFFF704 :                     
+(1)  360/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Pal_unk = 			ramaddr( $FFFFF7C0 )
+(1)  361/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      WindTunnel_flag =		ramaddr( $FFFFF7C7 )
+(1)  362/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Freeze_flag =			ramaddr( $FFFFF7C8 )
+(1)  363/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      WindTunnel_holding_flag =	ramaddr( $FFFFF7C9 )
+(1)  364/FFFFFFFFFFFFF704 :                     
+(1)  365/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Lock_Controls =			ramaddr( $FFFFF7CA )
+(1)  366/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      SBZ_Unk =			ramaddr( $FFFFF7CB )
+(1)  367/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Control_Locked =		ramaddr( $FFFFF7CC )
+(1)  368/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Bonuses_flag =			ramaddr( $FFFFF7CD )
+(1)  369/FFFFFFFFFFFFF704 :                     
+(1)  370/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Chain_Bonus_counter =		ramaddr( $FFFFF7D0 )	; counts up when you destroy things that give points, resets when you touch the ground
+(1)  371/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Bonus_Countdown_1 =		ramaddr( $FFFFF7D2 )	; level or special stage results time bonus
+(1)  372/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Bonus_Countdown_2 =		ramaddr( $FFFFF7D4 )	; level or special stage results ring bonus
+(1)  373/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Update_Bonus_score =		ramaddr( $FFFFF7D6 )
+(1)  374/FFFFFFFFFFFFF704 :                     
+(1)  375/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      End_SonicUnk =			ramaddr( $FFFFF7D7 )
 (1)  376/FFFFFFFFFFFFF704 :                     
-(1)  377/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Sprite_Table =			ramaddr( $FFFFF800 )	; Sprite attribute table buffer
+(1)  377/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_X_pos_coarse =		ramaddr( $FFFFF7DA )	; (Camera_X_pos - 128) / 256
 (1)  378/FFFFFFFFFFFFF704 :                     
-(1)  379/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Underwater_target_palette_line3 =	ramaddr( $FFFFFA00 )	; Underwater_target_palette will contain the palette the screen will ultimately fade in to.
-(1)  380/FFFFFFFFFFFFF704 :                     
-(1)  381/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Underwater_palette =		ramaddr( $FFFFFA80 )	; main palette for underwater parts of the screen
-(1)  382/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Underwater_palette_line2 =	ramaddr( $FFFFFAC0 )
-(1)  383/FFFFFFFFFFFFF704 :                     
-(1)  384/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Normal_palette =		ramaddr( $FFFFFB00 )	; main palette for non-underwater parts of the screen
-(1)  385/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Normal_palette_line2 =		ramaddr( $FFFFFB20 )
-(1)  386/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Normal_palette_line3 =		ramaddr( $FFFFFB40 )
-(1)  387/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Normal_palette_line4 =		ramaddr( $FFFFFB60 )
-(1)  388/FFFFFFFFFFFFF704 :                     
-(1)  389/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Target_palette =		ramaddr( $FFFFFB80 )	; This is used by the screen-fading subroutines.
-(1)  390/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Target_palette_line3 =		ramaddr( $FFFFFBC0 )	; While Normal_palette contains the blacked-out palette caused by the fading, Target_palette will contain the palette the screen will ultimately fade in to.
-(1)  391/FFFFFFFFFFFFF704 :                     
-(1)  392/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Object_Respawn_Table =		ramaddr( $FFFFFC00 )
-(1)  393/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Obj_respawn_index =		ramaddr( $FFFFFC00 )	; respawn table indices of the next objects when moving left or right for the first player
-(1)  394/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Error_message_ID =		ramaddr( $FFFFFC44 )
-(1)  395/FFFFFFFFFFFFF704 :                     
-(1)  396/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      System_Stack =			ramaddr( $FFFFFE00 )
-(1)  397/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Level_Inactive_flag =		ramaddr( $FFFFFE02 )
-(1)  398/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Timer_frames =			ramaddr( $FFFFFE04 )	; 2 bytes
-(1)  399/FFFFFFFFFFFFF704 :                     
-(1)  400/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Debug_object =			ramaddr( $FFFFFE06 )
-(1)  401/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Debug_placement_mode =		ramaddr( $FFFFFE08 )
-(1)  402/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Debug_Accel_Timer =		ramaddr( $FFFFFE0A )
-(1)  403/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Debug_Speed =			ramaddr( $FFFFFE0B )
-(1)  404/FFFFFFFFFFFFF704 :                     
-(1)  405/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Vint_runcount =			ramaddr( $FFFFFE0C )
-(1)  406/FFFFFFFFFFFFF704 :                     
-(1)  407/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Current_ZoneAndAct =		ramaddr( $FFFFFE10 )	; 2 bytes
-(1)  408/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Current_Zone =			ramaddr( $FFFFFE10 )
-(1)  409/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Current_Act =			ramaddr( $FFFFFE11 )
-(1)  410/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Life_count =			ramaddr( $FFFFFE12 )
-(1)  411/FFFFFFFFFFFFF704 :                     				; $FFFFFE13 unused
-(1)  412/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Air_left =			ramaddr( $FFFFFE14 )
-(1)  413/FFFFFFFFFFFFF704 :                     				; $FFFFFE15 unused
-(1)  414/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Current_Special_Stage =		ramaddr( $FFFFFE16 )
-(1)  415/FFFFFFFFFFFFF704 :                     				; $FFFFFE17 unused
-(1)  416/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Continue_count =		ramaddr( $FFFFFE18 )
-(1)  417/FFFFFFFFFFFFF704 :                     				; $FFFFFE19 unused
-(1)  418/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Time_Over_flag =		ramaddr( $FFFFFE1A )
-(1)  419/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Extra_life_flags =		ramaddr( $FFFFFE1B )
-(1)  420/FFFFFFFFFFFFF704 :                     
-(1)  421/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Update_HUD_lives =		ramaddr( $FFFFFE1C )
-(1)  422/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Update_HUD_rings =		ramaddr( $FFFFFE1D )
-(1)  423/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Update_HUD_timer =		ramaddr( $FFFFFE1E )
-(1)  424/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Update_HUD_score =		ramaddr( $FFFFFE1F )
-(1)  425/FFFFFFFFFFFFF704 :                     
-(1)  426/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Ring_count =			ramaddr( $FFFFFE20 )	; 2 bytes
-(1)  427/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Timer =				ramaddr( $FFFFFE22 )	; 4 bytes
-(1)  428/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Timer_minute = 			ramaddr( $FFFFFE23 )
-(1)  429/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Timer_second = 			ramaddr( $FFFFFE24 )
-(1)  430/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Timer_frame = 			ramaddr( $FFFFFE25 )
-(1)  431/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Score =				ramaddr( $FFFFFE26 )	; 4 bytes
-(1)  432/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      ShieldFlag =                    ramaddr( $FFFFFE2C )
-(1)  433/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      InvcFlag =                    ramaddr( $FFFFFE2D )
-(1)  434/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      SpeedSHoesFlags =             ramaddr( $FFFFFE2E )
-(1)  435/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Unk_Flags_1 =             ramaddr( $FFFFFE2F )
-(1)  436/FFFFFFFFFFFFF704 :                     				; $FFFFFE2A-$FFFFFE2F unused 6 bytes
-(1)  437/FFFFFFFFFFFFF704 :                     
-(1)  438/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Last_star_pole_hit =		ramaddr( $FFFFFE30 )
-(1)  439/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Last_star_pole_hit =	ramaddr( $FFFFFE31 )
-(1)  440/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_x_pos =			ramaddr( $FFFFFE32 )
-(1)  441/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_y_pos =			ramaddr( $FFFFFE34 )
-(1)  442/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Ring_count =		ramaddr( $FFFFFE36 )
-(1)  443/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Timer =			ramaddr( $FFFFFE38 )
-(1)  444/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Dynamic_Resize_Routine =	ramaddr( $FFFFFE3C )
-(1)  445/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Camera_Max_Y_pos =	ramaddr( $FFFFFE3E )
-(1)  446/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Camera_X_pos =		ramaddr( $FFFFFE40 )
-(1)  447/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Camera_Y_pos =		ramaddr( $FFFFFE42 )
-(1)  448/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Camera_BG_X_pos =		ramaddr( $FFFFFE44 )
-(1)  449/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Camera_BG_Y_pos =		ramaddr( $FFFFFE46 )
-(1)  450/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Camera_BG2_X_pos =	ramaddr( $FFFFFE48 )
-(1)  451/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Camera_BG2_Y_pos =	ramaddr( $FFFFFE4A )
-(1)  452/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Camera_BG3_X_pos =	ramaddr( $FFFFFE4C )
-(1)  453/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Camera_BG3_Y_pos =	ramaddr( $FFFFFE4E )
-(1)  454/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Water_Level =		ramaddr( $FFFFFE50 )
-(1)  455/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Water_routine =		ramaddr( $FFFFFE52 )
-(1)  456/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Water_move =		ramaddr( $FFFFFE53 )
-(1)  457/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Extra_life_flags =	ramaddr( $FFFFFE54 )
-(1)  458/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Emerald_count =			ramaddr( $FFFFFE57 )
-(1)  459/FFFFFFFFFFFFF704 :                     
-(1)  460/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Oscillation_Control =		ramaddr( $FFFFFE5E )
-(1)  461/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Oscillating_Data =		ramaddr( $FFFFFE60 )
-(1)  462/FFFFFFFFFFFFF704 :                     
-(1)  463/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Logspike_anim_counter =		ramaddr( $FFFFFEC0 )
-(1)  464/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Logspike_anim_frame =		ramaddr( $FFFFFEC1 )
-(1)  465/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Rings_anim_counter =		ramaddr( $FFFFFEC2 )
-(1)  466/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Rings_anim_frame =		ramaddr( $FFFFFEC3 )
-(1)  467/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Unknown_anim_counter =		ramaddr( $FFFFFEC4 )
-(1)  468/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Unknown_anim_frame =		ramaddr( $FFFFFEC5 )
-(1)  469/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Ring_spill_anim_counter =	ramaddr( $FFFFFEC6 )
-(1)  470/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Ring_spill_anim_frame =		ramaddr( $FFFFFEC7 )
-(1)  471/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Ring_spill_anim_accum =		ramaddr( $FFFFFEC8 )
-(1)  472/FFFFFFFFFFFFF704 :                     
-(1)  473/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_RAM_copy =		ramaddr( $FFFFFF10 )
-(1)  474/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_BG_copy =                ramaddr( $FFFFFF18 )
-(1)  475/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_BG2_copy =               ramaddr( $FFFFFF20 )
-(1)  476/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Scroll_flags_copy =		ramaddr( $FFFFFF30 )
-(1)  477/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Scroll_flags_BG_copy =          ramaddr( $FFFFFF32 )
-(1)  478/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Scroll_flags_BG2_copy =         ramaddr( $FFFFFF34 )
-(1)  479/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      LevSel_HoldTimer =		ramaddr( $FFFFFF80 )
-(1)  480/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Level_select_zone =		ramaddr( $FFFFFF82 )
-(1)  481/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Sound_test_sound =		ramaddr( $FFFFFF84 )
-(1)  482/FFFFFFFFFFFFF704 :                     
-(1)  483/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Level_select_flag =		ramaddr( $FFFFFFE0 )
-(1)  484/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Slow_motion_flag =		ramaddr( $FFFFFFE1 )
-(1)  485/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Debug_options_flag =		ramaddr( $FFFFFFE2 )	; if set, allows you to enable debug mode.
-(1)  486/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Hidden_credits_flag =		ramaddr( $FFFFFFE3 )
-(1)  487/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Correct_cheat_entries =		ramaddr( $FFFFFFE4 )
-(1)  488/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Correct_cheat_entries_2 =	ramaddr( $FFFFFFE6 )
-(1)  489/FFFFFFFFFFFFF704 :                     
-(1)  490/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      unk_FFEA =			ramaddr( $FFFFFFEA )	; Cleared at title screen, never read from
-(1)  491/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      unk_FFEC =			ramaddr( $FFFFFFEC )	; Written to at Sonic_Floor, never read from
-(1)  492/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      unk_FFED =			ramaddr( $FFFFFFED )	; Written to at Sonic_Floor, never read from
-(1)  493/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      unk_FFEE =			ramaddr( $FFFFFFEE )	; Written to at Sonic_Floor, never read from
-(1)  494/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      unk_FFEF =			ramaddr( $FFFFFFEF )	; Written to at Sonic_Floor, never read from
+(1)  379/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      ButtonVine_Trigger =		ramaddr( $FFFFF7E0 )	; 16 bytes flag array, #subtype byte set when button/vine of respective subtype activated
+(1)  380/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      ButtonVineSec =                 ButtonVine_Trigger+$5
+(1)  381/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Anim_Counters =			ramaddr( $FFFFF7F0 )	; $10 bytes ; was: Level_Unk
+(1)  382/FFFFFFFFFFFFF704 :                     
+(1)  383/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Sprite_Table =			ramaddr( $FFFFF800 )	; Sprite attribute table buffer
+(1)  384/FFFFFFFFFFFFF704 :                     
+(1)  385/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Underwater_target_palette_line3 =	ramaddr( $FFFFFA00 )	; Underwater_target_palette will contain the palette the screen will ultimately fade in to.
+(1)  386/FFFFFFFFFFFFF704 :                     
+(1)  387/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Underwater_palette =		ramaddr( $FFFFFA80 )	; main palette for underwater parts of the screen
+(1)  388/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Underwater_palette_line2 =	ramaddr( $FFFFFAC0 )
+(1)  389/FFFFFFFFFFFFF704 :                     
+(1)  390/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Normal_palette =		ramaddr( $FFFFFB00 )	; main palette for non-underwater parts of the screen
+(1)  391/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Normal_palette_line2 =		ramaddr( $FFFFFB20 )
+(1)  392/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Normal_palette_line3 =		ramaddr( $FFFFFB40 )
+(1)  393/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Normal_palette_line4 =		ramaddr( $FFFFFB60 )
+(1)  394/FFFFFFFFFFFFF704 :                     
+(1)  395/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Target_palette =		ramaddr( $FFFFFB80 )	; This is used by the screen-fading subroutines.
+(1)  396/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Target_palette_line3 =		ramaddr( $FFFFFBC0 )	; While Normal_palette contains the blacked-out palette caused by the fading, Target_palette will contain the palette the screen will ultimately fade in to.
+(1)  397/FFFFFFFFFFFFF704 :                     
+(1)  398/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Object_Respawn_Table =		ramaddr( $FFFFFC00 )
+(1)  399/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Obj_respawn_index =		ramaddr( $FFFFFC00 )	; respawn table indices of the next objects when moving left or right for the first player
+(1)  400/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Error_message_ID =		ramaddr( $FFFFFC44 )
+(1)  401/FFFFFFFFFFFFF704 :                     
+(1)  402/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      System_Stack =			ramaddr( $FFFFFE00 )
+(1)  403/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Level_Inactive_flag =		ramaddr( $FFFFFE02 )
+(1)  404/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Timer_frames =			ramaddr( $FFFFFE04 )	; 2 bytes
+(1)  405/FFFFFFFFFFFFF704 :                     
+(1)  406/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Debug_object =			ramaddr( $FFFFFE06 )
+(1)  407/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Debug_placement_mode =		ramaddr( $FFFFFE08 )
+(1)  408/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Debug_Accel_Timer =		ramaddr( $FFFFFE0A )
+(1)  409/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Debug_Speed =			ramaddr( $FFFFFE0B )
+(1)  410/FFFFFFFFFFFFF704 :                     
+(1)  411/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Vint_runcount =			ramaddr( $FFFFFE0C )
+(1)  412/FFFFFFFFFFFFF704 :                     
+(1)  413/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Current_ZoneAndAct =		ramaddr( $FFFFFE10 )	; 2 bytes
+(1)  414/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Current_Zone =			ramaddr( $FFFFFE10 )
+(1)  415/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Current_Act =			ramaddr( $FFFFFE11 )
+(1)  416/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Life_count =			ramaddr( $FFFFFE12 )
+(1)  417/FFFFFFFFFFFFF704 :                     				; $FFFFFE13 unused
+(1)  418/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Air_left =			ramaddr( $FFFFFE14 )
+(1)  419/FFFFFFFFFFFFF704 :                     				; $FFFFFE15 unused
+(1)  420/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Current_Special_Stage =		ramaddr( $FFFFFE16 )
+(1)  421/FFFFFFFFFFFFF704 :                     				; $FFFFFE17 unused
+(1)  422/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Continue_count =		ramaddr( $FFFFFE18 )
+(1)  423/FFFFFFFFFFFFF704 :                     				; $FFFFFE19 unused
+(1)  424/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Time_Over_flag =		ramaddr( $FFFFFE1A )
+(1)  425/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Extra_life_flags =		ramaddr( $FFFFFE1B )
+(1)  426/FFFFFFFFFFFFF704 :                     
+(1)  427/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Update_HUD_lives =		ramaddr( $FFFFFE1C )
+(1)  428/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Update_HUD_rings =		ramaddr( $FFFFFE1D )
+(1)  429/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Update_HUD_timer =		ramaddr( $FFFFFE1E )
+(1)  430/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Update_HUD_score =		ramaddr( $FFFFFE1F )
+(1)  431/FFFFFFFFFFFFF704 :                     
+(1)  432/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Ring_count =			ramaddr( $FFFFFE20 )	; 2 bytes
+(1)  433/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Timer =				ramaddr( $FFFFFE22 )	; 4 bytes
+(1)  434/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Timer_minute = 			ramaddr( $FFFFFE23 )
+(1)  435/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Timer_second = 			ramaddr( $FFFFFE24 )
+(1)  436/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Timer_frame = 			ramaddr( $FFFFFE25 )
+(1)  437/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Score =				ramaddr( $FFFFFE26 )	; 4 bytes
+(1)  438/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      ShieldFlag =                    ramaddr( $FFFFFE2C )
+(1)  439/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      InvcFlag =                    ramaddr( $FFFFFE2D )
+(1)  440/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      SpeedSHoesFlags =             ramaddr( $FFFFFE2E )
+(1)  441/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Unk_Flags_1 =             ramaddr( $FFFFFE2F )
+(1)  442/FFFFFFFFFFFFF704 :                     				; $FFFFFE2A-$FFFFFE2F unused 6 bytes
+(1)  443/FFFFFFFFFFFFF704 :                     
+(1)  444/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Last_star_pole_hit =		ramaddr( $FFFFFE30 )
+(1)  445/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Last_star_pole_hit =	ramaddr( $FFFFFE31 )
+(1)  446/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_x_pos =			ramaddr( $FFFFFE32 )
+(1)  447/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_y_pos =			ramaddr( $FFFFFE34 )
+(1)  448/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Ring_count =		ramaddr( $FFFFFE36 )
+(1)  449/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Timer =			ramaddr( $FFFFFE38 )
+(1)  450/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Dynamic_Resize_Routine =	ramaddr( $FFFFFE3C )
+(1)  451/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Camera_Max_Y_pos =	ramaddr( $FFFFFE3E )
+(1)  452/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Camera_X_pos =		ramaddr( $FFFFFE40 )
+(1)  453/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Camera_Y_pos =		ramaddr( $FFFFFE42 )
+(1)  454/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Camera_BG_X_pos =		ramaddr( $FFFFFE44 )
+(1)  455/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Camera_BG_Y_pos =		ramaddr( $FFFFFE46 )
+(1)  456/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Camera_BG2_X_pos =	ramaddr( $FFFFFE48 )
+(1)  457/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Camera_BG2_Y_pos =	ramaddr( $FFFFFE4A )
+(1)  458/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Camera_BG3_X_pos =	ramaddr( $FFFFFE4C )
+(1)  459/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Camera_BG3_Y_pos =	ramaddr( $FFFFFE4E )
+(1)  460/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Water_Level =		ramaddr( $FFFFFE50 )
+(1)  461/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Water_routine =		ramaddr( $FFFFFE52 )
+(1)  462/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Water_move =		ramaddr( $FFFFFE53 )
+(1)  463/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Saved_Extra_life_flags =	ramaddr( $FFFFFE54 )
+(1)  464/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Emerald_count =			ramaddr( $FFFFFE57 )
+(1)  465/FFFFFFFFFFFFF704 :                     
+(1)  466/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Oscillation_Control =		ramaddr( $FFFFFE5E )
+(1)  467/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Oscillating_Data =		ramaddr( $FFFFFE60 )
+(1)  468/FFFFFFFFFFFFF704 :                     
+(1)  469/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Logspike_anim_counter =		ramaddr( $FFFFFEC0 )
+(1)  470/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Logspike_anim_frame =		ramaddr( $FFFFFEC1 )
+(1)  471/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Rings_anim_counter =		ramaddr( $FFFFFEC2 )
+(1)  472/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Rings_anim_frame =		ramaddr( $FFFFFEC3 )
+(1)  473/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Unknown_anim_counter =		ramaddr( $FFFFFEC4 )
+(1)  474/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Unknown_anim_frame =		ramaddr( $FFFFFEC5 )
+(1)  475/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Ring_spill_anim_counter =	ramaddr( $FFFFFEC6 )
+(1)  476/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Ring_spill_anim_frame =		ramaddr( $FFFFFEC7 )
+(1)  477/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Ring_spill_anim_accum =		ramaddr( $FFFFFEC8 )
+(1)  478/FFFFFFFFFFFFF704 :                     
+(1)  479/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_RAM_copy =		ramaddr( $FFFFFF10 )
+(1)  480/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_BG_copy =                ramaddr( $FFFFFF18 )
+(1)  481/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Camera_BG2_copy =               ramaddr( $FFFFFF20 )
+(1)  482/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Scroll_flags_copy =		ramaddr( $FFFFFF30 )
+(1)  483/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Scroll_flags_BG_copy =          ramaddr( $FFFFFF32 )
+(1)  484/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Scroll_flags_BG2_copy =         ramaddr( $FFFFFF34 )
+(1)  485/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      LevSel_HoldTimer =		ramaddr( $FFFFFF80 )
+(1)  486/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Level_select_zone =		ramaddr( $FFFFFF82 )
+(1)  487/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Sound_test_sound =		ramaddr( $FFFFFF84 )
+(1)  488/FFFFFFFFFFFFF704 :                     
+(1)  489/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Level_select_flag =		ramaddr( $FFFFFFE0 )
+(1)  490/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Slow_motion_flag =		ramaddr( $FFFFFFE1 )
+(1)  491/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Debug_options_flag =		ramaddr( $FFFFFFE2 )	; if set, allows you to enable debug mode.
+(1)  492/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Hidden_credits_flag =		ramaddr( $FFFFFFE3 )
+(1)  493/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Correct_cheat_entries =		ramaddr( $FFFFFFE4 )
+(1)  494/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Correct_cheat_entries_2 =	ramaddr( $FFFFFFE6 )
 (1)  495/FFFFFFFFFFFFF704 :                     
-(1)  496/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Demo_mode_flag =		ramaddr( $FFFFFFF0 )	; 1 if a demo is playing (2 bytes)
-(1)  497/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Demo_number =			ramaddr( $FFFFFFF2 )	; which demo will play next (2 bytes)
-(1)  498/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Ending_demo_number =		ramaddr( $FFFFFFF4 )	; zone for the ending demos (2 bytes)
-(1)  499/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Graphics_Flags =		ramaddr( $FFFFFFF8 )	; misc. bitfield
-(1)  500/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Debug_mode_flag =		ramaddr( $FFFFFFFA )	; (2 bytes)
-(1)  501/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Checksum_fourcc =		ramaddr( $FFFFFFFC )	; (4 bytes)
-(1)  502/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      RAM_End =			ramaddr( $FFFFFFFF )
-(1)  506/    F704 :                         dephase
-(1)  507/       0 :                         !org	0	; Reset the program counter
-(1)  508/       0 :                     ; ---------------------------------------------------------------------------
-(1)  509/       0 :                     ; VDP addressses
-(1)  510/       0 : =$C00000            VDP_data_port =			$C00000 ; (8=r/w, 16=r/w)
-(1)  511/       0 : =$C00004            VDP_control_port =		$C00004 ; (8=r/w, 16=r/w)
-(1)  512/       0 : =$C00011            PSG_input =			$C00011
-(1)  513/       0 :                     
-(1)  514/       0 :                     ; ---------------------------------------------------------------------------
-(1)  515/       0 :                     ; Z80 addresses
-(1)  516/       0 : =$A00000            Z80_RAM =			$A00000 ; start of Z80 RAM
-(1)  517/       0 : =$A000EA            Z80_DAC3_Pitch =		$A000EA
-(1)  518/       0 : =$A01FFD            DAC_Status =			$A01FFD
-(1)  519/       0 : =$A01FFF            DAC_Sample =			$A01FFF
-(1)  520/       0 : =$A02000            Z80_RAM_End =			$A02000 ; end of non-reserved Z80 RAM
-(1)  521/       0 : =$A04000            YM2612_A0 =			$A04000
-(1)  522/       0 : =$A04001            YM2612_D0 =			$A04001
-(1)  523/       0 : =$A04002            YM2612_A1 =			$A04002
-(1)  524/       0 : =$A04003            YM2612_D1 =			$A04003
-(1)  525/       0 : =$A10001            Z80_Version =			$A10001
-(1)  526/       0 : =$A10002            Z80_Port_1_Data =		$A10002
-(1)  527/       0 : =$A10008            Z80_Port_1_Control =		$A10008
-(1)  528/       0 : =$A1000A            Z80_Port_2_Control =		$A1000A
-(1)  529/       0 : =$A1000C            Z80_Expansion_Control =		$A1000C
-(1)  530/       0 : =$A11100            Z80_Bus_Request =		$A11100
-(1)  531/       0 : =$A11200            Z80_Reset =			$A11200
-(1)  532/       0 :                     
-(1)  533/       0 : =$A14000            Security_Addr =			$A14000
+(1)  496/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      unk_FFEA =			ramaddr( $FFFFFFEA )	; Cleared at title screen, never read from
+(1)  497/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      unk_FFEC =			ramaddr( $FFFFFFEC )	; Written to at Sonic_Floor, never read from
+(1)  498/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      unk_FFED =			ramaddr( $FFFFFFED )	; Written to at Sonic_Floor, never read from
+(1)  499/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      unk_FFEE =			ramaddr( $FFFFFFEE )	; Written to at Sonic_Floor, never read from
+(1)  500/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      unk_FFEF =			ramaddr( $FFFFFFEF )	; Written to at Sonic_Floor, never read from
+(1)  501/FFFFFFFFFFFFF704 :                     
+(1)  502/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Demo_mode_flag =		ramaddr( $FFFFFFF0 )	; 1 if a demo is playing (2 bytes)
+(1)  503/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Demo_number =			ramaddr( $FFFFFFF2 )	; which demo will play next (2 bytes)
+(1)  504/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Ending_demo_number =		ramaddr( $FFFFFFF4 )	; zone for the ending demos (2 bytes)
+(1)  505/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Graphics_Flags =		ramaddr( $FFFFFFF8 )	; misc. bitfield
+(1)  506/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Debug_mode_flag =		ramaddr( $FFFFFFFA )	; (2 bytes)
+(1)  507/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      Checksum_fourcc =		ramaddr( $FFFFFFFC )	; (4 bytes)
+(1)  508/FFFFFFFFFFFFF704 : =$FFFFFFFFFF..      RAM_End =			ramaddr( $FFFFFFFF )
+(1)  512/    F704 :                         dephase
+(1)  513/    F704 :                     
+(1)  514/FFFFFFFFFFFFD000 :                         phase	Object_RAM
+(1)  515/FFFFFFFFFFFFD000 : (MACRO)                               ds.b ObSize ; used by team sonic presents then its cleared out by title screen code  
+(1)  515/FFFFFFFFFFFFD000 :                                     !ds.b OBSIZE
+(1)  516/FFFFFFFFFFFFD040 : (MACRO)             TitleScreenSonic: ds.b ObSize
+(1)  516/FFFFFFFFFFFFD040 :                                     !ds.b OBSIZE
+(1)  517/FFFFFFFFFFFFD080 : (MACRO)             TitleScreenPRESS_START: ds.b ObSize
+(1)  517/FFFFFFFFFFFFD080 :                                     !ds.b OBSIZE
+(1)  518/FFFFFFFFFFFFD0C0 : (MACRO)             TitleScreenTM: ds.b ObSize
+(1)  518/FFFFFFFFFFFFD0C0 :                                     !ds.b OBSIZE
+(1)  519/FFFFFFFFFFFFD100 : (MACRO)             TitleScreenPRESS_START2: ds.b ObSize ; seems to load the press start object twice although the first time isnt really loaded
+(1)  519/FFFFFFFFFFFFD100 :                                     !ds.b OBSIZE
+(1)  520/FFFFFFFFFFFFD140 : (MACRO)                              ds.b    ObSize
+(1)  520/FFFFFFFFFFFFD140 :                                     !ds.b OBSIZE
+(1)  521/FFFFFFFFFFFFD180 : (MACRO)                              ds.b ObSize
+(1)  521/FFFFFFFFFFFFD180 :                                     !ds.b OBSIZE
+(1)  522/FFFFFFFFFFFFD1C0 : (MACRO)                              ds.b ObSize
+(1)  522/FFFFFFFFFFFFD1C0 :                                     !ds.b OBSIZE
+(1)  523/FFFFFFFFFFFFD200 : (MACRO)                              ds.b ObSize
+(1)  523/FFFFFFFFFFFFD200 :                                     !ds.b OBSIZE
+(1)  524/FFFFFFFFFFFFD240 : (MACRO)                              ds.b ObSize
+(1)  524/FFFFFFFFFFFFD240 :                                     !ds.b OBSIZE
+(1)  525/FFFFFFFFFFFFD280 : (MACRO)                              ds.b ObSize
+(1)  525/FFFFFFFFFFFFD280 :                                     !ds.b OBSIZE
+(1)  526/FFFFFFFFFFFFD2C0 :                     TitleScreenObjRamEnd:                 
+(1)  527/    F9C4 :                         dephase
+(1)  528/       0 :                         !org	0	; Reset the program counter
+(1)  529/       0 :                     ; ---------------------------------------------------------------------------
+(1)  530/       0 :                     ; VDP addressses
+(1)  531/       0 : =$C00000            VDP_data_port =			$C00000 ; (8=r/w, 16=r/w)
+(1)  532/       0 : =$C00004            VDP_control_port =		$C00004 ; (8=r/w, 16=r/w)
+(1)  533/       0 : =$C00011            PSG_input =			$C00011
 (1)  534/       0 :                     
 (1)  535/       0 :                     ; ---------------------------------------------------------------------------
-(1)  536/       0 :                     ; Sound Driver addressses
-(1)  537/       0 : =$0                 SFXPriorityVal =		0
-(1)  538/       0 : =$1                 TempoTimeout =			1
-(1)  539/       0 : =$3                 StopMusic =			3
-(1)  540/       0 : =$9                 QueueToPlay =			9
-(1)  541/       0 : =$A                 SFXToPlay =			$A	; used for music/sfx
-(1)  542/       0 : =$B                 SFXSpecToPlay =			$B	; used for special sfx
-(1)  543/       0 : =$C                 SFXUnknown =			$C	; used for (broken) sfx
-(1)  544/       0 :                     ; ---------------------------------------------------------------------------
-(1)  545/       0 :                     ; VRAM and tile art base addresses.
-(1)  546/       0 :                     ; VRAM Reserved regions.
-(1)  547/       0 : =$C000              VRAM_Plane_A_Name_Table                  = $C000	; Extends until $CFFF
-(1)  548/       0 : =$E000              VRAM_Plane_B_Name_Table                  = $E000	; Extends until $EFFF
-(1)  549/       0 : =$A000              VRAM_Plane_A_Name_Table_2P               = $A000	; Extends until $AFFF
-(1)  550/       0 : =$8000              VRAM_Plane_B_Name_Table_2P               = $8000	; Extends until $8FFF
-(1)  551/       0 : =$1000              VRAM_Plane_Table_Size                    = $1000	; 64 cells x 32 cells x 2 bytes per cell
-(1)  552/       0 : =$F800              VRAM_Sprite_Attribute_Table              = $F800	; Extends until $FA7F
-(1)  553/       0 : =$280               VRAM_Sprite_Attribute_Table_Size         = $0280	; 640 bytes
-(1)  554/       0 : =$FC00              VRAM_Horiz_Scroll_Table                  = $FC00	; Extends until $FF7F
-(1)  555/       0 : =$380               VRAM_Horiz_Scroll_Table_Size             = $0380	; 224 lines * 2 bytes per entry * 2 PNTs
+(1)  536/       0 :                     ; Z80 addresses
+(1)  537/       0 : =$A00000            Z80_RAM =			$A00000 ; start of Z80 RAM
+(1)  538/       0 : =$A000EA            Z80_DAC3_Pitch =		$A000EA
+(1)  539/       0 : =$A01FFD            DAC_Status =			$A01FFD
+(1)  540/       0 : =$A01FFF            DAC_Sample =			$A01FFF
+(1)  541/       0 : =$A02000            Z80_RAM_End =			$A02000 ; end of non-reserved Z80 RAM
+(1)  542/       0 : =$A04000            YM2612_A0 =			$A04000
+(1)  543/       0 : =$A04001            YM2612_D0 =			$A04001
+(1)  544/       0 : =$A04002            YM2612_A1 =			$A04002
+(1)  545/       0 : =$A04003            YM2612_D1 =			$A04003
+(1)  546/       0 : =$A10001            Z80_Version =			$A10001
+(1)  547/       0 : =$A10002            Z80_Port_1_Data =		$A10002
+(1)  548/       0 : =$A10008            Z80_Port_1_Control =		$A10008
+(1)  549/       0 : =$A1000A            Z80_Port_2_Control =		$A1000A
+(1)  550/       0 : =$A1000C            Z80_Expansion_Control =		$A1000C
+(1)  551/       0 : =$A11100            Z80_Bus_Request =		$A11100
+(1)  552/       0 : =$A11200            Z80_Reset =			$A11200
+(1)  553/       0 :                     
+(1)  554/       0 : =$A14000            Security_Addr =			$A14000
+(1)  555/       0 :                     
+(1)  556/       0 :                     ; ---------------------------------------------------------------------------
+(1)  557/       0 :                     ; Sound Driver addressses
+(1)  558/       0 : =$0                 SFXPriorityVal =		0
+(1)  559/       0 : =$1                 TempoTimeout =			1
+(1)  560/       0 : =$3                 StopMusic =			3
+(1)  561/       0 : =$9                 QueueToPlay =			9
+(1)  562/       0 : =$A                 SFXToPlay =			$A	; used for music/sfx
+(1)  563/       0 : =$B                 SFXSpecToPlay =			$B	; used for special sfx
+(1)  564/       0 : =$C                 SFXUnknown =			$C	; used for (broken) sfx
+(1)  565/       0 :                     ; ---------------------------------------------------------------------------
+(1)  566/       0 :                     ; VRAM and tile art base addresses.
+(1)  567/       0 :                     ; VRAM Reserved regions.
+(1)  568/       0 : =$C000              VRAM_Plane_A_Name_Table                  = $C000	; Extends until $CFFF
+(1)  569/       0 : =$E000              VRAM_Plane_B_Name_Table                  = $E000	; Extends until $EFFF
+(1)  570/       0 : =$A000              VRAM_Plane_A_Name_Table_2P               = $A000	; Extends until $AFFF
+(1)  571/       0 : =$8000              VRAM_Plane_B_Name_Table_2P               = $8000	; Extends until $8FFF
+(1)  572/       0 : =$1000              VRAM_Plane_Table_Size                    = $1000	; 64 cells x 32 cells x 2 bytes per cell
+(1)  573/       0 : =$F800              VRAM_Sprite_Attribute_Table              = $F800	; Extends until $FA7F
+(1)  574/       0 : =$280               VRAM_Sprite_Attribute_Table_Size         = $0280	; 640 bytes
+(1)  575/       0 : =$FC00              VRAM_Horiz_Scroll_Table                  = $FC00	; Extends until $FF7F
+(1)  576/       0 : =$380               VRAM_Horiz_Scroll_Table_Size             = $0380	; 224 lines * 2 bytes per entry * 2 PNTs
       22/       0 :                     
       23/       0 :                     ; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
       24/       0 :                     ; Simplifying macros and functions
@@ -4297,20 +4334,20 @@
     3314/    3114 : 6100 E28A           		bsr.w	PlaySound_Special
     3315/    3118 : 11FC 0000 FFFA      		move.b	#0,(Debug_mode_flag).w ; disable debug mode
     3316/    311E : 31FC 0178 F614      		move.w	#$178,(Demo_Time_left).w ; run title	screen for $178	frames
-    3317/    3124 : 43F8 D080           		lea	(Object_RAM+$80).w,a1
+    3317/    3124 : 43F8 D080           		lea	(TitleScreenPRESS_START).w,a1
     3318/    3128 : 7000                		moveq	#0,d0
-    3319/    312A : 323C 0007           		move.w	#7,d1		; This is bugged, it only clears $D09C to $D0A0, this prevents the "PRESS START BUTTON" text displaying. Change to $F to fix.
+    3319/    312A : 323C 0007           		move.w	#(TitleScreenObjRamEnd-TitleScreenTM)/ObSize-1,d1		; This is bugged, it only clears $D09C to $D0A0, this prevents the "PRESS START BUTTON" text displaying. Change to $F to fix.
     3320/    312E :                     
     3321/    312E :                     Title_ClrObjRam2:
     3322/    312E : 22C0                		move.l	d0,(a1)+
     3323/    3130 : 51C9 FFFC           		dbf	d1,Title_ClrObjRam2
     3324/    3134 :                     
-    3325/    3134 : 11FC 000E D040      		move.b	#$E,(Object_RAM+$40).w ; load big Sonic object
-    3326/    313A : 11FC 000F D080      		move.b	#$F,(Object_RAM+$80).w ; load "PRESS	START BUTTON" object
-    3327/    3140 : 11FC 000F D0C0      		move.b	#$F,(Object_RAM+$C0).w ; load "TM" object
-    3328/    3146 : 11FC 0003 D0DA      		move.b	#3,(Object_RAM+$C0+mapping_frame).w
-    3329/    314C : 11FC 000F D100      		move.b	#$F,(Object_RAM+$100).w
-    3330/    3152 : 11FC 0002 D11A      		move.b	#2,(Object_RAM+$100+mapping_frame).w
+    3325/    3134 : 11FC 000E D040      		move.b	#$E,(TitleScreenSonic).w ; load big Sonic object
+    3326/    313A : 11FC 000F D080      		move.b	#$F,(TitleScreenPRESS_START).w ; load "PRESS	START BUTTON" object
+    3327/    3140 : 11FC 000F D0C0      		move.b	#$F,(TitleScreenTM).w ; load "TM" object
+    3328/    3146 : 11FC 0003 D0DA      		move.b	#3,(TitleScreenTM+mapping_frame).w
+    3329/    314C : 11FC 000F D100      		move.b	#$F,(TitleScreenPRESS_START2).w
+    3330/    3152 : 11FC 0002 D11A      		move.b	#2,(TitleScreenPRESS_START2+mapping_frame).w
     3331/    3158 : 4EB9 0000 DB36      		jsr	(ObjectsLoad).l
     3332/    315E : 6100 31F8           		bsr.w	DeformBgLayer
     3333/    3162 : 4EB9 0000 DE5C      		jsr	(BuildSprites).l
@@ -6229,7 +6266,7 @@
     5201/    49C6 : 31C0 F79C           		move.w	d0,(Unk_F79C).w
     5202/    49CA : 7000                		moveq	#0,d0
     5203/    49CC : 1018                		move.b	(a0)+,d0
-    5204/    49CE : 31C0 F7A0           		move.w	d0,(Unk_F7A0).w   
+    5204/    49CE : 31C0 F7A0           		move.w	d0,(Unk_F7A0).w
     5205/    49D2 : 43F9 0000 4AF0      		lea	(byte_4ABC).l,a1
     5206/    49D8 : 43F1 0000           		lea	(a1,d0.w),a1
     5207/    49DC : 303C 8200           		move.w	#-$7E00,d0
@@ -6310,24 +6347,16 @@
                     0702 0624 0704 0630 
     5275/    4AE0 : FF06 063C FF06 063C 		dc.b $FF, 6, 6,	$3C, $FF, 6, 6,	$3C, 7,	4, 6, $30, 7, 2, 6, $24
                     0704 0630 0702 0624 
-    5276/    4AF0 : (MACRO)             		align 2
-    5276/    4AF0 :  (MACRO-2)                  cnop 0,2
-    5276/    4AF0 :   (MACRO-3)                         org (*-1+(2)-((*-1+(-(0)))#(2)))
+    5276/    4AF0 : (MACRO)             		even
     5277/    4AF0 : 1001 1800 1801 2000 byte_4ABC:	dc.b $10, 1, $18, 0, $18, 1, $20, 0, $20, 1, $28, 0, $28, 1
                     2001 2800 2801      
     5278/    4AFE :                     					; XREF: PalCycle_SS
-    5279/    4AFE : (MACRO)             		align 2
-    5279/    4AFE :  (MACRO-2)                  cnop 0,2
-    5279/    4AFE :   (MACRO-3)                         org (*-1+(2)-((*-1+(-(0)))#(2)))
+    5279/    4AFE : (MACRO)             		even
     5280/    4AFE :                     
     5281/    4AFE :                     Pal_SSCyc1:	binclude	art/pallet/c_ss_1.bin
-    5282/    4B46 : (MACRO)             		align 2
-    5282/    4B46 :  (MACRO-2)                  cnop 0,2
-    5282/    4B46 :   (MACRO-3)                         org (*-1+(2)-((*-1+(-(0)))#(2)))
+    5282/    4B46 : (MACRO)             		even
     5283/    4B46 :                     Pal_SSCyc2:	binclude	art/pallet/c_ss_2.bin
-    5284/    4C18 : (MACRO)             		align 2
-    5284/    4C18 :  (MACRO-2)                  cnop 0,2
-    5284/    4C18 :   (MACRO-3)                         org (*-1+(2)-((*-1+(-(0)))#(2)))
+    5284/    4C18 : (MACRO)             		even
     5285/    4C18 :                     
     5286/    4C18 :                     ; ---------------------------------------------------------------------------
     5287/    4C18 :                     ; Subroutine to	make the special stage background animated
@@ -6381,7 +6410,7 @@
     5335/    4C82 : 0C40 000C           		cmpi.w	#$C,d0
     5336/    4C86 : 6620                		bne.s	loc_4C74
     5337/    4C88 : 5378 F718           		subq.w	#1,(Camera_BG3_X_pos).w
-    5338/    4C8C : 47F8 AB00           		lea	($FFFFAB00).w,a3
+    5338/    4C8C : 47F8 AB00           		lea	(Decomp_Buffer+$100).w,a3
     5339/    4C90 : 243C 0001 8000      		move.l	#$18000,d2
     5340/    4C96 : 7206                		moveq	#6,d1
     5341/    4C98 :                     
@@ -6393,7 +6422,7 @@
     5347/    4CA4 : 51C9 FFF2           		dbf	d1,loc_4C64
     5348/    4CA8 :                     
     5349/    4CA8 :                     loc_4C74:
-    5350/    4CA8 : 47F8 AB00           		lea	($FFFFAB00).w,a3
+    5350/    4CA8 : 47F8 AB00           		lea	(Decomp_Buffer+$100).w,a3
     5351/    4CAC : 45F9 0000 4CF8      		lea	(byte_4CC4).l,a2
     5352/    4CB2 :                     
     5353/    4CB2 :                     loc_4C7E:
@@ -6421,7 +6450,7 @@
     5375/    4CDE : 0242 03FC           		andi.w	#$3FC,d2
     5376/    4CE2 : 51C9 FFF4           		dbf	d1,loc_4CA4
     5377/    4CE6 : 51CB FFE6           		dbf	d3,loc_4C9A
-    5378/    4CEA : 4E75                		rts	
+    5378/    4CEA : 4E75                		rts
     5379/    4CEC :                     ; End of function SS_BGAnimate
     5380/    4CEC :                     
     5381/    4CEC :                     ; ===========================================================================
@@ -6862,7 +6891,7 @@
     5749/    51E4 : 21FC 0006 5D5C F796 		move.l	#Col_GHZ,(Collision_addr).w ; load collision	index
     5750/    51EC : 46FC 2300           		move	#$2300,sr
     5751/    51F0 : 41F9 0006 2ABA      		lea	(Kos_EndFlowers).l,a0 ;	load extra flower patterns
-    5752/    51F6 : 43F8 9400           		lea	($FFFF9400).w,a1 ; RAM address to buffer the patterns
+    5752/    51F6 : 43F8 9400           		lea	(EndingFlowerArtBuffer).w,a1 ; RAM address to buffer the patterns
     5753/    51FA : 6100 C6A4           		bsr.w	KosDec
     5754/    51FE : 7003                		moveq	#3,d0
     5755/    5200 : 6100 CEFE           		bsr.w	PalLoad_ForFade	; load Sonic's pallet
@@ -6878,7 +6907,7 @@
     5765/    5226 : 11FC 0001 F7CC      		move.b	#1,(Control_Locked).w ; lock	controls
     5766/    522C : 31FC 0400 F602      		move.w	#$400,(Ctrl_1_Logical).w ; move Sonic to the left
     5767/    5232 : 31FC F800 D014      		move.w	#$F800,(Object_RAM+inertia).w ; set Sonic's speed
-    5768/    5238 : 11FC 0021 D040      		move.b	#$21,(Object_RAM+$40).w ; load HUD object
+    5768/    5238 : 11FC 0021 D040      		move.b	#$21,(HudObRam).w ; load HUD object
     5769/    523E : 4EB9 0000 E23C      		jsr	(ObjectsManager).l
     5770/    5244 : 4EB9 0000 DB36      		jsr	(ObjectsLoad).l
     5771/    524A : 4EB9 0000 DE5C      		jsr	(BuildSprites).l
@@ -15298,19 +15327,19 @@
    13048/    A98A : 5428 0024           		addq.b	#2,routine(a0)
    13049/    A98E : 317C 00D0 0008      		move.w	#$D0,x_pos(a0)
    13050/    A994 : 317C 0130 000C      		move.w	#$130,y_pos(a0)
-   13051/    A99A : 217C 0000 AA9A 0004 		move.l	#Map_obj0F,4(a0)
-   13052/    A9A2 : 317C 0200 0002      		move.w	#$200,2(a0)
+   13051/    A99A : 217C 0000 AA9A 0004 		move.l	#Map_obj0F,mappings(a0)
+   13052/    A9A2 : 317C 0200 0002      		move.w	#$200,art_tile(a0)
    13053/    A9A8 : 0C28 0002 001A      		cmpi.b	#2,mapping_frame(a0)	; is object "PRESS START"?
    13054/    A9AE : 6520                		bcs.s	Obj0F_PrsStart	; if yes, branch
    13055/    A9B0 : 5428 0024           		addq.b	#2,routine(a0)
    13056/    A9B4 : 0C28 0003 001A      		cmpi.b	#3,mapping_frame(a0)	; is the object	"TM"?
    13057/    A9BA : 6612                		bne.s	locret_A6F8	; if not, branch
-   13058/    A9BC : 317C 2510 0002      		move.w	#$2510,2(a0)	; "TM" specific	code
+   13058/    A9BC : 317C 2510 0002      		move.w	#$2510,art_tile(a0)	; "TM" specific	code
    13059/    A9C2 : 317C 0170 0008      		move.w	#$170,x_pos(a0)
    13060/    A9C8 : 317C 00F8 000C      		move.w	#$F8,y_pos(a0)
    13061/    A9CE :                     
    13062/    A9CE :                     locret_A6F8:				; XREF: Obj0F_Index
-   13063/    A9CE : 4E75                		rts	
+   13063/    A9CE : 4E75                		rts
    13064/    A9D0 :                     ; ===========================================================================
    13065/    A9D0 :                     
    13066/    A9D0 :                     Obj0F_PrsStart:				; XREF: Obj0F_Index
@@ -15324,9 +15353,7 @@
    13074/    A9DA : 0002                		dc.w byte_A706-Ani_obj0E
    13075/    A9DC : 0700 0102 0304 0506 byte_A706:	dc.b 7,	0, 1, 2, 3, 4, 5, 6, 7,	$FE, 2,	0
                     07FE 0200           
-   13076/    A9E8 : (MACRO)             		align 2
-   13076/    A9E8 :  (MACRO-2)                  cnop 0,2
-   13076/    A9E8 :   (MACRO-3)                         org (*-1+(2)-((*-1+(-(0)))#(2)))
+   13076/    A9E8 : (MACRO)             		even
    13077/    A9E8 :                     ; ===========================================================================
    13078/    A9E8 :                     ; ---------------------------------------------------------------------------
    13079/    A9E8 :                     ; Animation script - "TM" and "PRESS START BUTTON" on the title screen
@@ -15334,9 +15361,7 @@
    13081/    A9E8 :                     Ani_obj0F:
    13082/    A9E8 : 0002                		dc.w byte_A714-Ani_obj0F
    13083/    A9EA : 1F00 01FF           byte_A714:	dc.b $1F, 0, 1,	$FF
-   13084/    A9EE : (MACRO)             		align 2
-   13084/    A9EE :  (MACRO-2)                  cnop 0,2
-   13084/    A9EE :   (MACRO-3)                         org (*-1+(2)-((*-1+(-(0)))#(2)))
+   13084/    A9EE : (MACRO)             		even
    13085/    A9EE :                     
    13086/    A9EE :                     ; ---------------------------------------------------------------------------
    13087/    A9EE :                     ; Subroutine to	animate	a sprite using an animation script
@@ -43808,7 +43833,7 @@
    37579/   1D538 : 6A4C                		bpl.s	loc_1C2F4
    37580/   1D53A : 11FC 0007 F7B3      		move.b	#7,(AnimTilesCounter4).w
    37581/   1D540 : 43F9 0006 8032      		lea	(Art_GhzFlower1).l,a1 ;	load big flower	patterns
-   37582/   1D546 : 45F8 9400           		lea	($FFFF9400).w,a2
+   37582/   1D546 : 45F8 9400           		lea	(EndingFlowerArtBuffer).w,a2
    37583/   1D54A : 1038 F7B2           		move.b	(AnimTilesFrame2).w,d0
    37584/   1D54E : 5238 F7B2           		addq.b	#1,(AnimTilesFrame2).w
    37585/   1D552 : 0240 0001           		andi.w	#1,d0
@@ -45011,8 +45036,8 @@
    38695/   1E392 : 675E                		beq.s	Debug_DoNothing	; if not, branch
    38696/   1E394 : 7000                		moveq	#0,d0
    38697/   1E396 : 31C0 FE08           		move.w	d0,(Debug_placement_mode).w ; deactivate debug mode
-   38698/   1E39A : 21FC 0002 23E2 D004 		move.l	#Map_Sonic,(Object_RAM+4).w
-   38699/   1E3A2 : 31FC 0780 D002      		move.w	#$780,(Object_RAM+2).w
+   38698/   1E39A : 21FC 0002 23E2 D004 		move.l	#Map_Sonic,(Object_RAM+mappings).w
+   38699/   1E3A2 : 31FC 0780 D002      		move.w	#$780,(Object_RAM+art_tile).w
    38700/   1E3A8 : 11C0 D01C           		move.b	d0,(Object_RAM+anim).w
    38701/   1E3AC : 3140 000C           		move.w	d0,y_pos(a0)
    38702/   1E3B0 : 3140 000E           		move.w	d0,y_pos+2(a0)
@@ -45022,14 +45047,14 @@
    38706/   1E3C6 : 662A                		bne.s	Debug_DoNothing	; if not, branch
    38707/   1E3C8 : 4278 F780           		clr.w	(SS_Rotate).w
    38708/   1E3CC : 31FC 0040 F782      		move.w	#$40,(SS_Rotate_sec).w ; set new level rotation speed
-   38709/   1E3D2 : 21FC 0002 23E2 D004 		move.l	#Map_Sonic,(Object_RAM+4).w
-   38710/   1E3DA : 31FC 0780 D002      		move.w	#$780,(Object_RAM+2).w
+   38709/   1E3D2 : 21FC 0002 23E2 D004 		move.l	#Map_Sonic,(Object_RAM+mappings).w
+   38710/   1E3DA : 31FC 0780 D002      		move.w	#$780,(Object_RAM+art_tile).w
    38711/   1E3E0 : 11FC 0002 D01C      		move.b	#2,(Object_RAM+anim).w
    38712/   1E3E6 : 08F8 0002 D022      		bset	#2,(Object_RAM+status).w
    38713/   1E3EC : 08F8 0001 D022      		bset	#1,(Object_RAM+status).w
    38714/   1E3F2 :                     
    38715/   1E3F2 :                     Debug_DoNothing:
-   38716/   1E3F2 : 4E75                		rts	
+   38716/   1E3F2 : 4E75                		rts
    38717/   1E3F4 :                     ; End of function Debug_Control
    38718/   1E3F4 :                     
    38719/   1E3F4 :                     
@@ -51005,7 +51030,7 @@
    40320/   88000 : (MACRO)             		even
    40325/   88000 :                     EndOfRom:
    40326/   88000 :                     	END
- AS V1.42 Beta [Bld 89] - source file s1.asm - page 2 - 10/27/2022 18:32:00
+ AS V1.42 Beta [Bld 89] - source file s1.asm - page 2 - 10/27/2022 19:04:59
 
 
   symbol table (* = unused):
@@ -51372,6 +51397,7 @@
  EMERALD_COUNT :   FFFFFFFFFFFFFE57 - |  ENDDEMO_EXIT :                5974 C |
  ENDDEMO_LAMPLOAD :            596E C |  ENDDEMO_LAMPVAR :             5986 C |
  ENDDEMO_LEVELS :              5976 C |  ENDINGDEMOLOAD :              5916 C |
+ ENDINGFLOWERARTBUFFER :                                   FFFFFFFFFFFF9400 C |
  ENDINGSEQUENCE :              511A C |  ENDINGSTLOCARRAY :            613E C |
  ENDING_DEMO_NUMBER :                                      FFFFFFFFFFFFFFF4 - |
  ENDOFROM :                   88000 C |  END_ALLEMLDS :                5324 C |
@@ -51427,38 +51453,38 @@
  HUDDB_OBJCOUNT :             1DA68 C |  HUDDB_RINGS :                1DA54 C |
  HUDDB_XY :                   1DB1C C |  HUDDB_XY2 :                  1DB3C C |
  HUDDB_XYLOOP :               1DB44 C |  HUDDEBUG :                   1DA44 C |
- HUDUPDATE :                  1D95A C |  HUD_1 :                      1DC46 C |
- HUD_10 :                     1DC42 C |  HUD_100 :                    1DC3E C |
- HUD_1000 :                   1DC3A C | *HUD_10000 :                  1DC36 C |
- HUD_100000 :                 1DC32 C |  HUD_BASE :                   1DAC4 C |
- HUD_BONUSLOOP :              1DCBC C |  HUD_CHKBONUS :               1DA04 C |
- HUD_CHKLIVES :               1D9F6 C |  HUD_CHKRINGS :               1D97A C |
- HUD_CHKTIME :                1D99A C |  HUD_CLRBONUS :               1DD02 C |
- HUD_CLRBONUSLOOP :           1DD04 C |  HUD_CLRLIVES :               1DD6A C |
- HUD_CLRLIVESLOOP :           1DD70 C |  HUD_END :                    1DA2C C |
- HUD_LIVES :                  1DD10 C |  HUD_LIVESLOOP :              1DD2A C |
- HUD_LOADART :                1DB84 C |  HUD_LOADZERO :               1DAB0 C |
- HUD_MINS :                   1DC4A C |  HUD_RINGS :                  1DB72 C |
- HUD_SCORE :                  1DB7C C |  HUD_SCORELOOP :              1DB8A C |
- HUD_SECS :                   1DC54 C |  HUD_TILESBASE :              1DB0C C |
- HUD_TILESZERO :              1DB18 C |  HUD_TIMELOOP :               1DC62 C |
- HUD_TIMERINGBONUS :          1DCAE C |  HURTSONIC :                  1C284 C |
- HURT_CHKSPIKES :             1C2F0 C |  HURT_NORINGS :               1C320 C |
- HURT_REVERSE :               1C2E2 C |  HURT_SHIELD :                1C2AA C |
- HURT_SOUND :                 1C316 C |  ID :                             0 - |
- IDSTART :                       E0 - |  ILLEGALINSTR :                 3EA C |
- INERTIA :                       14 - | *INEXTMODE :                      0 - |
- INITMUSICPLAYBACK :          78C2E C |  INIT_SPRITETABLE :            DE3A C |
-*INIT_SPRITETABLE2 :           DE42 C |  INIT_SPRITETABLE2.LOOP :      DE48 C |
-*INLWORDMODE :                    0 - | *INMAXMODE :                      0 - |
-*INSRCMODE :                      0 - | *INSUPMODE :                      1 - |
- INTERACT :                      3D - |  INVCFLAG :        FFFFFFFFFFFFFE2D - |
- INVINCIBILITY_TIMER :           32 - |  INVULNERABLE_TIME :             30 - |
- JOYPADINIT :                  11BA C |  JOYPAD_READ :                 11F8 C |
- JUMPING :                       3C - |  KILLSONIC :                  1C328 C |
- KILL_NODEATH :               1C37E C |  KILL_SOUND :                 1C378 C |
- KOSDEC :                      18A0 C |  KOS_ENDFLOWERS :             62ABA C |
- KOS_Z80 :                    794CC C |
+ HUDOBRAM :        FFFFFFFFFFFFD040 C |  HUDUPDATE :                  1D95A C |
+ HUD_1 :                      1DC46 C |  HUD_10 :                     1DC42 C |
+ HUD_100 :                    1DC3E C |  HUD_1000 :                   1DC3A C |
+*HUD_10000 :                  1DC36 C |  HUD_100000 :                 1DC32 C |
+ HUD_BASE :                   1DAC4 C |  HUD_BONUSLOOP :              1DCBC C |
+ HUD_CHKBONUS :               1DA04 C |  HUD_CHKLIVES :               1D9F6 C |
+ HUD_CHKRINGS :               1D97A C |  HUD_CHKTIME :                1D99A C |
+ HUD_CLRBONUS :               1DD02 C |  HUD_CLRBONUSLOOP :           1DD04 C |
+ HUD_CLRLIVES :               1DD6A C |  HUD_CLRLIVESLOOP :           1DD70 C |
+ HUD_END :                    1DA2C C |  HUD_LIVES :                  1DD10 C |
+ HUD_LIVESLOOP :              1DD2A C |  HUD_LOADART :                1DB84 C |
+ HUD_LOADZERO :               1DAB0 C |  HUD_MINS :                   1DC4A C |
+ HUD_RINGS :                  1DB72 C |  HUD_SCORE :                  1DB7C C |
+ HUD_SCORELOOP :              1DB8A C |  HUD_SECS :                   1DC54 C |
+ HUD_TILESBASE :              1DB0C C |  HUD_TILESZERO :              1DB18 C |
+ HUD_TIMELOOP :               1DC62 C |  HUD_TIMERINGBONUS :          1DCAE C |
+ HURTSONIC :                  1C284 C |  HURT_CHKSPIKES :             1C2F0 C |
+ HURT_NORINGS :               1C320 C |  HURT_REVERSE :               1C2E2 C |
+ HURT_SHIELD :                1C2AA C |  HURT_SOUND :                 1C316 C |
+ ID :                             0 - |  IDSTART :                       E0 - |
+ ILLEGALINSTR :                 3EA C |  INERTIA :                       14 - |
+*INEXTMODE :                      0 - |  INITMUSICPLAYBACK :          78C2E C |
+ INIT_SPRITETABLE :            DE3A C | *INIT_SPRITETABLE2 :           DE42 C |
+ INIT_SPRITETABLE2.LOOP :      DE48 C | *INLWORDMODE :                    0 - |
+*INMAXMODE :                      0 - | *INSRCMODE :                      0 - |
+*INSUPMODE :                      1 - |  INTERACT :                      3D - |
+ INVCFLAG :        FFFFFFFFFFFFFE2D - |  INVINCIBILITY_TIMER :           32 - |
+ INVULNERABLE_TIME :             30 - |  JOYPADINIT :                  11BA C |
+ JOYPAD_READ :                 11F8 C |  JUMPING :                       3C - |
+ KILLSONIC :                  1C328 C |  KILL_NODEATH :               1C37E C |
+ KILL_SOUND :                 1C378 C |  KOSDEC :                      18A0 C |
+ KOS_ENDFLOWERS :             62ABA C |  KOS_Z80 :                    794CC C |
  LAST_STAR_POLE_HIT :                                      FFFFFFFFFFFFFE30 - |
  LEVEL :                       37C4 C |  LEVELLAYOUTLOAD :             6DE4 C |
  LEVELLAYOUTLOAD2 :            6E04 C |  LEVELMENUTEXT :               35C4 C |
@@ -53547,13 +53573,13 @@
  PAUSE_CHKSTART :              1400 C |  PAUSE_DONOTHING :             1414 C |
  PAUSE_SLOWMO :                1416 C |  PLATFORM2 :                   7540 C |
  PLATFORM3 :                   7546 C |  PLATFORMOBJECT :              751E C |
- PLAYLEVEL :                   3364 C |  PLAYMUSIC :                  7863E C |
- PLAYSEGASOUND :              78618 C |  PLAYSOUND :                   139A C |
- PLAYSOUNDBYINDEX :           785B8 C |  PLAYSOUND_CHECKRING :        7882E C |
- PLAYSOUND_CHECKWATERFALL :   78972 C |  PLAYSOUND_EFFECTS :          785FA C |
- PLAYSOUND_SPECIAL :           13A0 C | *PLAYSOUND_UNK :               13A6 C |
- PLC_BOSS :                   1EBEE C |  PLC_BUFFER :      FFFFFFFFFFFFF680 C |
- PLC_BUFFER_REG0 : FFFFFFFFFFFFF6E0 C |
+*PLAYER_1 :        FFFFFFFFFFFFD000 C |  PLAYLEVEL :                   3364 C |
+ PLAYMUSIC :                  7863E C |  PLAYSEGASOUND :              78618 C |
+ PLAYSOUND :                   139A C |  PLAYSOUNDBYINDEX :           785B8 C |
+ PLAYSOUND_CHECKRING :        7882E C |  PLAYSOUND_CHECKWATERFALL :   78972 C |
+ PLAYSOUND_EFFECTS :          785FA C |  PLAYSOUND_SPECIAL :           13A0 C |
+*PLAYSOUND_UNK :               13A6 C |  PLC_BOSS :                   1EBEE C |
+ PLC_BUFFER :      FFFFFFFFFFFFF680 C |  PLC_BUFFER_REG0 : FFFFFFFFFFFFF6E0 C |
  PLC_BUFFER_REG10 : FFFFFFFFFFFFF6F0 C |
  PLC_BUFFER_REG14 : FFFFFFFFFFFFF6F4 C |
  PLC_BUFFER_REG18 : FFFFFFFFFFFFF6F8 C |
@@ -54340,12 +54366,17 @@
  TARGET_PALETTE_LINE3 :                                    FFFFFFFFFFFFFBC0 - |
  TEMPARRAY_LAYERDEF :                                      FFFFFFFFFFFFA800 C |
  TEMPOTIMEOUT :                   1 - |  TEMPOWAIT :                  78C6C C |
- TILT :                          37 - | *TIME :                    18:31:58 - |
+ TILT :                          37 - | *TIME :                    19:04:57 - |
  TIMEBONUSES :                 F700 C |  TIMEOVER :                   1DA2E C |
  TIMER :           FFFFFFFFFFFFFE22 - |  TIMER_FRAME :     FFFFFFFFFFFFFE25 - |
  TIMER_FRAMES :    FFFFFFFFFFFFFE04 - |  TIMER_MINUTE :    FFFFFFFFFFFFFE23 - |
  TIMER_SECOND :    FFFFFFFFFFFFFE24 - |  TIME_OVER_FLAG :  FFFFFFFFFFFFFE1A - |
- TITLESCREEN :                 2F1C C |  TITLE_CHKLEVSEL :             3252 C |
+ TITLESCREEN :                 2F1C C |
+ TITLESCREENOBJRAMEND :                                    FFFFFFFFFFFFD2C0 C |
+ TITLESCREENPRESS_START :                                  FFFFFFFFFFFFD080 C |
+ TITLESCREENPRESS_START2 :                                 FFFFFFFFFFFFD100 C |
+ TITLESCREENSONIC : FFFFFFFFFFFFD040 C |
+ TITLESCREENTM :   FFFFFFFFFFFFD0C0 C |  TITLE_CHKLEVSEL :             3252 C |
  TITLE_CHKREGION :             31C6 C |  TITLE_CLROBJRAM :             2F6E C |
  TITLE_CLROBJRAM2 :            312E C |  TITLE_CLRPALLET :             2FCE C |
  TITLE_CLRSCROLL :             3274 C |  TITLE_CLRVRAM :               3296 C |
@@ -54498,10 +54529,10 @@
  __FORW64 :                   78D5C C |  __FORW7 :                     1644 C |
  __FORW8 :                     16DE C |  __FORW9 :                     7EF6 C |
 
-   6801 symbols
-     97 unused symbols
+   6809 symbols
+     98 unused symbols
 
- AS V1.42 Beta [Bld 89] - source file s1.asm - page 3 - 10/27/2022 18:32:00
+ AS V1.42 Beta [Bld 89] - source file s1.asm - page 3 - 10/27/2022 19:04:59
 
 
   defined macros:
@@ -54520,7 +54551,7 @@ _MOVE                                 | _TST
 
      20 macros
 
- AS V1.42 Beta [Bld 89] - source file s1.asm - page 4 - 10/27/2022 18:32:00
+ AS V1.42 Beta [Bld 89] - source file s1.asm - page 4 - 10/27/2022 19:04:59
 
 
   defined functions:
@@ -54532,7 +54563,7 @@ VDPCOMMDELTA                          | RAMADDR
 ID                                    | CHKOP                                
 NOTZ80                                |
 
- AS V1.42 Beta [Bld 89] - source file s1.asm - page 5 - 10/27/2022 18:32:00
+ AS V1.42 Beta [Bld 89] - source file s1.asm - page 5 - 10/27/2022 19:04:59
 
 
   codepages:
@@ -54541,10 +54572,10 @@ NOTZ80                                |
 STANDARD (0 changed characters)
 
 
-1.82 seconds assembly time
+2.18 seconds assembly time
 
-  49166 lines source file
-  63258 lines incl. macro expansions
+  49187 lines source file
+  63319 lines incl. macro expansions
       3 passes
       0 errors
       0 warnings

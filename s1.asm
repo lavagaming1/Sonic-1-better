@@ -3314,20 +3314,20 @@ Title_LoadText:
 		bsr.w	PlaySound_Special
 		move.b	#0,(Debug_mode_flag).w ; disable debug mode
 		move.w	#$178,(Demo_Time_left).w ; run title	screen for $178	frames
-		lea	(Object_RAM+$80).w,a1
+		lea	(TitleScreenPRESS_START).w,a1
 		moveq	#0,d0
-		move.w	#7,d1		; This is bugged, it only clears $D09C to $D0A0, this prevents the "PRESS START BUTTON" text displaying. Change to $F to fix.
+		move.w	#(TitleScreenObjRamEnd-TitleScreenTM)/ObSize-1,d1		; This is bugged, it only clears $D09C to $D0A0, this prevents the "PRESS START BUTTON" text displaying. Change to $F to fix.
 
 Title_ClrObjRam2:
 		move.l	d0,(a1)+
 		dbf	d1,Title_ClrObjRam2
 
-		move.b	#$E,(Object_RAM+$40).w ; load big Sonic object
-		move.b	#$F,(Object_RAM+$80).w ; load "PRESS	START BUTTON" object
-		move.b	#$F,(Object_RAM+$C0).w ; load "TM" object
-		move.b	#3,(Object_RAM+$C0+mapping_frame).w
-		move.b	#$F,(Object_RAM+$100).w
-		move.b	#2,(Object_RAM+$100+mapping_frame).w
+		move.b	#$E,(TitleScreenSonic).w ; load big Sonic object
+		move.b	#$F,(TitleScreenPRESS_START).w ; load "PRESS	START BUTTON" object
+		move.b	#$F,(TitleScreenTM).w ; load "TM" object
+		move.b	#3,(TitleScreenTM+mapping_frame).w
+		move.b	#$F,(TitleScreenPRESS_START2).w
+		move.b	#2,(TitleScreenPRESS_START2+mapping_frame).w
 		jsr	(ObjectsLoad).l
 		bsr.w	DeformBgLayer
 		jsr	(BuildSprites).l
@@ -5201,7 +5201,7 @@ loc_4992:
 		move.w	d0,(Unk_F79C).w
 		moveq	#0,d0
 		move.b	(a0)+,d0
-		move.w	d0,(Unk_F7A0).w   
+		move.w	d0,(Unk_F7A0).w
 		lea	(byte_4ABC).l,a1
 		lea	(a1,d0.w),a1
 		move.w	#-$7E00,d0
@@ -5335,7 +5335,7 @@ loc_4C4E:				; XREF: SS_BGAnimate
 		cmpi.w	#$C,d0
 		bne.s	loc_4C74
 		subq.w	#1,(Camera_BG3_X_pos).w
-		lea	($FFFFAB00).w,a3
+		lea	(Decomp_Buffer+$100).w,a3
 		move.l	#$18000,d2
 		moveq	#6,d1
 
@@ -5347,7 +5347,7 @@ loc_4C64:
 		dbf	d1,loc_4C64
 
 loc_4C74:
-		lea	($FFFFAB00).w,a3
+		lea	(Decomp_Buffer+$100).w,a3
 		lea	(byte_4CC4).l,a2
 
 loc_4C7E:
@@ -5375,7 +5375,7 @@ loc_4CA4:
 		andi.w	#$3FC,d2
 		dbf	d1,loc_4CA4
 		dbf	d3,loc_4C9A
-		rts	
+		rts
 ; End of function SS_BGAnimate
 
 ; ===========================================================================
@@ -5749,7 +5749,7 @@ End_LoadData:
 		move.l	#Col_GHZ,(Collision_addr).w ; load collision	index
 		move	#$2300,sr
 		lea	(Kos_EndFlowers).l,a0 ;	load extra flower patterns
-		lea	($FFFF9400).w,a1 ; RAM address to buffer the patterns
+		lea	(EndingFlowerArtBuffer).w,a1 ; RAM address to buffer the patterns
 		bsr.w	KosDec
 		moveq	#3,d0
 		bsr.w	PalLoad_ForFade	; load Sonic's pallet
@@ -5765,7 +5765,7 @@ End_LoadSonic:
 		move.b	#1,(Control_Locked).w ; lock	controls
 		move.w	#$400,(Ctrl_1_Logical).w ; move Sonic to the left
 		move.w	#$F800,(Object_RAM+inertia).w ; set Sonic's speed
-		move.b	#$21,(Object_RAM+$40).w ; load HUD object
+		move.b	#$21,(HudObRam).w ; load HUD object
 		jsr	(ObjectsManager).l
 		jsr	(ObjectsLoad).l
 		jsr	(BuildSprites).l
@@ -13048,19 +13048,19 @@ Obj0F_Main:				; XREF: Obj0F_Index
 		addq.b	#2,routine(a0)
 		move.w	#$D0,x_pos(a0)
 		move.w	#$130,y_pos(a0)
-		move.l	#Map_obj0F,4(a0)
-		move.w	#$200,2(a0)
+		move.l	#Map_obj0F,mappings(a0)
+		move.w	#$200,art_tile(a0)
 		cmpi.b	#2,mapping_frame(a0)	; is object "PRESS START"?
 		bcs.s	Obj0F_PrsStart	; if yes, branch
 		addq.b	#2,routine(a0)
 		cmpi.b	#3,mapping_frame(a0)	; is the object	"TM"?
 		bne.s	locret_A6F8	; if not, branch
-		move.w	#$2510,2(a0)	; "TM" specific	code
+		move.w	#$2510,art_tile(a0)	; "TM" specific	code
 		move.w	#$170,x_pos(a0)
 		move.w	#$F8,y_pos(a0)
 
 locret_A6F8:				; XREF: Obj0F_Index
-		rts	
+		rts
 ; ===========================================================================
 
 Obj0F_PrsStart:				; XREF: Obj0F_Index
@@ -13073,7 +13073,7 @@ Obj0F_PrsStart:				; XREF: Obj0F_Index
 Ani_obj0E:
 		dc.w byte_A706-Ani_obj0E
 byte_A706:	dc.b 7,	0, 1, 2, 3, 4, 5, 6, 7,	$FE, 2,	0
-		align 2
+		even
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Animation script - "TM" and "PRESS START BUTTON" on the title screen
@@ -13081,7 +13081,7 @@ byte_A706:	dc.b 7,	0, 1, 2, 3, 4, 5, 6, 7,	$FE, 2,	0
 Ani_obj0F:
 		dc.w byte_A714-Ani_obj0F
 byte_A714:	dc.b $1F, 0, 1,	$FF
-		align 2
+		even
 
 ; ---------------------------------------------------------------------------
 ; Subroutine to	animate	a sprite using an animation script
@@ -37579,7 +37579,7 @@ AniArt_Ending:				; XREF: AniArt_Index
 		bpl.s	loc_1C2F4
 		move.b	#7,(AnimTilesCounter4).w
 		lea	(Art_GhzFlower1).l,a1 ;	load big flower	patterns
-		lea	($FFFF9400).w,a2
+		lea	(EndingFlowerArtBuffer).w,a2
 		move.b	(AnimTilesFrame2).w,d0
 		addq.b	#1,(AnimTilesFrame2).w
 		andi.w	#1,d0
@@ -38695,8 +38695,8 @@ Debug_Exit:
 		beq.s	Debug_DoNothing	; if not, branch
 		moveq	#0,d0
 		move.w	d0,(Debug_placement_mode).w ; deactivate debug mode
-		move.l	#Map_Sonic,(Object_RAM+4).w
-		move.w	#$780,(Object_RAM+2).w
+		move.l	#Map_Sonic,(Object_RAM+mappings).w
+		move.w	#$780,(Object_RAM+art_tile).w
 		move.b	d0,(Object_RAM+anim).w
 		move.w	d0,y_pos(a0)
 		move.w	d0,y_pos+2(a0)
@@ -38706,14 +38706,14 @@ Debug_Exit:
 		bne.s	Debug_DoNothing	; if not, branch
 		clr.w	(SS_Rotate).w
 		move.w	#$40,(SS_Rotate_sec).w ; set new level rotation speed
-		move.l	#Map_Sonic,(Object_RAM+4).w
-		move.w	#$780,(Object_RAM+2).w
+		move.l	#Map_Sonic,(Object_RAM+mappings).w
+		move.w	#$780,(Object_RAM+art_tile).w
 		move.b	#2,(Object_RAM+anim).w
 		bset	#2,(Object_RAM+status).w
 		bset	#1,(Object_RAM+status).w
 
 Debug_DoNothing:
-		rts	
+		rts
 ; End of function Debug_Control
 
 

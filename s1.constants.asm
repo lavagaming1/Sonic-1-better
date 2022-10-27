@@ -184,7 +184,10 @@ ramaddr function x,(-(x&$80000000)<<1)|x
  	phase	ramaddr($FFFF0000)	; Pretend we're in the RAM
 RAM_Start: ; =			ramaddr( $FFFF0000 )	; 4 bytes ; start of RAM
 
-Chunk_Table:	                ds.b    $A400                    	;	ramaddr( $FFFF0000 )	; $A3FF bytes
+Chunk_Table:	                ds.b    $8000                    	;	ramaddr( $FFFF0000 )	; $A3FF bytes
+                                ds.b    $1000
+                                ds.b    $400
+EndingFlowerArtBuffer:          ds.b    $1000
 
 Level_Layout:                   ds.b    $400  ; =			ramaddr( $FFFFA400 )	; $3FF bytes
 TempArray_LayerDef:             ds.b    $200  ;=		ramaddr( $FFFFA800 )	; $1FF bytes ; used by some layer deformation routines
@@ -197,7 +200,10 @@ Sonic_Stat_Record_Buf: ds.b $100 ;= 	ramaddr( $FFFFCB00 )	; $100 bytes
 
 Horiz_Scroll_Buf:               ds.b   $400 ; = 		ramaddr( $FFFFCC00 )	; $3FF bytes
 
-Object_RAM:       ds.b   ObSize*$80 ;=			ramaddr( $FFFFD000 )	; The various objects in the game are loaded in this area. Each game mode uses different objects, so some slots are reused.
+Object_RAM:
+Player_1: ds.b   ObSize
+HudObRam: ds.b   ObSize
+              ds.b   ObSize*$7E ;=			ramaddr( $FFFFD000 )	; The various objects in the game are loaded in this area. Each game mode uses different objects, so some slots are reused.
 Object_RAM_End
 SndDriverRam:     ds.b  $5C0
 SndDriverRamEnd
@@ -270,7 +276,7 @@ Plc_Buffer_Reg1A:		ds.w	1
 				; $FFFFF6FC-$FFFFF6FF	; unused
 Camera_RAM: ;			ramaddr( $FFFFF700 )
 Camera_X_pos: ;			ramaddr( $FFFFF700 )
-            ds.l 1 
+            ds.l 1
 Camera_Y_pos =			ramaddr( $FFFFF704 )
 Camera_BG_X_pos =		ramaddr( $FFFFF708 )	; only used sometimes as the layer deformation makes it sort of redundant
 Camera_BG_Y_pos =		ramaddr( $FFFFF70C )
@@ -287,7 +293,7 @@ Camera_Min_Y_pos_now =		ramaddr( $FFFFF72C )
 Camera_Max_Y_pos_now =		ramaddr( $FFFFF72E )
 Camera_Min_X_pos_now =		ramaddr( $FFFFF730 )	; unused
 Camera_Max_X_pos_now =		ramaddr( $FFFFF732 )	; unused
-Screen_Y_wrap_value =           ramaddr( $FFFFF734 ) 
+Screen_Y_wrap_value =           ramaddr( $FFFFF734 )
 				; $FFFFF734-$FFFFF739	; unused
 Camera_X_pos_diff =		ramaddr( $FFFFF73A )	; was "Camera_Unk"
 Camera_Y_pos_diff =		ramaddr( $FFFFF73C )	; was "Camera_Unk2"
@@ -328,11 +334,11 @@ Loop_TunnelRam =               ramaddr( $FFFFF7AC )
 AnimTilesFrame =               ramaddr( $FFFFF7B0 )
 AnimTilesFrame2 =              ramaddr( $FFFFF7B2 )
 AnimTiles_Counter =            ramaddr( $FFFFF7B1 )
-AnimTilesCounter4 =           ramaddr( $FFFFF7B3 ) 
+AnimTilesCounter4 =           ramaddr( $FFFFF7B3 )
 AnimTilesCounter2 =             ramaddr( $FFFFF7B4 )
 AnimTilesCounter3 =          ramaddr( $FFFFF7B5 )
 BigRingGraphics =		ramaddr( $FFFFF7BE )
-RotatingPlatformsTable =     	ramaddr( $FFFFF7C1 ) ;BigRingGraphics+$3 
+RotatingPlatformsTable =     	ramaddr( $FFFFF7C1 ) ;BigRingGraphics+$3
 
 Obj_placement_routine =		ramaddr( $FFFFF76C )
 
@@ -503,6 +509,21 @@ RAM_End =			ramaddr( $FFFFFFFF )
      if * > 0	; Don't declare more space than the RAM can contain!
 	fatal "The RAM variable declarations are too large by $\{*} bytes."
     endif
+    dephase
+
+    phase	Object_RAM
+                  ds.b ObSize ; used by team sonic presents then its cleared out by title screen code  
+TitleScreenSonic: ds.b ObSize
+TitleScreenPRESS_START: ds.b ObSize
+TitleScreenTM: ds.b ObSize
+TitleScreenPRESS_START2: ds.b ObSize ; seems to load the press start object twice although the first time isnt really loaded
+                 ds.b    ObSize
+                 ds.b ObSize
+                 ds.b ObSize
+                 ds.b ObSize
+                 ds.b ObSize
+                 ds.b ObSize
+TitleScreenObjRamEnd:                 
     dephase
     !org	0	; Reset the program counter
 ; ---------------------------------------------------------------------------
