@@ -206,66 +206,71 @@ Sprites_drawn:   ds.w  1 ; =			ramaddr( $FFFFF5C2 )
          ds.b  $3C
 Game_Mode: ds.b  1
            ds.b  1 ;=			ramaddr( $FFFFF600 )	; 1 byte ; see GameModesArray (master level trigger, Mstr_Lvl_Trigger)
-Ctrl_1_Logical =		ramaddr( $FFFFF602 )	; 2 bytes
-Ctrl_1_Held_Logical =		ramaddr( $FFFFF602 )	; 1 byte
-Ctrl_1_Press_Logical =		ramaddr( $FFFFF603 )	; 1 byte
-Ctrl_1 =			ramaddr( $FFFFF604 )	; 2 bytes
-Ctrl_1_Held =			ramaddr( $FFFFF604 )	; 1 bytw
-Ctrl_1_Press =			ramaddr( $FFFFF605 )	; 1 byte
+Ctrl_1_Logical:  ;		ramaddr( $FFFFF602 )	; 2 bytes
+Ctrl_1_Held_Logical: ds.b 1  ;		ramaddr( $FFFFF602 )	; 1 byte
+Ctrl_1_Press_Logical: ds.b 1	;	ramaddr( $FFFFF603 )	; 1 byte
+Ctrl_1:	 ;		ramaddr( $FFFFF604 )	; 2 bytes
+Ctrl_1_Held: ds.b 1		;	ramaddr( $FFFFF604 )	; 1 bytw
+Ctrl_1_Press: ds.b 1 	;		ramaddr( $FFFFF605 )	; 1 byte
+                  ds.b $6
+VDP_Reg1_val: ds.w 1  ; =			ramaddr( $FFFFF60C )	; normal value of VDP register #1 when display is disabled
+              ds.b $6
+Demo_Time_left: ds.w 1 ;		ramaddr( $FFFFF614 )	; 2 bytes
 
-VDP_Reg1_val =			ramaddr( $FFFFF60C )	; normal value of VDP register #1 when display is disabled
-Demo_Time_left =		ramaddr( $FFFFF614 )	; 2 bytes
+Vscroll_Factor: ds.w 1	;	ramaddr( $FFFFF616 )	; 2 bytes
+Vscroll_Factor_BG: ds.w 1 ;		ramaddr( $FFFFF618 )	; 2 bytes
+Hscroll_Factor: ds.l 1 ;		ramaddr( $FFFFF61A )	; 4 bytes (written as a word once)
+Hscroll_Factor_BG: ds.w 1 ;		ramaddr( $FFFFF61C )	; 2 bytes
+Vscroll_Factor_BG2: ds.w 1 		;ramaddr( $FFFFF61E )	; 2 bytes
+Hscroll_Factor_BG2: ds.w 1 		;ramaddr( $FFFFF620 )	; 2 bytes
 
-Vscroll_Factor =		ramaddr( $FFFFF616 )	; 2 bytes
-Vscroll_Factor_BG =		ramaddr( $FFFFF618 )	; 2 bytes
-Hscroll_Factor =		ramaddr( $FFFFF61A )	; 4 bytes (written as a word once)
-Hscroll_Factor_BG =		ramaddr( $FFFFF61C )	; 2 bytes
-Vscroll_Factor_BG2 =		ramaddr( $FFFFF61E )	; 2 bytes
-Hscroll_Factor_BG2 =		ramaddr( $FFFFF620 )	; 2 bytes
+Hint_counter_reserve: ds.w 1 ; =		ramaddr( $FFFFF624 )	; Must contain a VDP command word, preferably a write to register $0A. Executed every V-INT.
+Palette_fade_start: ds.b 1	;	ramaddr( $FFFFF626 )	; Offset from the start of the palette to tell what range of the palette will be affected in the palette fading routines
+Palette_fade_length: ds.b 1 	;	ramaddr( $FFFFF627 )	; Number of entries to change in the palette fading routines
 
-Hint_counter_reserve =		ramaddr( $FFFFF624 )	; Must contain a VDP command word, preferably a write to register $0A. Executed every V-INT.
-Palette_fade_start =		ramaddr( $FFFFF626 )	; Offset from the start of the palette to tell what range of the palette will be affected in the palette fading routines
-Palette_fade_length =		ramaddr( $FFFFF627 )	; Number of entries to change in the palette fading routines
+VIntSubE_RunCount: ds.w 1 	;	ramaddr( $FFFFF628 )
 
-VIntSubE_RunCount =		ramaddr( $FFFFF628 )
+Vint_routine: ds.w 1 ; =			ramaddr( $FFFFF62A )	; routine counter for V-int
+Sprite_count: ds.w 1	;		ramaddr( $FFFFF62C )
+              ds.l 1 ; unused prob
+PalCycle_Frame: ds.w 1 ;		ramaddr( $FFFFF632 )	; ColorID loaded in PalCycle
+PalCycle_Timer: ds.w 1	;	ramaddr( $FFFFF634 )	; number of frames until next PalCycle call
+RNG_seed: ds.l 1  ;=			ramaddr( $FFFFF636 )	; used for random number generation
 
-Vint_routine =			ramaddr( $FFFFF62A )	; routine counter for V-int
-Sprite_count =			ramaddr( $FFFFF62C )
-PalCycle_Frame =		ramaddr( $FFFFF632 )	; ColorID loaded in PalCycle
-PalCycle_Timer =		ramaddr( $FFFFF634 )	; number of frames until next PalCycle call
-RNG_seed =			ramaddr( $FFFFF636 )	; used for random number generation
+Game_paused: ds.w 1	;		ramaddr( $FFFFF63A )
+             ds.l 1
+DMA_data_thunk: ds.l 1	;	ramaddr( $FFFFF640 )	; Used as a RAM holder for the final DMA command word. Data will NOT be preserved across V-INTs, so consider this space reserved.
+Hint_flag: ds.w 1 	;		ramaddr( $FFFFF644 )	; unless this is 1, H-int won't run
+Water_Level_1:  ds.w 1 ; =			ramaddr( $FFFFF646 )
+Water_Level_2:  ds.w 1 ; =			ramaddr( $FFFFF648 )
+Water_Level_3:  ds.w 1 ; =			ramaddr( $FFFFF64A )
+Water_on: ds.b 1 ; =			ramaddr( $FFFFF64C )
+Water_routine: ds.b 1 ; =			ramaddr( $FFFFF64D )
+Water_fullscreen_flag: ds.b 1  ; =		ramaddr( $FFFFF64E )	; was "Water_move"
 
-Game_paused =			ramaddr( $FFFFF63A )
-
-DMA_data_thunk =		ramaddr( $FFFFF640 )	; Used as a RAM holder for the final DMA command word. Data will NOT be preserved across V-INTs, so consider this space reserved.
-Hint_flag =			ramaddr( $FFFFF644 )	; unless this is 1, H-int won't run
-
-Water_Level_1 =			ramaddr( $FFFFF646 )
-Water_Level_2 =			ramaddr( $FFFFF648 )
-Water_Level_3 =			ramaddr( $FFFFF64A )
-Water_on =			ramaddr( $FFFFF64C )
-Water_routine =			ramaddr( $FFFFF64D )
-Water_fullscreen_flag =		ramaddr( $FFFFF64E )	; was "Water_move"
-
-Do_Updates_in_H_int =		ramaddr( $FFFFF64F )
-Unk_F660 =                      ramaddr( $FFFFF660 )
-Unk_F662 =                      ramaddr( $FFFFF662 )
-PalCycle_Frame_LZ =		ramaddr( $FFFFF650 )
-
-Plc_Buffer =			ramaddr( $FFFFF680 )
+Do_Updates_in_H_int: ds.b 1 ; =		ramaddr( $FFFFF64F )
+PalCycle_Frame_LZ: ds.w 1  ; =		ramaddr( $FFFFF650 )
+                   ds.l 3
+                   ds.w 1
+Unk_F660: ds.w 1 ; =                      ramaddr( $FFFFF660 )
+Unk_F662: ds.w 1 ; =                      ramaddr( $FFFFF662 )
+           ds.b $1C
+Plc_Buffer: ds.b $60  ; =			ramaddr( $FFFFF680 )
 				; these seem to store nemesis decompression state so PLC processing can be spread out across frames
-Plc_Buffer_Reg0 =		ramaddr( $FFFFF6E0 )
-Plc_Buffer_Reg4 =		ramaddr( $FFFFF6E4 )
-Plc_Buffer_Reg8 =		ramaddr( $FFFFF6E8 )
-Plc_Buffer_RegC =		ramaddr( $FFFFF6EC )
-Plc_Buffer_Reg10 =		ramaddr( $FFFFF6F0 )
-Plc_Buffer_Reg14 =		ramaddr( $FFFFF6F4 )
-Plc_Buffer_Reg18 =		ramaddr( $FFFFF6F8 )
-Plc_Buffer_Reg1A =		ramaddr( $FFFFF6FA )
+Plc_Buffer_Reg0:		ds.l	1
+Plc_Buffer_Reg4:		ds.l	1
+Plc_Buffer_Reg8:		ds.l	1
+Plc_Buffer_RegC:		ds.l	1
+Plc_Buffer_Reg10:		ds.l	1
+Plc_Buffer_Reg14:		ds.l	1
+Plc_Buffer_Reg18:		ds.w	1	; amount of current entry remaining to decompress
+Plc_Buffer_Reg1A:		ds.w	1
+                                ds.b	4	; seems unused
 
 				; $FFFFF6FC-$FFFFF6FF	; unused
-Camera_RAM =			ramaddr( $FFFFF700 )
-Camera_X_pos =			ramaddr( $FFFFF700 )
+Camera_RAM: ;			ramaddr( $FFFFF700 )
+Camera_X_pos: ;			ramaddr( $FFFFF700 )
+            ds.l 1 
 Camera_Y_pos =			ramaddr( $FFFFF704 )
 Camera_BG_X_pos =		ramaddr( $FFFFF708 )	; only used sometimes as the layer deformation makes it sort of redundant
 Camera_BG_Y_pos =		ramaddr( $FFFFF70C )

@@ -5273,15 +5273,15 @@ byte_4A3C:	dc.b 3,	0, 7, $92, 3, 0, 7, $90, 3, 0, 7, $8E, 3, 0, 7,	$8C
 		dc.b 3,	0, 6, $81, 3, 0, 6, $8A, 3, 0, 6, $8C, 3, 0, 6,	$8E
 		dc.b 3,	0, 6, $90, 3, 0, 6, $92, 7, 2, 6, $24, 7, 4, 6,	$30
 		dc.b $FF, 6, 6,	$3C, $FF, 6, 6,	$3C, 7,	4, 6, $30, 7, 2, 6, $24
-		align 2
+		even
 byte_4ABC:	dc.b $10, 1, $18, 0, $18, 1, $20, 0, $20, 1, $28, 0, $28, 1
 					; XREF: PalCycle_SS
-		align 2
+		even
 
 Pal_SSCyc1:	binclude	art/pallet/c_ss_1.bin
-		align 2
+		even
 Pal_SSCyc2:	binclude	art/pallet/c_ss_2.bin
-		align 2
+		even
 
 ; ---------------------------------------------------------------------------
 ; Subroutine to	make the special stage background animated
@@ -25041,10 +25041,11 @@ Boundary_Bottom:
 ; ===========================================================================
 
 Boundary_Sides:
-		move.w	d0,x_pos(a0)
-		move.w	#0,y_pos(a0)
-		move.w	#0,x_vel(a0)	; stop Sonic moving
-		move.w	#0,inertia(a0)
+		move.w	d0,x_pos+2(a0)
+		moveq   #0,d0
+		move.w	d0,y_pos+2(a0)
+		move.w	d0,x_vel(a0)	; stop Sonic moving
+		move.w	d0,inertia(a0)
 		bra.s	loc_13336
 ; End of function Sonic_LevelBound
 
