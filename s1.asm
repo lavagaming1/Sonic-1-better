@@ -550,7 +550,7 @@ loc_C36:				; XREF: Vint_SwitchTbl
 		subq.w	#1,(Demo_Time_left).w
 
 locret_C42:
-		rts	
+		rts
 ; ===========================================================================
 
 loc_C44:				; XREF: Vint_SwitchTbl
@@ -562,12 +562,12 @@ loc_C44:				; XREF: Vint_SwitchTbl
 		subq.w	#1,(Demo_Time_left).w
 
 locret_C5C:
-		rts	
+		rts
 ; ===========================================================================
 
 loc_C5E:				; XREF: Vint_SwitchTbl
 		bsr.w	Do_ControllerPal
-		rts	
+		rts
 ; ===========================================================================
 
 loc_C64:				; XREF: Vint_SwitchTbl
@@ -5201,7 +5201,7 @@ loc_4992:
 		move.w	d0,(Unk_F79C).w
 		moveq	#0,d0
 		move.b	(a0)+,d0
-		move.w	d0,(Unk_F7A0).w
+		move.w	d0,(Unk_F7A0).w   
 		lea	(byte_4ABC).l,a1
 		lea	(a1,d0.w),a1
 		move.w	#-$7E00,d0
@@ -9705,7 +9705,7 @@ Obj17_Main:				; XREF: Obj17_Index
 		move.w	#$4398,art_tile(a0)
 		move.b	#7,status(a0)
 		move.b	#4,render_flags(a0)
-		move.w	#$180,HelixPriority(a0)
+		move.b	#$3,priority(a0)
 		move.b	#8,width_pixels(a0)
 		move.w	y_pos(a0),d2
 		move.w	x_pos(a0),d3
@@ -9747,7 +9747,7 @@ Obj17_MakeHelix:
 		move.l	mappings(a0),mappings(a1)
 		move.w	#$4398,art_tile(a1)
 		move.b	#4,render_flags(a1)
-		move.w	#$180,HelixPriority(a1)
+		move.b	#$3,priority(a1)
 		move.b	#8,width_pixels(a1)
 		move.b	d6,$3E(a1)
 		addq.b	#1,d6
@@ -9766,9 +9766,7 @@ loc_7D78:
 		;dbf	d1,Obj17_MakeHelix ; repeat d1 times (helix length)
 
 Obj17_Action:				; XREF: Obj17_Index
-                lea	(Sprite_Table_Input).w,a1
-		adda.w	HelixPriority(a0),a1
-                pea    DisplaySprite_Helix
+                jsr     DisplaySprite
 		move.b	(Logspike_anim_frame).w,d0
 		move.b	#0,collision_flags(a0)	; make object harmless
 		add.b	$3E(a0),d0
@@ -9820,9 +9818,7 @@ Obj17_Display:				; XREF: Obj17_Index
 		bne.s	+
 		move.b	#$84,collision_flags(a0)	; make object harmful
 +
-		lea	(Sprite_Table_Input).w,a1
-		adda.w	HelixPriority(a0),a1
-		bra.w	DisplaySprite_Helix
+		jmp	DisplaySprite
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - helix of spikes on a pole (GHZ)
@@ -10455,9 +10451,6 @@ loc_84B2:
 		move.b	priority(a0),priority(a1)
 		move.b	width_pixels(a0),width_pixels(a1)
 		move.b	(a4)+,$38(a1)
-		cmpa.l	a0,a1
-		bcc.s	loc_84EE
-		bsr.w	DisplaySprite2
 
 loc_84EE:
 		dbf	d1,loc_84AA
@@ -10903,19 +10896,19 @@ Obj1E_Index:	dc.w Obj1E_Main-Obj1E_Index
 Obj1E_Main:				; XREF: Obj1E_Index
 		move.b	#$13,y_radius(a0)
 		move.b	#8,x_radius(a0)
-		move.l	#Map_obj1E,4(a0)
-		move.w	#$2302,2(a0)
-		move.b	#4,1(a0)
+		move.l	#Map_obj1E,mappings(a0)
+		move.w	#$2302,art_tile(a0)
+		move.b	#4,render_flags(a0)
 		move.b	#4,priority(a0)
 		move.b	#5,collision_flags(a0)
 		move.b	#$C,width_pixels(a0)
 		bsr.w	ObjectMoveAndFall
 		jsr	(ObjHitFloor).l
-		tst.w	d1
-		bpl.s	locret_8BAC
-		add.w	d1,y_pos(a0)
+		tst.w	d1      ; did this object reach the floor
+		bpl.s	locret_8BAC                              ; if not do nothing
+		add.w	d1,y_pos(a0)                        ; match to floor
 		move.w	#0,y_vel(a0)
-		addq.b	#2,routine(a0)
+		addq.b	#2,routine(a0);  go next routine
 
 locret_8BAC:
 		rts
@@ -16456,10 +16449,9 @@ Obj3C_Smash:
 Obj3C_FragMove:				; XREF: Obj3C_Index
 		bsr.w	ObjectMove
 		addi.w	#$70,y_vel(a0)	; make fragment	fall faster
-		bsr.w	DisplaySprite
 		tst.b	render_flags(a0)
 		bpl.w	DeleteObject
-		rts
+		bra.w	DisplaySprite
 
 ; ---------------------------------------------------------------------------
 ; Subroutine to	smash a	block (GHZ walls and MZ	blocks)
@@ -16490,7 +16482,7 @@ Smash_Loop:
 
 Smash_LoadFrag:				; XREF: SmashObject
 		move.b	#4,routine(a1)
-		_move.b	d4,ID(a1)
+		move.b	d4,ID(a1)
 		move.l	a3,mappings(a1)
 		move.b	d5,render_flags(a1)
 		move.w	x_pos(a0),x_pos(a1)
@@ -16500,14 +16492,7 @@ Smash_LoadFrag:				; XREF: SmashObject
 		move.b	width_pixels(a0),width_pixels(a1)
 		move.w	(a4)+,x_vel(a1)
 		move.w	(a4)+,y_vel(a1)
-		cmpa.l	a0,a1
-		bcc.s	loc_D268
-		move.l	a0,-(sp)
-		movea.l	a1,a0
-		bsr.w	ObjectMove
-		add.w	d2,y_vel(a0)
-		movea.l	(sp)+,a0
-		bsr.w	DisplaySprite2
+
 
 loc_D268:
 		dbf	d1,Smash_Loop
@@ -16680,15 +16665,16 @@ ObjectMove:
 
 
 DisplaySprite:
-         	moveq   #0,d0
+                moveq   #0,d0
          	move.b  priority(a0),d0
                 add.w   d0,d0
                 movea.w PriorityId(pc,d0.w),a1     ; get values
-DisplaySprite_Helix:
-		cmpi.w	#$7E,(a1)
+                move.w   (a1),d0 ; get amount of time of loop
+		cmp.w	#$7E,d0
 		bhs.s	locret_D620
-		addq.w	#2,(a1)
-		adda.w	(a1),a1
+                addq.w	#2,d0
+                move.w  d0,(a1)
+		adda.w	d0,a1
 		move.w	a0,(a1)
 
 locret_D620:
@@ -16707,24 +16693,8 @@ PriorityId:    dc.w  0+Sprite_Table_Input
 ; Subroutine to	display	a 2nd sprite/object, when a1 is	the object RAM
 ; ---------------------------------------------------------------------------
 
-; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
 
-DisplaySprite2:
-		lea	(Sprite_Table_Input).w,a2
-            	moveq   #0,d0
-         	move.b  priority(a1),d0
-                add.w   d0,d0
-                movea.w PriorityId(pc,d0.w),a2     ; get values
-		cmpi.w	#$7E,(a2)
-		bhs.s	locret_D63E
-		addq.w	#2,(a2)
-		adda.w	(a2),a2
-		move.w	a1,(a2)
-
-locret_D63E:
-		rts
-; End of function DisplaySprite2
 
 ; ---------------------------------------------------------------------------
 ; Subroutine to	delete an object
@@ -37907,8 +37877,7 @@ Obj21_Flash:				; XREF: Obj21_Main
 		tst.w	(Ring_count).w	; do you have any rings?
 		beq.s	Obj21_Flash2	; if not, branch
 		clr.b	mapping_frame(a0)		; make all counters yellow
-		lea    Sprite_Table_Input.w,a1
-		jmp	(DisplaySprite_Helix).l
+		jmp	(DisplaySprite).l
 ; ===========================================================================
 
 Obj21_Flash2:
