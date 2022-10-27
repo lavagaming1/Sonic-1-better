@@ -302,7 +302,7 @@ Camera_Y_pos_bias: ds.w 1 ;=		ramaddr( $FFFFF73E )	; was "Camera_Unk3"
 unk_F740: ds.b 1  ;=			ramaddr( $FFFFF740 )
 unk_F741: ds.b 1  ; =			ramaddr( $FFFFF741 )
 Dynamic_Resize_Routine: ds.b 1 ;=	ramaddr( $FFFFF742 )
-                ds.b 1 
+                ds.b 1
 Scroll_lock: ds.w 1 ;=			ramaddr( $FFFFF744 )	; set to 1 to stop all scrolling
 unk_F746: ds.w 1 ;=			ramaddr( $FFFFF746 )
 unk_F748: ds.w 1 ;=			ramaddr( $FFFFF748 )
@@ -311,20 +311,21 @@ Verti_block_crossed_flag: ds.b 1; =	ramaddr( $FFFFF74B )
 Horiz_block_crossed_flag_BG: ds.b 1; =	ramaddr( $FFFFF74C )
 Verti_block_crossed_flag_BG: ds.b 1 ; =	ramaddr( $FFFFF74D )
 Horiz_block_crossed_flag_BG2: ds.b 1 ; =	ramaddr( $FFFFF74E )
+                                ds.b 1
+                                ds.l 1 ; unused i assume
+Scroll_flags ds.w 1 ;=			ramaddr( $FFFFF754 )	; bitfield ; bit 0 = redraw top row, bit 1 = redraw bottom row, bit 2 = redraw left-most column, bit 3 = redraw right-most column
+Scroll_flags_BG: ds.w 1  ;=		ramaddr( $FFFFF756 )
+Scroll_flags_BG2: ds.w 1 ; =		ramaddr( $FFFFF758 )
+Scroll_flags_BG3: ds.w 1 ;=		ramaddr( $FFFFF75A )
+Camera_Max_Y_Pos_Changing: ds.l 1; =	ramaddr( $FFFFF75C )
 
-Scroll_flags =			ramaddr( $FFFFF754 )	; bitfield ; bit 0 = redraw top row, bit 1 = redraw bottom row, bit 2 = redraw left-most column, bit 3 = redraw right-most column
-Scroll_flags_BG =		ramaddr( $FFFFF756 )
-Scroll_flags_BG2 =		ramaddr( $FFFFF758 )
-Scroll_flags_BG3 =		ramaddr( $FFFFF75A )
-Camera_Max_Y_Pos_Changing =	ramaddr( $FFFFF75C )
-
-Sonic_top_speed =		ramaddr( $FFFFF760 )
-Sonic_acceleration =		ramaddr( $FFFFF762 )
-Sonic_deceleration =		ramaddr( $FFFFF764 )
-Sonic_LastLoadedDPLC =		ramaddr( $FFFFF766 )	; mapping frame number when Sonic last had his tiles requested to be transferred from ROM to VRAM. can be set to a dummy value like -1 to force a refresh DMA.
-
-Primary_Angle =			ramaddr( $FFFFF768 )
-Secondary_Angle =		ramaddr( $FFFFF76A )
+Sonic_top_speed: ds.w 1;=		ramaddr( $FFFFF760 )
+Sonic_acceleration: ds.w 1 ;=		ramaddr( $FFFFF762 )
+Sonic_deceleration: ds.w 1 ;=		ramaddr( $FFFFF764 )
+Sonic_LastLoadedDPLC: ds.b 1; =		ramaddr( $FFFFF766 )	; mapping frame number when Sonic last had his tiles requested to be transferred from ROM to VRAM. can be set to a dummy value like -1 to force a refresh DMA.
+                     ds.b 1 ; unused
+Primary_Angle: ds.w 1 ;=			ramaddr( $FFFFF768 )
+Secondary_Angle: ds.w 1 ; =		ramaddr( $FFFFF76A )
 Collision_addr =                ramaddr( $FFFFF796 )
 S1SS_PalFrame  =                 ramaddr( $FFFFF79A )
 Unk_F79C =                       ramaddr( $FFFFF79C )
@@ -520,7 +521,6 @@ TitleScreenPRESS_START: ds.b ObSize
 TitleScreenTM: ds.b ObSize
 TitleScreenPRESS_START2: ds.b ObSize ; seems to load the press start object twice although the first time isnt really loaded
                  ds.b    ObSize
-                 ds.b ObSize
                  ds.b ObSize
                  ds.b ObSize
                  ds.b ObSize

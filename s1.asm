@@ -3316,7 +3316,7 @@ Title_LoadText:
 		move.w	#$178,(Demo_Time_left).w ; run title	screen for $178	frames
 		lea	(TitleScreenPRESS_START).w,a1
 		moveq	#0,d0
-		move.w	#(TitleScreenObjRamEnd-TitleScreenTM)/ObSize-1,d1		; This is bugged, it only clears $D09C to $D0A0, this prevents the "PRESS START BUTTON" text displaying. Change to $F to fix.
+		move.w	#(TitleScreenObjRamEnd-TitleScreenPRESS_START)/ObSize-1,d1		; This is bugged, it only clears $D09C to $D0A0, this prevents the "PRESS START BUTTON" text displaying. Change to $F to fix.
 
 Title_ClrObjRam2:
 		move.l	d0,(a1)+
@@ -4908,6 +4908,7 @@ SpecialStage:				; XREF: GameModeArray
 		andi.b	#$BF,d0
 		move.w	d0,(VDP_control_port).l
 		bsr.w	ClearScreen
+		jsr     Init_SpriteTable
 		move	#$2300,sr
 		lea	(VDP_control_port).l,a5
 		move.w	#$8F01,(a5)
@@ -16717,34 +16718,7 @@ loc_D646:
 ; End of function DeleteObject
 
 ; ===========================================================================
-sub_D762:				; XREF: sub_D762; SS_ShowLayout
 
-		move.b	(a1)+,d0
-		ext.w	d0
-		add.w	d2,d0
-		move.w	d0,(a2)+
-		move.b	(a1)+,(a2)+
-		addq.b	#1,d5
-		move.b	d5,(a2)+
-		move.b	(a1)+,d0
-		lsl.w	#8,d0
-		move.b	(a1)+,d0
-		add.w	a3,d0
-		move.w	d0,(a2)+
-		move.b	(a1)+,d0
-		ext.w	d0
-		add.w	d3,d0
-		andi.w	#$1FF,d0
-		bne.s	loc_D78E
-		addq.w	#1,d0
-
-loc_D78E:
-		move.w	d0,(a2)+
-		dbf	d1,sub_D762
-
-locret_D794:
-		rts
-; End of function sub_D762
 ; ---------------------------------------------------------------------------
 ; Subroutine to	convert	mappings (etc) to proper Megadrive sprites
 ; ---------------------------------------------------------------------------
@@ -35847,17 +35821,56 @@ Touch_D7orE1:				; XREF: Touch_Special
 SS_ShowLayout:				; XREF: SpecialStage
 		bsr.w	SS_AniWallsRings
 		bsr.w	SS_AniItems
-		move.w	d5,-(sp)
-		lea	($FFFF8000).w,a1
+		lea	(Chunk_table+$8000).w,a1
 		move.b	(SS_Rotate).w,d0
-		andi.b	#$FC,d0
+		andi.b	#-2,d0
 		jsr	(CalcSine).l
-		move.w	d0,d4
-		move.w	d1,d5
-		muls.w	#$18,d4
-		muls.w	#$18,d5
+
+                move.w  d0,d3 ; save d0 to d3
+                move.w  d0,d5 ; save d0 to d5
+                move.w  d5,d2     ; save d5 in d2
+                add.w   d3,d3    ; multypply d3 by 2
+                add.w   d3,d3
+                add.w   d3,d3
+
+                add.w   d5,d5  ;2
+                add.w   d5,d5 ;4
+                add.w   d5,d5 ;8
+                add.w   d2,d2 ;2
+                add.w   d2,d2 ;4
+                add.w   d2,d2  ;8
+                add.w   d2,d5  ;8+8 = $10
+                add.w   d3,d5 ;$18
+		move.w  d5,d4
+		ext.l   d4
+
+                ;move.l  d4,-(sp)
+
+                move.w  d1,d3 ; save d0 to d3
+                move.w  d1,d5 ; save d0 to d5
+                move.w  d5,d2     ; save d5 in d2
+                add.w   d3,d3    ; multypply d3 by 2
+                add.w   d3,d3
+                add.w   d3,d3
+
+                add.w   d5,d5  ;2
+                add.w   d5,d5 ;4
+                add.w   d5,d5 ;8
+                add.w   d2,d2 ;2
+                add.w   d2,d2 ;4
+                add.w   d2,d2  ;8
+                add.w   d2,d5  ;8+8 = $10
+                add.w   d3,d5 ;$18
+		move.w  d5,d5
+		ext.l   d5
+		;move.w	d1,d5
+  ;muls.w	#$18,d4
+	;	muls.w	#$18,d5
 		moveq	#0,d2
 		move.w	(Camera_X_pos).w,d2
+
+		;lsr.w   #4,d2
+		;asr.w   d2
 		divu.w	#$18,d2
 		swap	d2
 		neg.w	d2
@@ -35870,7 +35883,7 @@ SS_ShowLayout:				; XREF: SpecialStage
 		addi.w	#-$B4,d3
 		move.w	#$F,d7
 
-loc_1B19E:
+loc_4B3A6:
 		movem.w	d0-d2,-(sp)
 		movem.w	d0-d1,-(sp)
 		neg.w	d0
@@ -35885,7 +35898,7 @@ loc_1B19E:
 		move.l	d6,d2
 		move.w	#$F,d6
 
-loc_1B1C0:
+loc_4B3C8:
 		move.l	d2,d0
 		asr.l	#8,d0
 		move.w	d0,(a1)+
@@ -35894,48 +35907,54 @@ loc_1B1C0:
 		move.w	d0,(a1)+
 		add.l	d5,d2
 		add.l	d4,d1
-		dbf	d6,loc_1B1C0
-
+		dbf	d6,loc_4B3C8
 		movem.w	(sp)+,d0-d2
 		addi.w	#$18,d3
-		dbf	d7,loc_1B19E
-
-		move.w	(sp)+,d5
-		lea	(Chunk_Table).l,a0
+		dbf	d7,loc_4B3A6
+		lea	(RAM_start).l,a0
 		moveq	#0,d0
 		move.w	(Camera_Y_pos).w,d0
 		divu.w	#$18,d0
-		mulu.w	#$80,d0
+		;mulu.w	#$80,d0
+		lsl.w   #$7,d0
+		ext.l   d0
+
 		adda.l	d0,a0
 		moveq	#0,d0
 		move.w	(Camera_X_pos).w,d0
 		divu.w	#$18,d0
 		adda.w	d0,a0
-		lea	($FFFF8000).w,a4
+		lea	(Chunk_table+$8000).w,a4
+		lea	(Sprite_Table).w,a2
+		moveq	#0,d5
+		move.b	(Sprite_count).w,d5
+		move.w	d5,d0
+		lsl.w	#3,d0
+		adda.w	d0,a2
 		move.w	#$F,d7
 
-loc_1B20C:
+loc_4B424:
 		move.w	#$F,d6
 
-loc_1B210:
+loc_4B428:
 		moveq	#0,d0
 		move.b	(a0)+,d0
-		beq.s	loc_1B268
-		cmpi.b	#$4E,d0
-		bhi.s	loc_1B268
+		beq.s	loc_4B47C
+                cmpi.b  #$4E, D0      ; are the sprites beyond $4E
+		bhi.s	loc_4B47C    ;branch if $4E and above
 		move.w	(a4),d3
 		addi.w	#$120,d3
 		cmpi.w	#$70,d3
-		bcs.s	loc_1B268
+		blo.s	loc_4B47C
 		cmpi.w	#$1D0,d3
-		bcc.s	loc_1B268
+		bhs.s	loc_4B47C
 		move.w	2(a4),d2
 		addi.w	#$F0,d2
 		cmpi.w	#$70,d2
-		bcs.s	loc_1B268
+		blo.s	loc_4B47C
 		cmpi.w	#$170,d2
-		bcc.s	loc_1B268
-		lea	(Chunk_Table+$4000).l,a5
+		bhs.s	loc_4B47C
+		lea	(Chunk_table+$4000).l,a5
 		lsl.w	#3,d0
 		lea	(a5,d0.w),a5
 		movea.l	(a5)+,a1
@@ -35946,26 +35965,47 @@ loc_1B210:
 		moveq	#0,d1
 		move.b	(a1)+,d1
 		subq.b	#1,d1
-		bmi.s	loc_1B268
-		jsr	(sub_D762).l
+		bmi.s	loc_4B47C
+		bsr.s	sub_4B490
 
-loc_1B268:
-		addq.w	#4,a4
-		dbf	d6,loc_1B210
-
+loc_4B47C:
+		lea	4(a4),a4
+		dbf	d6,loc_4B428
 		lea	$70(a0),a0
-		dbf	d7,loc_1B20C
-
+		dbf	d7,loc_4B424
 		move.b	d5,(Sprite_count).w
-		cmpi.b	#$50,d5
-		beq.s	loc_1B288
-		move.l	#0,(a2)
-		rts	
+		rts
 ; ===========================================================================
 
-loc_1B288:
-		move.b	#0,-5(a2)
-		rts	
+sub_4B490:
+		cmpi.b	#$50,d5
+		beq.s	locret_4B4C2
+		move.b	(a1)+,d0
+		ext.w	d0
+		add.w	d2,d0
+		move.w	d0,(a2)+
+		move.b	(a1)+,(a2)+
+		addq.b	#1,d5
+		addq.w	#1,a2
+		move.b	(a1)+,d0
+		lsl.w	#8,d0
+		move.b	(a1)+,d0
+		add.w	a3,d0
+		move.w	d0,(a2)+
+		move.b	(a1)+,d0
+		ext.w	d0
+		add.w	d3,d0
+		andi.w	#$1FF,d0
+		bne.s	loc_4B4BC
+		addq.w	#1,d0
+
+loc_4B4BC:
+		move.w	d0,(a2)+
+		dbf	d1,sub_4B490
+
+locret_4B4C2:
+		rts
+; End of function sub_4B490
 ; End of function SS_ShowLayout
 
 ; ---------------------------------------------------------------------------
@@ -36110,7 +36150,7 @@ loc_1B4C4:
 		dbf	d0,loc_1B4C4
 
 locret_1B4CE:
-		rts	
+		rts
 ; End of function SS_RemoveCollectedItem
 
 ; ---------------------------------------------------------------------------
@@ -36138,7 +36178,7 @@ loc_1B4E8:
 loc_1B4EA:
 		dbf	d7,loc_1B4DA
 
-		rts	
+		rts
 ; End of function SS_AniItems
 
 ; ===========================================================================
@@ -36165,7 +36205,7 @@ SS_AniRingSparks:			; XREF: SS_AniIndex
 		clr.l	4(a0)
 
 locret_1B530:
-		rts	
+		rts
 ; ===========================================================================
 SS_AniRingData:	dc.b $42, $43, $44, $45, 0, 0
 ; ===========================================================================
@@ -36183,14 +36223,14 @@ SS_AniBumper:				; XREF: SS_AniIndex
 		clr.l	(a0)
 		clr.l	4(a0)
 		move.b	#$25,(a1)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_1B564:
 		move.b	d0,(a1)
 
 locret_1B566:
-		rts	
+		rts
 ; ===========================================================================
 SS_AniBumpData:	dc.b $32, $33, $32, $33, 0, 0
 ; ===========================================================================
@@ -36210,7 +36250,7 @@ SS_Ani1Up:				; XREF: SS_AniIndex
 		clr.l	4(a0)
 
 locret_1B596:
-		rts	
+		rts
 ; ===========================================================================
 SS_Ani1UpData:	dc.b $46, $47, $48, $49, 0, 0
 ; ===========================================================================
@@ -36228,14 +36268,14 @@ SS_AniReverse:				; XREF: SS_AniIndex
 		clr.l	(a0)
 		clr.l	4(a0)
 		move.b	#$2B,(a1)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_1B5CA:
 		move.b	d0,(a1)
 
 locret_1B5CC:
-		rts	
+		rts
 ; ===========================================================================
 SS_AniRevData:	dc.b $2B, $31, $2B, $31, 0, 0
 ; ===========================================================================
@@ -36258,7 +36298,7 @@ SS_AniEmeraldSparks:			; XREF: SS_AniIndex
 		jsr	(PlaySound_Special).l ;	play special stage GOAL	sound
 
 locret_1B60C:
-		rts	
+		rts
 ; ===========================================================================
 SS_AniEmerData:	dc.b $46, $47, $48, $49, 0, 0
 ; ===========================================================================
