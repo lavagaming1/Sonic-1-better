@@ -6385,9 +6385,9 @@ Obj8B_Main:				; XREF: Obj8B_Index
 		addq.b	#2,routine(a0)
 		move.w	#$120,x_pos(a0)
 		move.w	#$F4,y_pos(a0)
-		move.l	#Map_obj8B,4(a0)
-		move.w	#$3E1,2(a0)
-		move.b	#0,1(a0)
+		move.l	#Map_obj8B,mappings(a0)
+		move.w	#$3E1,art_tile(a0)
+		move.b	#0,render_flags(a0)
 		move.b	#2,priority(a0)
 		move.b	#2,anim(a0)	; use "END" animation
 		cmpi.b	#6,(Emerald_count).w ; do you have all 6 emeralds?
@@ -13867,7 +13867,8 @@ Map_obj14:
 ; ---------------------------------------------------------------------------
 ; Object 30 - large green glassy blocks	(MZ)
 ; ---------------------------------------------------------------------------
-
+GlassChildOgypos = $30  ; 2 bytes
+Ob30_Parent = $3C ; 4 bytes
 Obj30:					; XREF: Obj_Index
 		moveq	#0,d0
 		move.b	routine(a0),d0
@@ -13920,21 +13921,21 @@ Obj30_Loop:
 
 Obj30_Load:				; XREF: Obj30_Main
 		move.b	(a2)+,routine(a1)
-		_move.b	#$30,0(a1)
+		_move.b	#$30,ID(a1)
 		move.w	x_pos(a0),x_pos(a1)
 		move.b	(a2)+,d0
 		ext.w	d0
 		add.w	y_pos(a0),d0
 		move.w	d0,y_pos(a1)
-		move.l	#Map_obj30,4(a1)
-		move.w	#$C38E,2(a1)
-		move.b	#4,1(a1)
-		move.w	y_pos(a1),$30(a1)
+		move.l	#Map_obj30,mappings(a1)
+		move.w	#$C38E,art_tile(a1)
+		move.b	#4,render_flags(a1)
+		move.w	y_pos(a1),GlassChildOgypos(a1)
 		move.b	subtype(a0),subtype(a1)
 		move.b	#$20,width_pixels(a1)
 		move.b	#4,priority(a1)
 		move.b	(a2)+,mapping_frame(a1)
-		move.l	a0,$3C(a1)
+		move.l	a0,Ob30_Parent(a1)
 		dbf	d1,Obj30_Loop	; repeat once to load "reflection object"
 
 		move.b	#$10,width_pixels(a1)
@@ -13944,7 +13945,7 @@ Obj30_Load:				; XREF: Obj30_Main
 
 loc_B480:
 		move.w	#$90,$32(a0)
-		bset	#4,1(a0)
+		bset	#4,render_flags(a0)
 
 Obj30_Block012:				; XREF: Obj30_Index
 		bsr.w	Obj30_Types
@@ -13956,7 +13957,7 @@ Obj30_Block012:				; XREF: Obj30_Index
 ; ===========================================================================
 
 Obj30_Reflect012:			; XREF: Obj30_Index
-		movea.l	$3C(a0),a1
+		movea.l	Ob30_Parent(a0),a1
 		move.w	$32(a1),$32(a0)
 		bra.w	Obj30_Types
 ; ===========================================================================
@@ -13971,9 +13972,9 @@ Obj30_Block34:				; XREF: Obj30_Index
 ; ===========================================================================
 
 Obj30_Reflect34:			; XREF: Obj30_Index
-		movea.l	$3C(a0),a1
+		movea.l	Ob30_Parent(a0),a1
 		move.w	$32(a1),$32(a0)
-		move.w	y_pos(a1),$30(a0)
+		move.w	y_pos(a1),GlassChildOgypos(a0)
 		bra.w	*+4
 
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
@@ -13982,8 +13983,8 @@ Obj30_Reflect34:			; XREF: Obj30_Index
 Obj30_Types:				; XREF: Obj30_Block012; et al
 		moveq	#0,d0
 		move.b	subtype(a0),d0
-		andi.w	#7,d0
-		add.w	d0,d0
+		andi.w	#7,d0   ; read second digit
+		add.w	d0,d0  ; multyply that by 2
 		move.w	Obj30_TypeIndex(pc,d0.w),d1
 		jmp	Obj30_TypeIndex(pc,d1.w)
 ; End of function Obj30_Types
@@ -13997,7 +13998,7 @@ Obj30_TypeIndex:dc.w Obj30_Type00-Obj30_TypeIndex
 ; ===========================================================================
 
 Obj30_Type00:				; XREF: Obj30_TypeIndex
-		rts	
+		rts
 ; ===========================================================================
 
 Obj30_Type01:				; XREF: Obj30_TypeIndex
@@ -14106,7 +14107,7 @@ loc_B5EE:
 		move.w	$30(a0),d1
 		sub.w	d0,d1
 		move.w	d1,y_pos(a0)
-		rts	
+		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - large green	glassy blocks (MZ)
@@ -16479,17 +16480,22 @@ Smash_Loop:
 		addq.w	#6,a3
 
 Smash_LoadFrag:				; XREF: SmashObject
-		move.b	#4,routine(a1)
-		move.b	d4,ID(a1)
-		move.l	a3,mappings(a1)
-		move.b	d5,render_flags(a1)
-		move.w	x_pos(a0),x_pos(a1)
-		move.w	y_pos(a0),y_pos(a1)
-		move.w	art_tile(a0),art_tile(a1)
-		move.b	priority(a0),priority(a1)
-		move.b	width_pixels(a0),width_pixels(a1)
-		move.w	(a4)+,x_vel(a1)
-		move.w	(a4)+,y_vel(a1)
+                movea.l a1,a6
+		move.b	#4,routine(a6)
+		move.b	d4,ID(a6)
+		move.l	a3,mappings(a6)
+		move.b	d5,render_flags(a6)
+		move.w	x_pos(a0),x_pos(a6)
+		move.w	y_pos(a0),y_pos(a6)
+		move.w	art_tile(a0),art_tile(a6)
+		move.b	priority(a0),priority(a6)
+		move.b	width_pixels(a0),width_pixels(a6)
+		move.w	(a4)+,x_vel(a6)
+		move.w	(a4)+,y_vel(a6)
+		movea.l a0,a6   ; apprently you cant scrap this in some objects because some objects display durring that 1 frame its spawning an object 
+		movea.l a1,a0
+		jsr     DisplaySprite
+		movea.l a6,a0
 
 
 loc_D268:
@@ -16672,8 +16678,7 @@ DisplaySprite:
 		bhs.s	locret_D620
                 addq.w	#2,d0
                 move.w  d0,(a1)
-		adda.w	d0,a1
-		move.w	a0,(a1)
+		move.w	a0,(a1,d0.w)
 
 locret_D620:
 		rts
@@ -18704,8 +18709,15 @@ Map_obj12:
 ; ---------------------------------------------------------------------------
 
 Obj47:					; XREF: Obj_Index
-                tst.b   routine(a0)
-                bne.s   Obj47_Hit
+                moveq	#0,d0
+		move.b	routine(a0),d0
+		move.w	Obj47_Index(pc,d0.w),d1
+		jmp	Obj47_Index(pc,d1.w)
+; ===========================================================================
+Obj47_Index:	dc.w Obj47_Main-Obj47_Index
+		dc.w Obj47_Hit-Obj47_Index
+; ===========================================================================
+Obj47_Main:
 		addq.b	#2,routine(a0)
 		move.l	#Map_obj47,mappings(a0)
 		move.w	#$380,art_tile(a0)
@@ -18751,7 +18763,7 @@ Obj47_Score:
 		jsr	(AddPoints).l	; add 10 to score
 		bsr.w	SingleObjLoad
 		bne.s	Obj47_Display
-		_move.b	#$29,0(a1)	; load points object
+		_move.b	#$29,ID(a1)	; load points object
 		move.w	x_pos(a0),x_pos(a1)
 		move.w	y_pos(a0),y_pos(a1)
 		move.b	#4,mapping_frame(a1)
@@ -18817,7 +18829,7 @@ Obj0D:					; XREF: Obj_Index
 		sub.w	d1,d0
 		cmpi.w	#$280,d0
 		bhi.w	DeleteObject
-		rts	
+		rts
 ; ===========================================================================
 Obj0D_Index:	dc.w Obj0D_Main-Obj0D_Index
 		dc.w Obj0D_Touch-Obj0D_Index
@@ -18828,9 +18840,9 @@ Obj0D_Index:	dc.w Obj0D_Main-Obj0D_Index
 
 Obj0D_Main:				; XREF: Obj0D_Index
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj0D,4(a0)
-		move.w	#$680,2(a0)
-		move.b	#4,1(a0)
+		move.l	#Map_obj0D,mappings(a0)
+		move.w	#$680,art_tile(a0)
+		move.b	#4,render_flags(a0)
 		move.b	#$18,width_pixels(a0)
 		move.b	#4,priority(a0)
 
@@ -18847,7 +18859,7 @@ Obj0D_Touch:				; XREF: Obj0D_Index
 		addq.b	#2,routine(a0)
 
 locret_EBBA:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj0D_Spin:				; XREF: Obj0D_Index
@@ -18870,7 +18882,7 @@ Obj0D_Sparkle:
 		lea	Obj0D_SparkPos(pc,d0.w),a2 ; load sparkle position data
 		bsr.w	SingleObjLoad
 		bne.s	locret_EC42
-		_move.b	#$25,0(a1)	; load rings object
+		_move.b	#$25,ID(a1)	; load rings object
 		move.b	#6,routine(a1)	; jump to ring sparkle subroutine
 		move.b	(a2)+,d0
 		ext.w	d0
@@ -18880,14 +18892,14 @@ Obj0D_Sparkle:
 		ext.w	d0
 		add.w	y_pos(a0),d0
 		move.w	d0,y_pos(a1)
-		move.l	#Map_obj25,4(a1)
-		move.w	#$27B2,2(a1)
-		move.b	#4,1(a1)
+		move.l	#Map_obj25,mappings(a1)
+		move.w	#$27B2,art_tile(a1)
+		move.b	#4,render_flags(a1)
 		move.b	#2,priority(a1)
 		move.b	#8,width_pixels(a1)
 
 locret_EC42:
-		rts	
+		rts
 ; ===========================================================================
 Obj0D_SparkPos:	dc.b -$18,-$10		; x-position, y-position
 		dc.b	8,   8
@@ -20058,7 +20070,7 @@ loc_FC4E:
 loc_FC84:
 		bset	#3,status(a1)
 		bset	#3,status(a0)
-		rts	
+		rts
 ; End of function sub_FC2C
 
 ; ===========================================================================
@@ -20148,10 +20160,10 @@ loc_FD98:
 Obj51_Display:				; XREF: Obj51_Index
 		bsr.w	ObjectMove
 		addi.w	#$38,y_vel(a0)
-		bsr.w	DisplaySprite
+
 		tst.b	render_flags(a0)
 		bpl.w	DeleteObject
-		rts
+		bra.w	DisplaySprite
 ; ===========================================================================
 Obj51_Speeds:	dc.w $FE00, $FE00	; x-speed, y-speed
 		dc.w $FF00, $FF00
@@ -35439,8 +35451,8 @@ TouchResponse:				; XREF: Obj01
 ;Touch_NoDuck:
 		move.w	#$10,d4
 		add.w	d5,d5
-		lea	(Object_RAM+$800).w,a1 ; begin checking the object RAM
-		moveq	#$5F,d6
+		lea	(Dynamic_Object_RAM).w,a1 ; begin checking the object RAM
+		moveq	#(Dynamic_Object_RAM_End-Dynamic_Object_RAM)/ObSize-1,d6
 
 Touch_Loop:
          ; 	tst.b	render_flags(a1)
@@ -35449,7 +35461,7 @@ Touch_Loop:
 		bne.s	Touch_Height	; if touch response is not 0, branch
 
 Touch_NextObj:
-		lea	$40(a1),a1	; next object RAM
+		lea	ObSize(a1),a1	; next object RAM
 		dbf	d6,Touch_Loop	; repeat $5F more times
 
 		moveq	#0,d0
@@ -35538,11 +35550,15 @@ Touch_ChkValue:
 		beq.w	Touch_Enemy	; if not, branch
 		cmpi.b	#$C0,d1		; is touch response $C0	or higher?
 		beq.w	Touch_Special	; if yes, branch
+		tst.b	d1		; is touch response $80-$BF ?
+		bmi.w	Touch_ChkHurt	; if yes, branch
 
 ; touch	response is $40-$7F
-		cmpi.b	#$26,ID(a1)		; is touch response $46	?
+                move.b	collision_flags(a1),d0
+                andi.b	#$3F,d0
+		cmpi.b	#$6,d0		; is touch response $46	?
 		beq.s	Touch_Monitor	; if yes, branch
-		cmpi.w	#$5A,invulnerable_time(a0)
+		cmpi.b	#$5A,invulnerable_time(a0)
 		bcc.w	locret_1AEF2
 		addq.b	#2,routine(a1)	; advance the object"s routine counter
 
@@ -35748,7 +35764,7 @@ Kill_Sound:
 
 Kill_NoDeath:
 		moveq	#-1,d0
-		rts	
+		rts
 ; End of function KillSonic
 
 
@@ -35766,7 +35782,7 @@ Touch_Special:				; XREF: Touch_ChkValue
 		beq.s	Touch_D7orE1	; if yes, branch
 		cmpi.b	#$21,d1		; is touch response $E1	?
 		beq.s	Touch_D7orE1	; if yes, branch
-		rts	
+		rts
 ; ===========================================================================
 
 Touch_CatKiller:			; XREF: Touch_Special

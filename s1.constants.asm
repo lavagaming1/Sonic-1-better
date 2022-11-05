@@ -203,7 +203,10 @@ Horiz_Scroll_Buf:               ds.b   $400 ; = 		ramaddr( $FFFFCC00 )	; $3FF by
 Object_RAM:
 Player_1: ds.b   ObSize
 HudObRam: ds.b   ObSize
-              ds.b   ObSize*$7E ;=			ramaddr( $FFFFD000 )	; The various objects in the game are loaded in this area. Each game mode uses different objects, so some slots are reused.
+          ds.b   ObSize*$1E
+Dynamic_Object_RAM:
+              ds.b   ObSize*$60 ;=			ramaddr( $FFFFD000 )	; The various objects in the game are loaded in this area. Each game mode uses different objects, so some slots are reused.
+Dynamic_Object_RAM_End
 Object_RAM_End
 SndDriverRam:     ds.b  $5C0
 SndDriverRamEnd
