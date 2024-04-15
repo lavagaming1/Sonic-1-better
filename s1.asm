@@ -626,7 +626,7 @@ loc_CD4:				; XREF: loc_C76
 		move.b	#0,(Sonic_LastLoadedDPLC+1).w
 
 loc_D50:
-		startZ80
+		;startZ80
 		movem.l	(Camera_RAM).w,d0-d7
 		movem.l	d0-d7,(Camera_RAM_copy).w
 		movem.l	(Scroll_flags).w,d0-d1
@@ -1102,7 +1102,7 @@ SoundDriverLoad:			; XREF: GameClrRAM; TitleScreen
 
 PlaySound:
 		move.b	d0,(SndDriverRam+QueueToPlay).w
-		rts		
+		rts
 ; End of function PlaySound
 
 ; ---------------------------------------------------------------------------
@@ -1120,7 +1120,7 @@ PlaySound:
 
 PlaySound_Special:
 		move.b	d0,(SndDriverRam+SFXSpecToPlay).w
-		rts	
+		rts
 ; End of function PlaySound_Special
 
 ; ===========================================================================
@@ -1130,7 +1130,7 @@ PlaySound_Special:
 
 PlaySound_Unk:
 		move.b	d0,(SndDriverRam+SFXUnknown).w
-		rts	
+		rts
 
 ; ---------------------------------------------------------------------------
 ; Subroutine to	pause the game
@@ -16341,16 +16341,8 @@ Obj3B_Solid:				; XREF: Obj3B_Index
 ; ---------------------------------------------------------------------------
 
 Obj49:					; XREF: Obj_Index
-		moveq	#0,d0
-		move.b	routine(a0),d0
-		move.w	Obj49_Index(pc,d0.w),d1
-		jmp	Obj49_Index(pc,d1.w)
-; ===========================================================================
-Obj49_Index:	dc.w Obj49_Main-Obj49_Index
-		dc.w Obj49_PlaySnd-Obj49_Index
-; ===========================================================================
-
-Obj49_Main:				; XREF: Obj49_Index
+                tst.b   routine(a0)
+                bne.s   Obj49_PlaySnd
 		addq.b	#2,routine(a0)
 		move.b	#4,1(a0)
 
@@ -16370,7 +16362,7 @@ Obj49_ChkDel:
 		sub.w	d1,d0
 		cmpi.w	#$280,d0
 		bhi.w	DeleteObject
-		rts	
+		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - purple rock	(GHZ)
@@ -16492,7 +16484,7 @@ Smash_LoadFrag:				; XREF: SmashObject
 		move.b	width_pixels(a0),width_pixels(a6)
 		move.w	(a4)+,x_vel(a6)
 		move.w	(a4)+,y_vel(a6)
-		movea.l a0,a6   ; apprently you cant scrap this in some objects because some objects display durring that 1 frame its spawning an object 
+		movea.l a0,a6   ; apprently you cant scrap this in some objects because some objects display durring that 1 frame its spawning an object
 		movea.l a1,a0
 		jsr     DisplaySprite
 		movea.l a6,a0
@@ -16616,7 +16608,7 @@ Obj_Index:
 	dc.l Obj61, Obj62, Obj63, Obj64
 	dc.l Obj65, Obj66, Obj67, Obj68
 	dc.l Obj69, Obj6A, Obj6B, Obj6C
-	dc.l Obj6D, Obj6E, Obj6F, Obj70
+	dc.l Obj6D, Obj6E, ObjSBZSpinningPtfm, Obj70
 	dc.l Obj71, Obj72, Obj73, Obj74
 	dc.l Obj75, Obj76, Obj77, Obj78
 	dc.l Obj79, Obj7A, Obj7B, Obj7C
@@ -16824,11 +16816,11 @@ Render_Sprites_NextLevel:
 
 
 		lea	$80(a5),a5	; load next priority level
-		cmpi.b  #1,ID(a5)
+	;	cmpi.b  #1,ID(a5)
          ;       lea     ($FFFFB000).w,a3
 	;	cmpa.w  #Object_RAM,a5
 	;	blo.w   loc_1AD4A
-	;	cmpa.l	#Block_Table,a5
+		cmpa.w	#Sprite_Table_Input_End,a5
 		blo.w	loc_1AD4A
 		move.w	d7,d6
 		bmi.s	loc_1AE18
@@ -18466,9 +18458,9 @@ Obj6D_Index:	dc.w Obj6D_Main-Obj6D_Index
 
 Obj6D_Main:				; XREF: Obj6D_Index
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj6D,4(a0)
-		move.w	#$83D9,2(a0)
-		ori.b	#4,1(a0)
+		move.l	#Map_obj6D,mappings(a0)
+		move.w	#$83D9,art_tile(a0)
+		ori.b	#4,render_flags(a0)
 		move.b	#1,priority(a0)
 		move.w	y_pos(a0),$30(a0)
 		move.b	#$C,width_pixels(a0)
@@ -22719,9 +22711,9 @@ Obj5F_Index:	dc.w Obj5F_Main-Obj5F_Index  ;0
 
 Obj5F_Main:				; XREF: Obj5F_Index
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj5F,4(a0)
-		move.w	#$400,2(a0)
-		ori.b	#4,1(a0)
+		move.l	#Map_obj5F,mappings(a0)
+		move.w	#$400,art_tile(a0)
+		ori.b	#4,render_flags(a0)
 		move.b	#3,priority(a0)
 		move.b	#$C,width_pixels(a0)
 		move.b	subtype(a0),d0
@@ -28115,7 +28107,7 @@ Obj66_Animate:
 		move.b	d0,mapping_frame(a0)
 
 locret_15246:
-		rts	
+		rts
 ; End of function Obj66_ChkSwitch
 
 
@@ -28136,7 +28128,7 @@ Obj66_ChgPos:				; XREF: Obj66_GrabSonic
 		ext.w	d0
 		add.w	y_pos(a0),d0
 		move.w	d0,y_pos(a1)
-		rts	
+		rts
 ; End of function Obj66_ChgPos
 
 ; ===========================================================================
@@ -28171,9 +28163,9 @@ Obj67_Index:	dc.w Obj67_Main-Obj67_Index
 
 Obj67_Main:				; XREF: Obj67_Index
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj67,4(a0)
-		move.w	#$C344,2(a0)
-		move.b	#4,1(a0)
+		move.l	#Map_obj67,mappings(a0)
+		move.w	#$C344,art_tile(a0)
+		move.b	#4,render_flags(a0)
 		move.b	#4,priority(a0)
 		move.b	#8,width_pixels(a0)
 		move.w	x_pos(a0),$32(a0)
@@ -28222,7 +28214,7 @@ Obj67_MoveSonic:			; XREF: Obj67_Action
 		btst	#1,status(a1)
 		beq.s	loc_155B8
 		clr.b	$3A(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_155A8:
@@ -28232,7 +28224,7 @@ loc_155A8:
 		clr.b	$3A(a0)
 
 locret_155B6:
-		rts	
+		rts
 ; ===========================================================================
 
 loc_155B8:
@@ -28255,7 +28247,7 @@ loc_155E2:
 		cmpi.w	#-$400,d0
 		ble.s	loc_155FA
 		move.w	#-$400,inertia(a1)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_155FA:
@@ -28264,14 +28256,14 @@ loc_155FA:
 		move.w	#-$F00,inertia(a1)
 
 locret_15606:
-		rts	
+		rts
 ; ===========================================================================
 
 loc_15608:
 		cmpi.w	#$400,d0
 		bge.s	loc_15616
 		move.w	#$400,inertia(a1)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_15616:
@@ -28280,7 +28272,7 @@ loc_15616:
 		move.w	#$F00,inertia(a1)
 
 locret_15622:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj67_MoveSpot:				; XREF: Obj67_Action
@@ -28302,7 +28294,7 @@ Obj67_MoveSpot:				; XREF: Obj67_Action
 		add.w	d3,d5
 		move.w	d4,y_pos(a0)
 		move.w	d5,x_pos(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 Obj67_ChkDel:				; XREF: Obj67_Action
@@ -28417,9 +28409,9 @@ Obj69_Index:	dc.w Obj69_Main-Obj69_Index
 
 Obj69_Main:				; XREF: Obj69_Index
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj69,4(a0)
-		move.w	#$4492,2(a0)
-		ori.b	#4,1(a0)
+		move.l	#Map_obj69,mappings(a0)
+		move.w	#$4492,art_tile(a0)
+		ori.b	#4,render_flags(a0)
 		move.b	#$80,width_pixels(a0)
 		moveq	#0,d0
 		move.b	subtype(a0),d0
@@ -28429,8 +28421,8 @@ Obj69_Main:				; XREF: Obj69_Index
 		tst.b	subtype(a0)
 		bpl.s	Obj69_Trapdoor
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj69a,4(a0)
-		move.w	#$4DF,2(a0)
+		move.l	#Map_obj69a,mappings(a0)
+		move.w	#$4DF,art_tile(a0)
 		move.b	#$10,width_pixels(a0)
 		move.b	#2,anim(a0)
 		moveq	#0,d0
@@ -28438,22 +28430,22 @@ Obj69_Main:				; XREF: Obj69_Index
 		move.w	d0,d1
 		andi.w	#$F,d0		; read only the	2nd digit
 		mulu.w	#6,d0		; multiply by 6
-		move.w	d0,$30(a0)	; set time delay
-		move.w	d0,$32(a0)
+		move.w	d0,objoff_30(a0)	; set time delay
+		move.w	d0,objoff_32(a0)
 		andi.w	#$70,d1
 		addi.w	#$10,d1
 		lsl.w	#2,d1
 		subq.w	#1,d1
-		move.w	d1,$36(a0)
+		move.w	d1,objoff_36(a0)
 		bra.s	Obj69_Spinner
 ; ===========================================================================
 
 Obj69_Trapdoor:				; XREF: Obj69_Index
-		subq.w	#1,$30(a0)
+		subq.w	#1,objoff_30(a0)
 		bpl.s	Obj69_Animate
-		move.w	$32(a0),$30(a0)
+		move.w	objoff_32(a0),objoff_30(a0)
 		bchg	#0,anim(a0)
-		tst.b	1(a0)
+		tst.b	render_flags(a0)
 		bpl.s	Obj69_Animate
 		move.w	#SndID_DoorOpen,d0
 		jsr	(PlaySound_Special).l ;	play door sound
@@ -28486,17 +28478,17 @@ Obj69_Display:
 
 Obj69_Spinner:				; XREF: Obj69_Index
 		move.w	(Timer_frames).w,d0
-		and.w	$36(a0),d0
+		and.w	objoff_36(a0),d0
 		bne.s	Obj69_Delay
-		move.b	#1,$34(a0)
+		move.b	#1,objoff_34(a0)
 
 Obj69_Delay:
-		tst.b	$34(a0)
+		tst.b	objoff_34(a0)
 		beq.s	Obj69_Animate2
-		subq.w	#1,$30(a0)
+		subq.w	#1,objoff_30(a0)
 		bpl.s	Obj69_Animate2
-		move.w	$32(a0),$30(a0)
-		clr.b	$34(a0)
+		move.w	objoff_32(a0),objoff_30(a0)
+		clr.b	objoff_34(a0)
 		bchg	#0,anim(a0)
 
 Obj69_Animate2:
@@ -28569,10 +28561,10 @@ Obj6A_Index:	dc.w Obj6A_Main-Obj6A_Index
 
 Obj6A_Main:				; XREF: Obj6A_Index
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj6A,4(a0)
-		move.w	#$43B5,2(a0)
-		move.b	#4,1(a0)
-		move.b	#4,priority(a0)
+		move.l	#Map_obj6A,mappings(a0)
+		move.w	#$43B5,art_tile(a0)
+		move.b	#4,render_flags(a0)
+		move.w	#4,priority(a0)
 		move.b	#$20,width_pixels(a0)
 		move.w	x_pos(a0),$3A(a0)
 		move.w	y_pos(a0),$38(a0)
@@ -28607,7 +28599,7 @@ Obj6A_TypeIndex:dc.w Obj6A_Type00-Obj6A_TypeIndex, Obj6A_Type01-Obj6A_TypeIndex
 ; ===========================================================================
 
 Obj6A_Type00:				; XREF: Obj6A_TypeIndex
-		rts	
+		rts
 ; ===========================================================================
 
 Obj6A_Type01:				; XREF: Obj6A_TypeIndex
@@ -28638,7 +28630,7 @@ loc_15A46:
 		jsr	(PlaySound_Special).l ;	play saw sound
 
 locret_15A60:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj6A_Type02:				; XREF: Obj6A_TypeIndex
@@ -28669,7 +28661,7 @@ loc_15A96:
 		jsr	(PlaySound_Special).l ;	play saw sound
 
 locret_15AB0:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj6A_Type03:				; XREF: Obj6A_TypeIndex
@@ -28698,7 +28690,7 @@ loc_15B02:
 		addq.l	#4,sp
 
 locret_15B04:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj6A_Animate03:			; XREF: ROM:00015AB6j
@@ -28710,7 +28702,7 @@ Obj6A_Animate03:			; XREF: ROM:00015AB6j
 		bchg	#0,mapping_frame(a0)
 
 locret_15B24:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj6A_Type04:				; XREF: Obj6A_TypeIndex
@@ -28738,7 +28730,7 @@ loc_15B74:
 		addq.l	#4,sp
 
 locret_15B76:
-		rts	
+		rts
 ; ===========================================================================
 
 Obj6A_Animate04:
@@ -28750,7 +28742,7 @@ Obj6A_Animate04:
 		bchg	#0,mapping_frame(a0)
 
 locret_15B96:
-		rts	
+		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - ground saws	and pizza cutters (SBZ)
@@ -28898,7 +28890,7 @@ Obj6B_TypeIndex:dc.w Obj6B_Type00-Obj6B_TypeIndex, Obj6B_Type01-Obj6B_TypeIndex
 ; ===========================================================================
 
 Obj6B_Type00:				; XREF: Obj6B_TypeIndex
-		rts	
+		rts
 ; ===========================================================================
 
 Obj6B_Type01:				; XREF: Obj6B_TypeIndex
@@ -28928,7 +28920,7 @@ loc_15DD4:
 		move.w	$34(a0),d1
 		sub.w	d0,d1
 		move.w	d1,x_pos(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_15DE0:
@@ -29283,12 +29275,12 @@ Map_obj6E:
 ; ---------------------------------------------------------------------------
 ; Object 6F - spinning platforms that move around a conveyor belt (SBZ)
 ; ---------------------------------------------------------------------------
-
-Obj6F:					; XREF: Obj_Index
+SpinningPtfmSpawnIndex = $2F ; kinda like respawn_index but its ids for a custom buffer
+ObjSBZSpinningPtfm:					; XREF: Obj_Index
 		moveq	#0,d0
 		move.b	routine(a0),d0
-		move.w	Obj6F_Index(pc,d0.w),d1
-		jsr	Obj6F_Index(pc,d1.w)
+		move.w	ObjSBZSpinningPtfm_Index(pc,d0.w),d1
+		jsr	ObjSBZSpinningPtfm_Index(pc,d1.w)
 		move.w	$30(a0),d0
 		andi.w	#$FF80,d0
 		move.w	(Camera_X_pos).w,d1
@@ -29298,32 +29290,32 @@ Obj6F:					; XREF: Obj_Index
 		cmpi.w	#$280,d0
 		bhi.s	loc_1629A
 
-Obj6F_Display:
+ObjSBZSpinningPtfm_Display:
 		jmp	(DisplaySprite).l
 ; ===========================================================================
 
 loc_1629A:
 		cmpi.b	#2,(Current_Act).w ; check if act	is 3
-		bne.s	Obj6F_Act1or2	; if not, branch
+		bne.s	ObjSBZSpinningPtfm_Act1or2	; if not, branch
 		cmpi.w	#-$80,d0
-		bcc.s	Obj6F_Display
+		bcc.s	ObjSBZSpinningPtfm_Display
 
-Obj6F_Act1or2:
-		move.b	$2F(a0),d0
-		bpl.s	Obj6F_Delete
+ObjSBZSpinningPtfm_Act1or2:
+		move.b	SpinningPtfmSpawnIndex(a0),d0
+		bpl.s	ObjSBZSpinningPtfm_Delete
 		andi.w	#$7F,d0
 		lea	(RotatingPlatformsTable).w,a2
 		bclr	#0,(a2,d0.w)
 
-Obj6F_Delete:
+ObjSBZSpinningPtfm_Delete:
 		jmp	(DeleteObject).l
 
 ; ===========================================================================
-Obj6F_Index:	dc.w Obj6F_Main-Obj6F_Index
-		dc.w loc_163D8-Obj6F_Index
+ObjSBZSpinningPtfm_Index:	dc.w ObjSBZSpinningPtfm_Main-ObjSBZSpinningPtfm_Index
+		dc.w loc_163D8-ObjSBZSpinningPtfm_Index
 ; ===========================================================================
 
-Obj6F_Main:				; XREF: Obj6F_Index
+ObjSBZSpinningPtfm_Main:				; XREF: ObjSBZSpinningPtfm_Index
 		move.b	subtype(a0),d0
 		bmi.w	loc_16380
 		addq.b	#2,routine(a0)
@@ -29382,8 +29374,8 @@ loc_16378:
 		bra.w	loc_163D8
 ; ===========================================================================
 
-loc_16380:				; XREF: Obj6F_Main
-		move.b	d0,$2F(a0)
+loc_16380:				; XREF: ObjSBZSpinningPtfm_Main
+		move.b	d0,SpinningPtfmSpawnIndex(a0)
 		andi.w	#$7F,d0
 		lea	(RotatingPlatformsTable).w,a2
 		bset	#0,(a2,d0.w)
@@ -29399,14 +29391,14 @@ loc_1639A:
 		adda.w	(a2,d0.w),a2
 		move.w	(a2)+,d1
 		movea.l	a0,a1
-		bra.s	Obj6F_LoadPform
+		bra.s	ObjSBZSpinningPtfm_LoadPform
 ; ===========================================================================
 
-Obj6F_Loop:
+ObjSBZSpinningPtfm_Loop:
 		jsr	(SingleObjLoad).l
 		bne.s	loc_163D0
 
-Obj6F_LoadPform:			; XREF: loc_1639A
+ObjSBZSpinningPtfm_LoadPform:			; XREF: loc_1639A
 		_move.b	#$6F,0(a1)
 		move.w	(a2)+,x_pos(a1)
 		move.w	(a2)+,y_pos(a1)
@@ -29414,14 +29406,14 @@ Obj6F_LoadPform:			; XREF: loc_1639A
 		move.b	d0,subtype(a1)
 
 loc_163D0:
-		dbf	d1,Obj6F_Loop
+		dbf	d1,ObjSBZSpinningPtfm_Loop
 
 		addq.l	#4,sp
 		rts
 ; ===========================================================================
 
-loc_163D8:				; XREF: Obj6F_Index
-		lea	(Ani_obj6F).l,a1
+loc_163D8:				; XREF: ObjSBZSpinningPtfm_Index
+		lea	(Ani_ObjSBZSpinningPtfm).l,a1
 		jsr	(AnimateSprite).l
 		tst.b	mapping_frame(a0)
 		bne.s	loc_16404
@@ -29488,9 +29480,9 @@ loc_16484:
 ; ---------------------------------------------------------------------------
 ; Animation script - platform on conveyor belt (SBZ)
 ; ---------------------------------------------------------------------------
-Ani_obj6F:
-		dc.w byte_1648E-Ani_obj6F
-		dc.w byte_164A2-Ani_obj6F
+Ani_ObjSBZSpinningPtfm:
+		dc.w byte_1648E-Ani_ObjSBZSpinningPtfm
+		dc.w byte_164A2-Ani_ObjSBZSpinningPtfm
 byte_1648E:	dc.b 0,	0, 1, 2, 3, 4, $43, $42, $41, $40, $61,	$62, $63
 		dc.b $64, $23, $22, $21, 0, $FF, 0
 byte_164A2:	dc.b $F, 0, $FF
@@ -29524,9 +29516,9 @@ Obj70_Index:	dc.w Obj70_Main-Obj70_Index
 
 Obj70_Main:				; XREF: Obj70_Index
 		addq.b	#2,routine(a0)
-		move.l	#Map_obj70,4(a0)
-		move.w	#$42F0,2(a0)
-		ori.b	#4,1(a0)
+		move.l	#Map_obj70,mappings(a0)
+		move.w	#$42F0,art_tile(a0)
+		ori.b	#4,render_flags(a0)
 		move.b	#4,priority(a0)
 		move.b	#$60,width_pixels(a0)
 		move.b	#$18,y_radius(a0)

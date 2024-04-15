@@ -193,6 +193,7 @@ Level_Layout:                   ds.b    $400  ; =			ramaddr( $FFFFA400 )	; $3FF 
 TempArray_LayerDef:             ds.b    $200  ;=		ramaddr( $FFFFA800 )	; $1FF bytes ; used by some layer deformation routines
 Decomp_Buffer:                  ds.b    $200 ;=			ramaddr( $FFFFAA00 )	; $1FF bytes
 Sprite_Table_Input:              ds.b    $400  ;=		ramaddr( $FFFFAC00 )	; $3FF bytes ; in custom format before being converted and stored in Sprite_Table/Sprite_Table_2
+Sprite_Table_Input_End:
 Block_Table:                     ds.b    $1800 ;=			ramaddr( $FFFFB000 )	; $17FF bytes
 
 Sonic_Art_Buffer: ds.b    $300       ;=		ramaddr( $FFFFC800 )	; $2FF bytes ; Sonic's dynamic pattern reloading routine copies the relevant art over here, from where it is DMA'd to VRAM every V-int.
