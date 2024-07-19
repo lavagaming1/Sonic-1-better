@@ -56,6 +56,19 @@ restart_countdown = $3A
 jumping = $3C
 Interact = $3D
 move_lock = $3E
+objoff_A =		2+x_pos ; note: x_pos can be 4 bytes, but sometimes the last 2 bytes of x_pos are used for other unrelated things
+objoff_B =		3+x_pos ; unused
+objoff_E =		2+y_pos	; unused
+objoff_F =		3+y_pos ; unused
+objoff_10 =		$10
+objoff_14 =		$14
+objoff_15 =		$15
+objoff_1F =		$1F
+objoff_27 =		$27
+objoff_28 =		$28 ; overlaps subtype, but a few objects use it for other things anyway
+ enum               objoff_29=$29,objoff_2A=$2A,objoff_2B=$2B,objoff_2C=$2C,objoff_2D=$2D,objoff_2E=$2E,objoff_2F=$2F
+ enum objoff_30=$30,objoff_31=$31,objoff_32=$32,objoff_33=$33,objoff_34=$34,objoff_35=$35,objoff_36=$36,objoff_37=$37
+ enum objoff_38=$38,objoff_39=$39,objoff_3A=$3A,objoff_3B=$3B,objoff_3C=$3C,objoff_3D=$3D,objoff_3E=$3E,objoff_3F=$3F
 ; ---------------------------------------------------------------------------
 ; some variables and functions to help define those constants (redefined before a new set of IDs)
 offset :=	0		; this is the start of the pointer table
