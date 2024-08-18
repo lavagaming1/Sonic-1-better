@@ -2254,56 +2254,56 @@ Pal_SBZCycList:
 	dc.w 8			; number of entries - 1
 	dc.b 7,	8		; duration in frames, number of	colours
 	dc.w Pal_SBZCyc1	; pallet pointer
-	dc.w $FB50		; RAM address
+	dc.w Normal_palette+$50		; RAM address
 	dc.b $D, 8
 	dc.w Pal_SBZCyc2
-	dc.w $FB52
+	dc.w Normal_palette+$52
 	dc.b $E, 8
 	dc.w Pal_SBZCyc3
-	dc.w $FB6E
+	dc.w Normal_palette+$6E
 	dc.b $B, 8
 	dc.w Pal_SBZCyc5
-	dc.w $FB70
+	dc.w Normal_palette+$70
 	dc.b 7,	8
 	dc.w Pal_SBZCyc6
-	dc.w $FB72
+	dc.w Normal_palette+$72
 	dc.b $1C, $10
 	dc.w Pal_SBZCyc7
-	dc.w $FB7E
+	dc.w Normal_palette+$7E
 	dc.b 3,	3
 	dc.w Pal_SBZCyc8
-	dc.w $FB78
+	dc.w Normal_palette+$78
 	dc.b 3,	3
 	dc.w Pal_SBZCyc8+2
-	dc.w $FB7A
+	dc.w Normal_palette+$7A
 	dc.b 3,	3
 	dc.w Pal_SBZCyc8+4
-	dc.w $FB7C
-	align 2
+	dc.w Normal_palette+$7C
+	even
 
 Pal_SBZCycList2:
 	dc.w 6
 	dc.b 7,	8
 	dc.w Pal_SBZCyc1
-	dc.w $FB50
+	dc.w Normal_palette+$50
 	dc.b $D, 8
 	dc.w Pal_SBZCyc2
-	dc.w $FB52
+	dc.w Normal_palette+$52
 	dc.b 9,	8
 	dc.w Pal_SBZCyc9
-	dc.w $FB70
+	dc.w Normal_palette+$70
 	dc.b 7,	8
 	dc.w Pal_SBZCyc6
-	dc.w $FB72
+	dc.w Normal_palette+$72
 	dc.b 3,	3
 	dc.w Pal_SBZCyc8
-	dc.w $FB78
+	dc.w Normal_palette+$78
 	dc.b 3,	3
 	dc.w Pal_SBZCyc8+2
-	dc.w $FB7A
+	dc.w Normal_palette+$7A
 	dc.b 3,	3
 	dc.w Pal_SBZCyc8+4
-	dc.w $FB7C
+	dc.w Normal_palette+$7C
 	align 2
 
 Pal_SBZCyc1:	binclude	art/pallet/c_sbz_1.bin
