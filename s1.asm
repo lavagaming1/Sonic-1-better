@@ -2064,7 +2064,7 @@ loc_19D8:
 		move.b	byte_1A3C(pc,d0.w),d0
 		beq.s	locret_1A3A
 		moveq	#1,d1
-		tst.b	(Pal_unk).w
+		tst.b	(Pal_ReverseCycle).w
 		beq.s	loc_19F0
 		neg.w	d1
 
@@ -2212,7 +2212,7 @@ loc_1B06:				; XREF: PalCycle_SBZ
 
 loc_1B2E:
 		moveq	#-1,d1
-		tst.b	(Pal_unk).w
+		tst.b	(Pal_ReverseCycle).w
 		beq.s	loc_1B38
 		neg.w	d1
 
@@ -23577,7 +23577,7 @@ loc_123E2:
 		lsl.w	#2,d1
 		move.b	d1,$38(a0)
 		move.b	#4,$3A(a0)
-		tst.b	(Pal_unk).w
+		tst.b	(Pal_ReverseCycle).w
 		beq.s	loc_1244C
 		move.b	#1,$3B(a0)
 		neg.b	$3A(a0)
@@ -23659,7 +23659,7 @@ loc_124DE:				; XREF: Obj63_Index
 		andi.w	#3,d0
 		bne.s	loc_124FC
 		moveq	#1,d1
-		tst.b	(Pal_unk).w
+		tst.b	(Pal_ReverseCycle).w
 		beq.s	loc_124F2
 		neg.b	d1
 
@@ -23680,7 +23680,7 @@ sub_12502:				; XREF: loc_124B2; loc_124C2
 		tst.b	$3B(a0)
 		bne.s	loc_12520
 		move.b	#1,$3B(a0)
-		move.b	#1,(Pal_unk).w
+		move.b	#1,(Pal_ReverseCycle).w
 		neg.b	$3A(a0)
 		bra.s	loc_12534
 ; ===========================================================================
@@ -29338,7 +29338,7 @@ ObjSBZSpinningPtfm_Main:				; XREF: ObjSBZSpinningPtfm_Index
 		lsl.w	#2,d1
 		move.b	d1,$38(a0)
 		move.b	#4,$3A(a0)
-		tst.b	(Pal_unk).w
+		tst.b	(Pal_ReverseCycle).w
 		beq.s	loc_16356
 		move.b	#1,$3B(a0)
 		neg.b	$3A(a0)

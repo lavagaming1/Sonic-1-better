@@ -383,7 +383,7 @@ PalChangeSpeed =                 ramaddr( $FFFFF794 )
 
 Current_Boss_ID =		ramaddr( $FFFFF7AA )
 
-Pal_unk = 			ramaddr( $FFFFF7C0 )
+Pal_ReverseCycle = 			ramaddr( $FFFFF7C0 )
 WindTunnel_flag =		ramaddr( $FFFFF7C7 )
 Freeze_flag =			ramaddr( $FFFFF7C8 )
 WindTunnel_holding_flag =	ramaddr( $FFFFF7C9 )

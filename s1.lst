@@ -1,4 +1,4 @@
- AS V1.42 Beta [Bld 89] - source file s1.asm - page 1 - 7/19/2024 3:16:02
+ AS V1.42 Beta [Bld 89] - source file s1.asm - page 1 - 8/18/2024 20:53:16
 
 
        1/       0 :                     ; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -51228,7 +51228,7 @@
    40412/   88000 : (MACRO)             		even
    40417/   88000 :                     EndOfRom:
    40418/   88000 :                     	END
- AS V1.42 Beta [Bld 89] - source file s1.asm - page 2 - 7/19/2024 3:16:02
+ AS V1.42 Beta [Bld 89] - source file s1.asm - page 2 - 8/18/2024 20:53:17
 
 
   symbol table (* = unused):
@@ -51545,7 +51545,7 @@
  CURRENT_ZONEANDACT :                                      FFFFFFFFFFFFFE10 - |
  CYCLEQUEUE :                 78572 C |  DACUPDATETRACK :             782BE C |
  DAC_SAMPLE :                A01FFF - |  DAC_STATUS :                A01FFD - |
-*DATE :                   7/19/2024 - |  DEBUGLIST :                  1E50E C |
+*DATE :                   8/18/2024 - |  DEBUGLIST :                  1E50E C |
  DEBUGMODE :                  1E2BA C | *DEBUGSOUNDBANKS :                1 - |
  DEBUG_ACCEL_TIMER :                                       FFFFFFFFFFFFFE0A - |
  DEBUG_BACKITEM :             1E40E C |  DEBUG_CONTROL :              1E376 C |
@@ -54595,7 +54595,7 @@
  TARGET_PALETTE_LINE3 :                                    FFFFFFFFFFFFFBC0 - |
  TEMPARRAY_LAYERDEF :                                      FFFFFFFFFFFFA800 C |
  TEMPOTIMEOUT :                   1 - |  TEMPOWAIT :                  78C6C C |
- TILT :                          37 - | *TIME :                     3:16:00 - |
+ TILT :                          37 - | *TIME :                    20:53:11 - |
  TIMEBONUSES :                 F6DC C |  TIMEOVER :                   1DB2C C |
  TIMER :           FFFFFFFFFFFFFE22 - |  TIMER_FRAME :     FFFFFFFFFFFFFE25 - |
  TIMER_FRAMES :    FFFFFFFFFFFFFE04 - |  TIMER_MINUTE :    FFFFFFFFFFFFFE23 - |
@@ -54761,7 +54761,7 @@
    6865 symbols
     126 unused symbols
 
- AS V1.42 Beta [Bld 89] - source file s1.asm - page 3 - 7/19/2024 3:16:02
+ AS V1.42 Beta [Bld 89] - source file s1.asm - page 3 - 8/18/2024 20:53:17
 
 
   defined macros:
@@ -54780,7 +54780,7 @@ _MOVE                                 | _TST
 
      20 macros
 
- AS V1.42 Beta [Bld 89] - source file s1.asm - page 4 - 7/19/2024 3:16:02
+ AS V1.42 Beta [Bld 89] - source file s1.asm - page 4 - 8/18/2024 20:53:17
 
 
   defined functions:
@@ -54792,7 +54792,7 @@ VDPCOMMDELTA                          | RAMADDR
 ID                                    | CHKOP                                
 NOTZ80                                |
 
- AS V1.42 Beta [Bld 89] - source file s1.asm - page 5 - 7/19/2024 3:16:02
+ AS V1.42 Beta [Bld 89] - source file s1.asm - page 5 - 8/18/2024 20:53:17
 
 
   codepages:
@@ -54801,7 +54801,7 @@ NOTZ80                                |
 STANDARD (0 changed characters)
 
 
-2.03 seconds assembly time
+5.45 seconds assembly time
 
   49328 lines source file
   63900 lines incl. macro expansions
